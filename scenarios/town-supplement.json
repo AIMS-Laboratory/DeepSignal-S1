@@ -1,0 +1,10 @@
+{
+  "name": "DeepSignal-S1 Town10HD supplementary candidates",
+  "seeds": [99001, 99002, 99003],
+  "duration_s": 300,
+  "cases": [
+    {"scene": "town10hd", "scene_file": "town10hd/scene.json", "regime": "time-varying", "condition": "clean"},
+    {"scene": "town10hd", "scene_file": "town10hd/scene.json", "regime": "time-varying", "condition": "motion-blur"},
+    {"scene": "town10hd", "scene_file": "town10hd/scene.json", "regime": "time-varying", "condition": "defocus"}
+  ]
+}

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepsignal-s1-demo"
+version = "0.1.0"
+description = "Visual traffic-signal control demonstration and simulation tests"
+requires-python = ">=3.10,<3.11"
+dependencies = ["traci>=1.18", "sumolib>=1.18", "numpy>=1.24", "opencv-python-headless>=4.8", "Pillow>=10"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+download = ["gdown>=5"]
+baseline = ["ultralytics>=8.3", "fastapi>=0.115", "uvicorn>=0.30"]
+
+[project.scripts]
+deepsignal-s1 = "deepsignal_s1.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

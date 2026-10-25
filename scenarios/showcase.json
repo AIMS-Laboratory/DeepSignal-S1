@@ -1,0 +1,10 @@
+{
+  "name": "DeepSignal-S1 selected demonstration candidates",
+  "seeds": [99001, 99002, 99003],
+  "duration_s": 300,
+  "cases": [
+    {"scene": "nansha-j02", "scene_file": "nansha-j02/scene.json", "regime": "east-west", "condition": "clean"},
+    {"scene": "nansha-j02", "scene_file": "nansha-j02/scene.json", "regime": "north-south", "condition": "clean"},
+    {"scene": "nansha-j02", "scene_file": "nansha-j02/scene.json", "regime": "east-west", "condition": "defocus"}
+  ]
+}
