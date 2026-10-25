@@ -23,18 +23,35 @@ class SignalController:
         self.tail_end = None
 
     def _open(self, now, target):
+        initial = self.green_total == 0
         self.phase = target
         self.stage = "green"
         self.green_start = now
         self.green_total = (
             self.phases[target]["fixed_green_s"]
             if self.fixed
-            else self.scene["green_min_s"]
+            else max(self.scene["green_min_s"], 9 if initial else 0)
         )
         self.tail_end = None
         self.next_time = now + self.green_total - (0 if self.fixed else 5)
         self.next_kind = "yellow" if self.fixed else "decide"
         self.target = self.order[(self.order.index(target) + 1) % len(self.order)]
+
+    def observation_time(self):
+        """Predict the next observation endpoint, including phase transitions."""
+        if self.fixed:
+            return None
+        if self.waiting:
+            return self.decision_at
+        if self.next_kind == "decide":
+            return self.next_time
+        initial_green = max(self.scene["green_min_s"], 9 if self.green_total == 0 else 0)
+        at = self.next_time
+        if self.next_kind == "yellow":
+            at += self.phases[self.phase]["yellow_s"]
+        if self.next_kind in ("yellow", "red"):
+            at += self.phases[self.target]["all_red_s"]
+        return at + initial_green - 5
 
     def advance(self, now):
         if self.waiting or now + 1e-7 < self.next_time:

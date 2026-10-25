@@ -1,0 +1,73 @@
+{
+  "measured_on": "2026-10-25",
+  "model_version": "DeepSignal-S1-1.0-candidate",
+  "scope": "Selected Nansha J02 simulation demonstrations; not a network-wide benchmark.",
+  "seeds": [
+    99001,
+    99002,
+    99003
+  ],
+  "formal_arrival_window_s": [
+    98,
+    398
+  ],
+  "metric": "Mean complete journey time including waiting before insertion; lower is better.",
+  "aggregation": "Vehicle-weighted mean over all three seeds, with every formal vehicle completed.",
+  "capture_profile": "observation-configured-resolution",
+  "camera_quality": "Epic",
+  "baseline_names": {
+    "fixed": "Tuned fixed timing",
+    "visual-pressure": "YOLO+MP"
+  },
+  "yolo_mp_version": "yolo-mp-v1",
+  "rows": [
+    {
+      "scene": "nansha-j02",
+      "regime": "east-west",
+      "condition": "defocus",
+      "paired_runs": 3,
+      "mean_journey_s": {
+        "s1": 80.42213649851631,
+        "fixed": 93.29216617210682,
+        "visual-pressure": 82.19157270029675
+      },
+      "improvement_pct": {
+        "fixed": 13.795402338335327,
+        "visual-pressure": 2.152819496753644
+      },
+      "formal_vehicles_per_controller": 337
+    },
+    {
+      "scene": "nansha-j02",
+      "regime": "east-west",
+      "condition": "clean",
+      "paired_runs": 3,
+      "mean_journey_s": {
+        "s1": 78.85151335311572,
+        "fixed": 93.29216617210682,
+        "visual-pressure": 80.75477744807124
+      },
+      "improvement_pct": {
+        "fixed": 15.478955427351494,
+        "visual-pressure": 2.3568439603209868
+      },
+      "formal_vehicles_per_controller": 337
+    },
+    {
+      "scene": "nansha-j02",
+      "regime": "north-south",
+      "condition": "clean",
+      "paired_runs": 3,
+      "mean_journey_s": {
+        "s1": 91.624696485623,
+        "fixed": 97.27006389776359,
+        "visual-pressure": 93.5537699680511
+      },
+      "improvement_pct": {
+        "fixed": 5.803807652551962,
+        "visual-pressure": 2.0619943836436283
+      },
+      "formal_vehicles_per_controller": 313
+    }
+  ]
+}

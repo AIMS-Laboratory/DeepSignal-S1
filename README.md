@@ -8,7 +8,7 @@ DeepSignal-S1 observes intersection camera views and produces adaptive signal-co
 
 ![Nansha intersection camera views](assets/nansha-scene.jpg)
 
-*Nansha J02 simulation scene preview. This image illustrates the scene, not a measured control improvement.*
+*Nansha J02, UE5 Epic quality. Four camera views from the new closed-loop tests.*
 
 ## Demonstration Video
 
@@ -20,11 +20,23 @@ The comparison video will show **DeepSignal-S1 on the left** and **tuned fixed t
 | --- | --- | --- | --- |
 | **DeepSignal-S1** | Camera frames and current signal context | Adaptive | `--controller s1` |
 | Tuned fixed timing | Predefined timing plan | Fixed phase cycle | `--controller fixed` |
-| Visual pressure | Camera-based vehicle detection | Movement-pressure control | `--controller visual-pressure` |
+| YOLO+MP | YOLO camera-based vehicle detection | Movement-pressure control | `--controller visual-pressure` |
 
-Numerical comparisons will be published from the same serving release and the paired scenarios in this repository. This preview does not substitute earlier model results for new measurements.
+### New Paired Results
 
-The selected demonstration scenarios focus on Nansha J02. Town10HD and specified blur conditions are supplementary candidates, not claims of network-wide or unrestricted robustness.
+Measured on **October 25, 2026**, using one serving release, **DeepSignal-S1-1.0-candidate**, and three new seeds per case: **99001, 99002, 99003**. Values are vehicle-weighted mean complete journey time in seconds, including waiting before insertion. **Lower is better.** Every formal vehicle completed its journey.
+
+| Nansha J02 Demand | Camera Condition | DeepSignal-S1 | YOLO+MP | Shorter vs YOLO+MP | Tuned Fixed | Shorter vs Fixed |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| East-west heavy | **Defocus** | **80.42** | 82.19 | **2.15%** | 93.29 | **13.80%** |
+| East-west heavy | Clean | **78.85** | 80.75 | **2.36%** | 93.29 | **15.48%** |
+| North-south heavy | Clean | **91.62** | 93.55 | **2.06%** | 97.27 | **5.80%** |
+
+**YOLO+MP is the primary comparison for defocus**, and is also evaluated in every clean case. Both camera-based methods receive the same degradation and observation schedule. Fixed timing does not consume camera images.
+
+[Measurements (JSON)](results/nansha-2026-10-25.json) · [Table (CSV)](results/nansha-2026-10-25.csv) · [Comparison definitions](docs/comparisons.md)
+
+These are selected Nansha J02 demonstrations, not a claim that every seed, intersection or visual condition improves. Town10HD remains an optional test scenario and is not included in the displayed results.
 
 ## Run a Test
 

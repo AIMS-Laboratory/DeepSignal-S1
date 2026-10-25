@@ -30,11 +30,15 @@ deepsignal-s1 run-suite --suite scenarios/showcase.json \
 
 `--realtime` 启用按真实时间推进及一秒决策时限；推理在后台执行，仿真不暂停等待模型。没有该选项时为在线仿真测试，不能据此声称实际实时性。
 
-`--record` 录制每秒十帧的四路摄像头画面和对应时间线。实时录制也必须单独验证时限；高画质编码可能使运行变慢。
+`--record` 录制每秒五帧的四路摄像头画面和对应时间线，覆盖原有的三个模型观察时刻。仿真仍以 0.1 秒步长推进；视频保持原速，不删除真实推理等待。实时录制也必须单独验证时限；高画质编码可能使运行变慢。
 
-## 视觉基线 / Visual Baseline
+录制保持 Epic 画质，摄像头直接按合成图的单格分辨率渲染（南沙为每路 800×450，合成为 1600×900）。不录制的观察测试采用场景配置的原生摄像头分辨率。两种配置在报告的 `capture_profile` 中区分；视频的整回合成绩单独计算，不替换评测矩阵的成绩。4K 是最终对比视频画布大小，不代表每路摄像头均为原生 4K。
 
-视觉压力基线使用独立检测服务，不读取仿真真值：
+Recording retains Epic settings and renders each camera at its composite tile size (800×450 per Nansha view). Non-recording tests use the configured native camera sizes. Reports distinguish these capture profiles; video results are measured from the recorded episodes, separately from the evaluation matrix. The final comparison canvas is 4K, not each native camera.
+
+## YOLO+MP 基线 / YOLO+MP Baseline
+
+YOLO+MP 基线使用独立检测服务，不读取仿真真值。命令中的控制器标识为 `visual-pressure`：
 
 ```bash
 pip install -e '.[baseline]'

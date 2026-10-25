@@ -64,15 +64,21 @@ class CameraScene:
         try:
             settings = self.world.get_settings()
             settings.synchronous_mode = True
-            settings.fixed_delta_seconds = 0.1
+            settings.fixed_delta_seconds = 0.2 if self.record else 0.1
+            if self.record:
+                settings.max_substeps = 20
             self.world.apply_settings(settings)
             self.world.set_weather(c.WeatherParameters.ClearNoon)
             library = self.world.get_blueprint_library()
             poses = self.scene["cameras"] or self._town_cameras()
             for label, pose in poses.items():
                 bp = library.find("sensor.camera.rgb")
-                bp.set_attribute("image_size_x", str(pose["image_width"]))
-                bp.set_attribute("image_size_y", str(pose["image_height"]))
+                width, height = (
+                    self.scene["tile_size"] if self.record
+                    else (pose["image_width"], pose["image_height"])
+                )
+                bp.set_attribute("image_size_x", str(width))
+                bp.set_attribute("image_size_y", str(height))
                 bp.set_attribute("fov", str(pose["fov"]))
                 x, y, z = pose["location"]
                 camera = self.world.spawn_actor(
@@ -137,7 +143,7 @@ class CameraScene:
                         "-s",
                         f"{width * 2}x{height * 2}",
                         "-r",
-                        "10",
+                        "5",
                         "-i",
                         "pipe:0",
                         "-an",

@@ -46,6 +46,7 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
                 {
                     "case": case_id,
                     "scene": case["scene"],
+                    "regime": case["regime"],
                     "condition": case["condition"],
                     "seed": seed,
                     "reports": reports,
@@ -56,9 +57,12 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
             "All published comparisons must use exactly one serving model version"
         )
     rows = []
-    for scene, condition in sorted({(p["scene"], p["condition"]) for p in pairs}):
+    for scene, regime, condition in sorted(
+        {(p["scene"], p["regime"], p["condition"]) for p in pairs}
+    ):
         selected = [
-            p for p in pairs if p["scene"] == scene and p["condition"] == condition
+            p for p in pairs
+            if (p["scene"], p["regime"], p["condition"]) == (scene, regime, condition)
         ]
         means = {}
         for controller in controllers:
@@ -76,6 +80,7 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
         rows.append(
             {
                 "scene": scene,
+                "regime": regime,
                 "condition": condition,
                 "paired_runs": len(selected),
                 "mean_journey_s": means,
@@ -95,8 +100,8 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
     }
     write_json(root / "comparison.json", result)
     lines = [
-        "| Scenario | Condition | Pairs | DeepSignal-S1 (s) | Tuned fixed (s) | Visual pressure (s) |",
-        "| --- | --- | ---: | ---: | ---: | ---: |",
+        "| Scenario | Demand | Condition | Pairs | DeepSignal-S1 (s) | Tuned fixed (s) | YOLO+MP (s) |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: |",
     ]
     for row in rows:
         m = row["mean_journey_s"]
@@ -105,7 +110,7 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
             for c in ("s1", "fixed", "visual-pressure")
         ]
         lines.append(
-            f"| {row['scene']} | {row['condition']} | {row['paired_runs']} | "
+            f"| {row['scene']} | {row['regime']} | {row['condition']} | {row['paired_runs']} | "
             + " | ".join(values)
             + " |"
         )

@@ -1,4 +1,4 @@
-"""Visual movement-count baseline using the same camera samples."""
+"""YOLO+MP movement-pressure baseline using the same camera samples."""
 
 import base64
 import json
@@ -43,14 +43,20 @@ class VisualPressureClient:
                 for a, kind in phase["movements"]
             )
         current = context["signal"]["current_phase"]
+        red_age = context["signal"]["red_age_s"]
+        order = [p["key"] for p in self.scene["phases"]]
 
         def value(action):
             phase = (
                 current if action == "extend_5s" else action.removeprefix("switch_to_")
             )
-            return score[phase] + (1 if phase == current else 0)
+            return (
+                score[phase] + (1 if phase == current else 0),
+                red_age[phase],
+                -order.index(phase),
+            )
 
         return {
             "choice": max(context["legal_actions"], key=value),
-            "model_version": "visual-pressure-v2",
+            "model_version": "yolo-mp-v1",
         }

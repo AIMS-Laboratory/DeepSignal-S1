@@ -30,6 +30,11 @@ def render(model_run, fixed_run, output):
         if reports[0][field] != reports[1][field]:
             raise ValueError(f"The two videos differ in {field}")
     captures = [cv2.VideoCapture(str(d / "cameras.mp4")) for d in directories]
+    fps = captures[0].get(cv2.CAP_PROP_FPS)
+    if fps <= 0 or any(abs(c.get(cv2.CAP_PROP_FPS) - fps) > 0.01 for c in captures):
+        for capture in captures:
+            capture.release()
+        raise ValueError("The paired recordings must have the same frame rate")
     timelines = [
         [
             json.loads(line)
@@ -59,7 +64,7 @@ def render(model_run, fixed_run, output):
         "-s",
         "3840x2160",
         "-r",
-        "10",
+        str(fps),
         "-i",
         "pipe:0",
         "-an",
@@ -77,7 +82,14 @@ def render(model_run, fixed_run, output):
     ]
     encoder = subprocess.Popen(command, stdin=subprocess.PIPE)
     last = [None, None]
-    preview_index = min(1500, max(len(t) for t in timelines) - 1)
+    preview_index = min(round(250 * fps), max(len(t) for t in timelines) - 1)
+    journey = [r["metrics"]["mean_journey_s"] for r in reports]
+    full_episode = (
+        f"Full-episode mean journey: DeepSignal-S1 {journey[0]:.2f}s"
+        f"   |   Tuned fixed {journey[1]:.2f}s"
+    )
+    if journey[0] < journey[1]:
+        full_episode += f"   |   {100 * (1 - journey[0] / journey[1]):.1f}% shorter"
     try:
         for index in range(max(len(t) for t in timelines)):
             image = Image.new("RGB", (3840, 2160), (20, 22, 25))
@@ -133,6 +145,16 @@ def render(model_run, fixed_run, output):
                 draw.text(
                     (x, 1460), action.replace("_", " "), font=fonts[32], fill="white"
                 )
+                light_color = {
+                    "green": (89, 218, 159),
+                    "yellow": (245, 207, 97),
+                    "red": (245, 111, 108),
+                }[state["stage"]]
+                draw.ellipse((x + 1720, 1398, x + 1752, 1430), fill=light_color)
+                commitment = f"Committed green: {state['green_total_s']:g} s"
+                if state["countdown_s"] is not None:
+                    commitment += f"   |   Green tail: {state['countdown_s']:.1f} s"
+                draw.text((x, 1530), commitment, font=fonts[32], fill=(190, 195, 200))
                 m = state["metrics"]
                 journey = f"{m['mean_journey_s']:.2f} s" if m["complete"] else "--"
                 for label, value, offset in (
@@ -158,6 +180,12 @@ def render(model_run, fixed_run, output):
                         font=fonts[28],
                         fill=(190, 195, 200),
                     )
+            draw.text(
+                (64, 1950),
+                full_episode,
+                font=fonts[40],
+                fill=(89, 218, 159),
+            )
             draw.text(
                 (64, 2040),
                 "Selected simulation scenario  |  Same arrivals, routes, camera conditions and traffic rules",

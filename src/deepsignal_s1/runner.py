@@ -138,12 +138,13 @@ def run_episode(
                 state = signal.state_string(links, width)
                 conn.trafficlight.setRedYellowGreenState(scene["tls_id"], state)
                 if view:
-                    should_capture = record or (
+                    observation_at = signal.observation_time()
+                    should_capture = (tick % 2 == 0) if record else (
                         not signal.fixed
                         and (
                             signal.waiting
                             or any(
-                                abs(now - (signal.next_time - dt)) < 0.01
+                                abs(now - (observation_at - dt)) < 0.01
                                 for dt in (4, 2, 0)
                             )
                         )
@@ -179,6 +180,11 @@ def run_episode(
                                 )
                             samples.append(found)
                         context = signal.context(now)
+                        if controller == "visual-pressure":
+                            context["signal"]["red_age_s"] = {
+                                p: 0 if p == signal.phase else now - ended
+                                for p, ended in signal.last_green_end.items()
+                            }
                         if not context["legal_actions"]:
                             raise RuntimeError("No legal signal action remains")
                         if controller == "s1":
@@ -219,7 +225,7 @@ def run_episode(
                     "metrics": metrics.report(now),
                 }
                 trace.write(json.dumps(snapshot) + "\n")
-                if view and record:
+                if view and record and should_capture:
                     view.write_trace(snapshot)
                 simulation_wall_seconds = time.perf_counter() - sim_started
                 if realtime:
@@ -227,11 +233,15 @@ def run_episode(
                         max_clock_lag_s, simulation_wall_seconds - now
                     )
                 if now >= plan["window"][1] and metrics.report(now)["complete"]:
-                    break
+                    if not record or should_capture:
+                        break
             if not metrics.report(now)["complete"]:
                 raise RuntimeError(
                     "Not all planned formal vehicles completed their journeys"
                 )
+    except KeyboardInterrupt:
+        failure = "Interrupted by operator"
+        raise
     except Exception as error:
         failure = f"{type(error).__name__}: {error}"
     finally:
@@ -248,6 +258,10 @@ def run_episode(
             "model_version": version,
             "quality": None if cpu else "Epic",
             "engine": "SUMO" if cpu else "UE5",
+            "capture_profile": None if cpu else (
+                "recording-tile-resolution" if record else "observation-configured-resolution"
+            ),
+            "recording_fps": 5 if record else None,
             "metrics": metrics.report(now),
             "decisions": len(decisions),
             "failure": failure,

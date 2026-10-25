@@ -85,6 +85,24 @@ def test_cannot_extend_past_max_green(scene):
     assert "extend_5s" not in control.legal_actions(control.decision_at)
 
 
+def test_short_green_observations_include_preceding_clearance():
+    scene = load_scene(ROOT / "scenarios/town10hd/scene.json")
+    control = SignalController(scene)
+    assert control.observation_time() == pytest.approx(4.2)
+    control.advance(0.2)
+    assert control.green_total == 9
+    assert control.advance(4.2)
+    control.accept("switch_to_ew_left")
+    assert control.observation_time() == pytest.approx(15.2)
+    control.advance(9.2)
+    assert control.observation_time() == pytest.approx(15.2)
+    control.advance(12.2)
+    assert control.observation_time() == pytest.approx(15.2)
+    control.advance(14.2)
+    assert control.green_total == 6
+    assert control.observation_time() == pytest.approx(15.2)
+
+
 def test_illegal_action_not_replaced(scene):
     control = SignalController(scene)
     control.advance(0.2)

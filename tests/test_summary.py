@@ -1,6 +1,6 @@
 import pytest
 
-from deepsignal_s1.data import write_json
+from deepsignal_s1.data import read_json, write_json
 from deepsignal_s1.summary import summarize
 
 
@@ -41,6 +41,28 @@ def test_summary_requires_all_seeds_and_reports(paired):
     result = summarize(paired, paired / "suite.json", ("s1", "fixed"))
     assert result["rows"][0]["paired_runs"] == 2
     assert result["rows"][0]["improvement_pct"]["fixed"] == 25
+
+
+def test_demand_regimes_are_not_merged(paired):
+    suite = read_json(paired / "suite.json")
+    suite["cases"].append(
+        {"scene": "demo", "regime": "north-south", "condition": "clean"}
+    )
+    write_json(paired / "suite.json", suite)
+    for seed in suite["seeds"]:
+        for controller in ("s1", "fixed"):
+            source = paired / f"demo-east-west-clean-{seed}" / controller
+            target = paired / f"demo-north-south-clean-{seed}" / controller
+            write_json(target / "plan.json", read_json(source / "plan.json"))
+            report = read_json(source / "report.json")
+            report["regime"] = "north-south"
+            report["metrics"]["mean_journey_s"] *= 2
+            write_json(target / "report.json", report)
+    rows = summarize(paired, paired / "suite.json", ("s1", "fixed"))["rows"]
+    assert [(r["regime"], r["paired_runs"]) for r in rows] == [
+        ("east-west", 2), ("north-south", 2)
+    ]
+    assert [r["mean_journey_s"]["s1"] for r in rows] == [15, 30]
 
 
 def test_model_versions_cannot_be_combined(paired):

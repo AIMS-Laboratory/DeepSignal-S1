@@ -20,7 +20,19 @@ Mean journey time is calculated over all formal vehicles, including waiting befo
 - 相机方法使用相同机位、观察窗和指定视觉扰动。闭环策略不同之后，车辆状态自然会不同，不宣称双方始终看到逐像素相同的画面。
 - 三帧观察间隔为两秒；模型交通信息来自画面，信号时钟和静态路口信息作为必要执行上下文。
 
+Town 的自适应控制首段绿灯为 9 秒，以建立完整的四秒观察历史；后续仍允许 6 秒最短绿灯。后续观察窗可以跨越黄灯、全红和新绿灯阶段，帧按原始仿真时刻采集，不复制旧帧填充。
+
+Town adaptive runs start with a 9-second green to establish the observation history; subsequent greens retain the 6-second minimum. Cross-phase observation windows use actual frames from their scheduled times.
+
 `summarize` 要求展示矩阵的全部回合齐备且完整。缺失、失败、到达计划不同或模型版本混用时，不生成有效对比结论。
+
+## YOLO+MP 对照
+
+所有展示条件均同时比较 YOLO+MP 与调优固定配时。失焦条件重点比较 DeepSignal-S1 与 YOLO+MP：双方使用相同机位、同一失焦处理与同样的三帧观察时刻。固定配时不依赖画面，因此不能将失焦条件下相对固定配时的收益解释为视觉鲁棒性证据。
+
+YOLO+MP 使用 YOLO11m 检测车辆，再按进口转向汇总相位压力；本测试场景的出口按无阻塞处理。三个观察时刻按 0.25、0.25、0.5 平滑，保留当前相位滞回；压力相同时按红灯等待时间、再按相位顺序选择。检测服务不接收 SUMO 的车辆数或排队真值。控制器命令标识为 `visual-pressure`，结果版本为 `yolo-mp-v1`。
+
+Every displayed condition compares against both YOLO+MP and tuned fixed timing. Defocus comparisons primarily target YOLO+MP under the same camera degradation and observation schedule. Fixed timing does not consume images, so its defocus comparison alone is not evidence of visual robustness. YOLO+MP uses image detections and incoming-movement pressure with unblocked exits; signal red age resolves equal-pressure ties. No simulator traffic counts are supplied to the detector.
 
 ## 辅助指标
 

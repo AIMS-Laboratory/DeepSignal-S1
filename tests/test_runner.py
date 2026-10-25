@@ -19,6 +19,8 @@ def fake_camera(monkeypatch):
     import deepsignal_s1.scene as module
 
     class Scene:
+        snapshots = []
+
         def __init__(self, *args, **kwargs):
             pass
 
@@ -34,11 +36,16 @@ def fake_camera(monkeypatch):
         def encode_model_input(self, image):
             return image
 
+        def write_trace(self, snapshot):
+            self.snapshots.append(snapshot)
+
     monkeypatch.setattr(module, "CameraScene", Scene)
+    return Scene
 
 
+@pytest.mark.parametrize("scene_name", ["nansha-j02", "town10hd"])
 def test_online_loop_samples_and_completes_without_ground_truth_transport(
-    tmp_path, monkeypatch, fake_camera
+    tmp_path, monkeypatch, fake_camera, scene_name
 ):
     import deepsignal_s1.runner as runner
 
@@ -63,7 +70,7 @@ def test_online_loop_samples_and_completes_without_ground_truth_transport(
             return {"choice": action, "model_version": "explicit-unit-test-double"}
 
     monkeypatch.setattr(runner, "ModelClient", Client)
-    scene = load_scene(ROOT / "scenarios/nansha-j02/scene.json")
+    scene = load_scene(ROOT / f"scenarios/{scene_name}/scene.json")
     plan = build_plan(scene, "east-west", 99001, duration=30)
     result = runner.run_episode(
         scene, plan, tmp_path / "run", controller="s1", endpoint="test-double"
@@ -98,3 +105,35 @@ def test_failures_are_retained_and_not_replaced(tmp_path, monkeypatch, fake_came
     assert not report["complete"]
     assert report["metrics"]["mean_journey_s"] is None
     assert (tmp_path / "run/plan.json").exists()
+
+
+def test_recorded_trace_is_five_fps_and_includes_final_completion(tmp_path, fake_camera):
+    from deepsignal_s1.runner import run_episode
+
+    scene = load_scene(ROOT / "scenarios/nansha-j02/scene.json")
+    plan = build_plan(scene, "east-west", 99001, duration=5)
+    result = run_episode(scene, plan, tmp_path / "run", controller="fixed", record=True)
+    assert result["complete"] and result["recording_fps"] == 5
+    assert len(fake_camera.snapshots) == round(result["simulation_seconds"] * 5)
+    assert all(round(s["time"] * 10) % 2 == 0 for s in fake_camera.snapshots)
+    assert fake_camera.snapshots[-1]["metrics"]["complete"]
+
+
+def test_operator_interrupt_is_not_a_success(tmp_path, monkeypatch, fake_camera):
+    import deepsignal_s1.runner as runner
+
+    class Client:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def decide(self, *args):
+            raise KeyboardInterrupt
+
+    monkeypatch.setattr(runner, "ModelClient", Client)
+    scene = load_scene(ROOT / "scenarios/nansha-j02/scene.json")
+    plan = build_plan(scene, "east-west", 99001, duration=5)
+    with pytest.raises(KeyboardInterrupt):
+        runner.run_episode(scene, plan, tmp_path / "run", controller="s1", endpoint="test")
+    report = read_json(tmp_path / "run/report.json")
+    assert not report["complete"]
+    assert report["failure"] == "Interrupted by operator"
