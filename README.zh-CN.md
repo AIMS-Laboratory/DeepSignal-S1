@@ -6,13 +6,15 @@
 
 DeepSignal-S1 观察路口摄像头画面，给出自适应信号控制动作。本仓库提供仿真测试场景与模型调用客户端。
 
-![南沙路口四路摄像头画面](assets/nansha-scene.jpg)
-
-*南沙 J02，UE5 Epic 画质。本轮新闭环测试中的四路摄像头画面。*
-
 ## 对比视频
 
-对比视频采用**左侧 DeepSignal-S1、右侧调优固定配时**，同步展示车流、灯态和车辆行程指标。YouTube 上传后将在这里添加视频封面链接。
+[![DeepSignal-S1 对比视频](assets/comparison-cover.jpg)](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)
+
+**[观看 / 下载 4K 对比视频](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)** · YouTube 人工上传后补充正式链接。
+
+**左侧 DeepSignal-S1，右侧调优固定配时。** 两个回合均以真实时间运行，采用 Epic 画质、相同车流计划和种子 99001；两侧 121 辆正式车辆均完成行程。完整平均行程为 **81.42 秒与 90.82 秒，缩短 10.35%**。
+
+视频保持原速，展示真实信号动作和倒计时。此处为实际录制的单回合成绩，与下方三种子汇总分别统计。[录制回合数据](results/video-nansha-99001.json)。
 
 ## 与基线对比
 
@@ -37,6 +39,12 @@ DeepSignal-S1 观察路口摄像头画面，给出自适应信号控制动作。
 [测试数据（JSON）](results/nansha-2026-10-25.json) · [表格（CSV）](results/nansha-2026-10-25.csv) · [对比口径](docs/comparisons.md)
 
 以上为南沙 J02 选定场景的功能展示，不表述为每个种子、任意路口或所有视觉条件下均有收益。Town10HD 保留为可选测试场景，不计入主页展示结果。
+
+## 仿真场景
+
+![南沙路口四路摄像头画面](assets/nansha-scene.jpg)
+
+*南沙 J02，UE5 Epic 画质。本轮新闭环测试中的四路摄像头画面。*
 
 ## 运行测试
 

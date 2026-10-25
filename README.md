@@ -6,13 +6,15 @@ English | [简体中文](README.zh-CN.md)
 
 DeepSignal-S1 observes intersection camera views and produces adaptive signal-control actions. This repository provides the simulation scenarios and test client.
 
-![Nansha intersection camera views](assets/nansha-scene.jpg)
-
-*Nansha J02, UE5 Epic quality. Four camera views from the new closed-loop tests.*
-
 ## Demonstration Video
 
-The comparison video will show **DeepSignal-S1 on the left** and **tuned fixed timing on the right**, with synchronized traffic views, signal states and vehicle-level metrics. The YouTube link will be added after upload.
+[![DeepSignal-S1 comparison video](assets/comparison-cover.jpg)](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)
+
+**[Watch / download the 4K comparison](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)** · YouTube link to follow after upload.
+
+**DeepSignal-S1 on the left; tuned fixed timing on the right.** Both episodes ran in real time with Epic rendering, the same arrival plan and seed 99001. All 121 formal vehicles completed their journeys. Mean complete journey time is **81.42 s vs 90.82 s: 10.35% shorter**.
+
+The video preserves real timing at 1× playback, with signal actions and countdowns. Its single-episode measurements are separate from the three-seed table below. [Recorded-case measurements](results/video-nansha-99001.json).
 
 ## Baseline Comparisons
 
@@ -37,6 +39,12 @@ Measured on **October 25, 2026**, using one serving release, **DeepSignal-S1-1.0
 [Measurements (JSON)](results/nansha-2026-10-25.json) · [Table (CSV)](results/nansha-2026-10-25.csv) · [Comparison definitions](docs/comparisons.md)
 
 These are selected Nansha J02 demonstrations, not a claim that every seed, intersection or visual condition improves. Town10HD remains an optional test scenario and is not included in the displayed results.
+
+## Simulation Scene
+
+![Nansha intersection camera views](assets/nansha-scene.jpg)
+
+*Nansha J02, UE5 Epic quality. Four camera views from the new closed-loop tests.*
 
 ## Run a Test
 
