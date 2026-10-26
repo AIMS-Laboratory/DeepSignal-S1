@@ -242,9 +242,7 @@ def main():
                         e0 = now - gs0
                         gc0 = green_end[cur0] - gs0
                         red_age = {q: 0.0 if q == cur0 else now - green_end.get(q, 0.0) for q in PHASES}
-                        hist0 = {m: (0.0, 0.0, 0.0) for m in ALL_MOVES}
-                        dec = decide_mp_v2(hist0, cur0, gc0, red_age)
-                        n_dec[0] += 1
+                        dec = mp_decide(now, cur0, gc0, red_age)
                         if dec is None:
                             fail[0] = 'handoff-empty'
                             break
@@ -284,8 +282,10 @@ def main():
                             last_ge[seg['ph']] = seg['s'] + seg['G']
                             trans = (seg['s'] + seg['G'] - 5.0, 'decide', seg['ph'])
                         else:
-                            pend = (trans[0] + 5.0, dec[1])
-                            trans = (tt, 'y', seg['ph'])
+                            green_until = seg['s'] + seg['G']
+                            last_ge[seg['ph']] = green_until
+                            pend = (green_until + 5.0, dec[1])
+                            trans = (green_until, 'y', seg['ph'])
                             seg = None
                     elif kind == 'y':
                         set_st((ph, 'y'))
@@ -317,7 +317,7 @@ def main():
                 if now >= 120 and not preview_saved:
                     (out_json.parent / f'{tag}-camera.jpg').write_bytes(frame_buf[-1][1])
                     preview_saved = True
-                if now >= T_END - 1e-09 or ended:
+                if now >= T_END - 1e-09:
                     break
                 if not ended and trans is None and (pend is None) and (seg is None):
                     red_age = {q: now - last_ge.get(q, 0.0) for q in PHASES}

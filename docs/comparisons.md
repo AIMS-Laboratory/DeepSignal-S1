@@ -28,6 +28,10 @@ Town 的自适应控制首段绿灯为 9 秒，以建立完整的四秒观察历
 
 Town adaptive runs start with a 9-second green to establish the observation history; subsequent greens retain the 6-second minimum. Cross-phase observation windows use actual frames from their scheduled times.
 
+上述 Town 自适应执行约束以修正后的 `town-5s-green-tail-v2` 为准：决定切换后仍执行完整 5 秒绿灯尾段，再执行 3 秒黄灯和 2 秒全红。旧 Town 执行器漏掉了这段绿灯，历史记录不能视为已满足这些约束，也不与修正后的补测混算。两侧首次决策均使用实际观察，观察末端统一为 518 秒。详见[执行修正说明](intersection-metrics.md)。
+
+These Town adaptive timing constraints apply to corrected `town-5s-green-tail-v2`: retain the full five-second green tail before 3 seconds yellow and 2 seconds all-red. Legacy Town executors omitted that tail; their historical scores do not establish compliance and are not pooled with corrected runs. Both arms use real observations from their first decision and share the 518-second horizon. See [execution corrections](intersection-metrics.md).
+
 `summarize` 要求展示矩阵的全部回合齐备且完整。缺失、失败、到达计划不同或模型版本混用时，不生成有效对比结论。
 
 ## YOLO+MP 对照

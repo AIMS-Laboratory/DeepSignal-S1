@@ -21,6 +21,10 @@ Nansha clean, +/-8 degrees and defocus belong to the previously completed suite,
 
 **Camera correction, 2026-10-26:** pre-fix UE5 Town supplementary comparisons are invalidated due to camera initialization, with original records retained and all 240 Town runs rerun. Completed Nansha runs are retained. New runs add [intersection metrics](intersection-metrics.md).
 
+**后续执行时序修正：** 相机修复后的逐车统计核对一致，但又发现旧 Town 执行器漏掉切换前承诺的 5 秒绿灯尾段、YOLO+MP 首轮采用全零观测，以及部分回合提前一秒结束。这批记录同样保留并排除，Town 全部 240 回合按 `town-5s-green-tail-v2` 统一重跑，南沙 288 回合不动。不预设修正后的胜负，也不按成绩挑选回合；原因及实际信号时间线见[执行时序修正](intersection-metrics.md#town-执行时序修正--town-signal-timing-correction)。
+
+**Subsequent timing correction:** the camera-corrected trip statistics agree with raw records, but the Town executor also omitted its committed five-second green tail, initialized MP with zero observations, and could end one second early. Those runs are retained and excluded too. All 240 Town runs restart under `town-5s-green-tail-v2`; Nansha's 288 runs remain unchanged. Outcomes are not presumed and cases are not selected by performance. See the [timing correction](intersection-metrics.md#town-执行时序修正--town-signal-timing-correction).
+
 ## 角度与失焦 / Camera Conditions
 
 `angle-a` 表示每个相机的偏航角和俯仰角分别在 ±a 度内取样，滚转角在 ±a/2 度内取样；整回合保持不变，不是逐帧随机抖动。南沙使用交通种子生成扰动，因此两个角度档位采用同一组归一化方向；每个档位两种方法的偏移相同。Town 两种方法使用相同的 `seed + int(a * 10)` 生成偏移。

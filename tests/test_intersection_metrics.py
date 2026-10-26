@@ -17,7 +17,9 @@ def metrics_module():
 def test_queue_counts_unique_incoming_lanes_and_excludes_warmup(metrics_module):
     counts = {"in_0": 2, "in_1": 1, ":crossing": 50}
     connection = SimpleNamespace(
-        trafficlight=SimpleNamespace(getControlledLanes=lambda tls: ("in_0", "in_0", "in_1", ":crossing")),
+        trafficlight=SimpleNamespace(
+            getControlledLanes=lambda tls: ("in_0", "in_0", "in_1", ":crossing"),
+            getRedYellowGreenState=lambda tls: "Gr" if counts["in_0"] else "yr"),
         lane=SimpleNamespace(getLastStepHaltingNumber=lambda lane: counts[lane]))
     metrics = metrics_module.IntersectionMetrics(connection, "1", start=10.0, end=12.0)
     for now in (9.0, 10.0, 11.0):
@@ -28,6 +30,7 @@ def test_queue_counts_unique_incoming_lanes_and_excludes_warmup(metrics_module):
     assert metrics.observed_seconds == 2.0
     assert sum(metrics.queue_vehicle_seconds.values()) == 4.0
     assert metrics.max_queue_vehicles == 3
+    assert metrics.signal_timeline == [{'time_s': 9.0, 'state': 'Gr'}, {'time_s': 12.0, 'state': 'yr'}]
 
 
 def test_waiting_uses_formal_vehicles_including_unfinished(metrics_module, tmp_path):

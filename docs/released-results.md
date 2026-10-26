@@ -4,6 +4,10 @@
 
 This page covers completed measurements in `v0.2.0`, excluding the ongoing 528-run supplement. Both suites share the visual-to-decision interface but use **two explicitly identified frozen checkpoints**, not one cross-scene checkpoint.
 
+**Town 历史成绩限定：** 2026-10-26 检查发现，Town 存档和早期 UE5 补测的自适应执行器均在决定切换后立即变黄，漏掉了承诺的 5 秒绿灯尾段。本页保留原始历史测量及其重算材料，不将其视为满足修正后绿灯执行约束的成绩。当前 HF 权重在修正后 UE5 Town 上的完整 240 回合另行重跑，不能继承本页 Town 数字。南沙不受此 Town 修正影响。详见[执行时序说明](intersection-metrics.md)。
+
+**Historical Town scores:** the archived and early UE5 Town adaptive executors switched to yellow immediately after a switch decision, omitting the committed five-second green tail. Historical measurements and recomputation inputs remain available here, but do not establish compliance with corrected green timing. The current HF checkpoint is being evaluated separately across all 240 corrected UE5 Town runs and does not inherit these Town scores. Nansha is unaffected by this Town correction. See [timing corrections](intersection-metrics.md).
+
 ## 版本对应 / Matching Releases
 
 | 测试 / Suite | HF 完整模型目录 / Model Folder | 服务版本 / Model Version | 仿真 / Runtime |

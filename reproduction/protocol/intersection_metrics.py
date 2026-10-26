@@ -39,6 +39,7 @@ def trip_metrics(path, planned, horizon):
 class IntersectionMetrics:
     def __init__(self, connection, tls_id, start=98.0, end=518.0):
         self.connection = connection
+        self.tls_id = str(tls_id)
         self.lanes = tuple(lane for lane in dict.fromkeys(
             connection.trafficlight.getControlledLanes(str(tls_id))) if not lane.startswith(":"))
         self.start, self.end = start, end
@@ -46,8 +47,12 @@ class IntersectionMetrics:
         self.observed_seconds = 0.0
         self.queue_vehicle_seconds = {lane: 0.0 for lane in self.lanes}
         self.max_queue_vehicles = 0
+        self.signal_timeline = []
 
     def update(self, now):
+        state = self.connection.trafficlight.getRedYellowGreenState(self.tls_id)
+        if not self.signal_timeline or self.signal_timeline[-1]['state'] != state:
+            self.signal_timeline.append({'time_s': now, 'state': state})
         duration = max(0.0, min(now, self.end) - max(self.last_time, self.start))
         self.last_time = now
         if not duration:
@@ -76,6 +81,7 @@ class IntersectionMetrics:
             "queue_scope": "All vehicles on unique signal-controlled incoming lanes; time-averaged "
                            "SUMO halting counts (speed < 0.1 m/s). Unit: vehicles, not metres.",
             "evaluation_only": True,
+            "signal_timeline": self.signal_timeline,
             **trip_metrics(tripinfo, planned, min(self.last_time, self.end)),
         }
         Path(destination).write_text(json.dumps(value, indent=2) + "\n")

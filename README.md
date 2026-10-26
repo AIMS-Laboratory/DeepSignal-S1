@@ -32,6 +32,8 @@ The video preserves real timing at 1× playback, with signal actions and countdo
 
 The published suites use **two explicitly named scene-specific releases**, not one checkpoint evaluated in both scenes: `DeepSignal-S1-1.0-candidate` for Nansha (UE5/CARLA 0.10.0), and `DeepSignal-S1-Town10HD-1.0-archive` for the archived Town10HD environment (CARLA 0.9.16). The ongoing supplementary matrix is **not** used in these tables.
 
+**Town timing correction:** the Town rows below retain historical measurements from a legacy executor that omitted the committed five-second green tail. They are **not validated scores under the corrected timing protocol**, nor results of the current HF checkpoint. The complete current-checkpoint Town suite is being rerun; see [scope and corrections](docs/intersection-metrics.md). Nansha measurements are unaffected by this Town correction.
+
 | Scene | Camera Condition | Successful Pairs / Planned | Comparison | Journey-Metric Reduction |
 | --- | --- | ---: | --- | ---: |
 | Nansha, nine intersections | Clean | 72 / 72 | Engineering fixed timing | **15.99%** |

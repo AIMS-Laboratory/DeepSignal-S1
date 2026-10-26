@@ -45,3 +45,13 @@ The UE5 Town launcher now avoids zero-angle pose writes and waits for a world ti
 场景压缩包内的测试代码快照早于此次修复。**使用包内运行素材，但执行 GitHub 当前版本的测试代码**；无需重新下载三维素材，也不能直接运行旧快照后将成绩视为已验证。
 
 The scene archive's code snapshot predates this fix. Use its runtime assets with current GitHub test code; re-downloading the scene binaries is unnecessary.
+
+## Town 执行时序修正 / Town Signal-Timing Correction
+
+进一步核对发现，旧 Town 自适应执行器在预定绿灯结束前 5 秒请求决策，却在决定切换后立即变黄，漏掉了仍承诺执行的 5 秒绿灯。S1 和 YOLO+MP 都受影响；相同错误不代表对两种策略的影响相同。另有两个问题：YOLO+MP 首次决策使用人造全零观测，而不是实际三帧；末端转换可能使部分回合在 517 秒提前结束。
+
+当前 `town-5s-green-tail-v2` 执行规则在两侧均保留完整绿灯尾段，随后执行 3 秒黄灯和 2 秒全红；YOLO+MP 首次决策改用实际三帧，所有 Town 回合统一推进至 518 秒。模型权重、交通计划、YOLO 检测阈值及原有校准不因比较输赢调整。新指标中的 `signal_timeline` 记录仿真信号实际状态的变化时刻，可核对真实绿灯、黄灯和全红持续时间；它不作为控制器输入。
+
+相机已修复、但仍使用旧执行时序的 Town 补测也保留原始记录并排除，完整 240 回合按新规则重新运行。旧存档 Town 执行器也存在漏掉绿灯尾段的问题，历史数值不能作为新规则下的验收成绩。已完成的南沙 288 回合不受此次 Town 修正影响。
+
+The old Town adaptive executors requested decisions five seconds before green expiry but switched to yellow immediately after a switch decision, omitting the committed green tail. Both controllers were affected, not necessarily equally. The first MP decision also used synthetic zero counts, and terminal transitions could stop runs at 517 seconds. The corrected `town-5s-green-tail-v2` protocol preserves the green tail, then 3 seconds yellow and 2 seconds all-red, uses real observations for MP from its first decision, and runs both arms through 518 seconds. Weights, traffic plans, detector thresholds and calibration are unchanged. `signal_timeline` records actual simulator signal-state transitions for verification only. All 240 Town runs are restarted with earlier records retained and excluded; completed Nansha runs are retained. Archived Town executors share the green-tail defect, so historical numbers are not acceptance results under the corrected protocol.
