@@ -55,8 +55,26 @@ def build_report(manifest, reference, fixed_records):
                      'paired_metric_sum': sums,
                      'improvement_vs_yolo_pct': 100 * (1 - sums['s1'] / sums['visual-pressure']),
                      's1_paired_wins': sum(arms['s1'][t][metric] < arms['visual-pressure'][t][metric] for t in paired)}
+            fixed_scene = 'town10hd' if suite_name == 'town10hd-archive' else suite_name
+            fixed_paired = [t for t in tags if arms['s1'][t].get('fail') is None
+                            and fixed.get((fixed_scene, t), {}).get('fail') is None
+                            and isinstance(fixed.get((fixed_scene, t), {}).get(metric), (int, float))]
+            fixed_values = {t: fixed[(fixed_scene, t)][metric] for t in fixed_paired}
+            s1_sum = sum(arms['s1'][t][metric] for t in fixed_paired)
+            fixed_sum = sum(fixed_values.values())
+            wins = sum(arms['s1'][t][metric] < fixed_values[t] for t in fixed_paired)
+            ties = sum(arms['s1'][t][metric] == fixed_values[t] for t in fixed_paired)
+            block['engineering_fixed_comparison'] = {
+                'expected_pairs': len(tags), 'successful_pairs': len(fixed_paired),
+                'paired_tags': fixed_paired, 's1_wins': wins, 'ties': ties,
+                's1_losses': len(fixed_paired) - wins - ties,
+                's1_win_rate_pct': 100 * wins / len(fixed_paired) if fixed_paired else None,
+                'paired_metric_sum': {'s1': s1_sum, 'engineering_fixed': fixed_sum},
+                'improvement_pct': 100 * (1 - s1_sum / fixed_sum) if fixed_sum else None,
+                'scope': 'S1 and fixed successful pairs, independent of YOLO success; '
+                         'image-independent fixed results reused per condition. '
+                         'Exact metric equality is a tie, not approximate equivalence.'}
             if condition == 'clean':
-                fixed_scene = 'town10hd' if suite_name == 'town10hd-archive' else suite_name
                 fixed_sum = sum(fixed[(fixed_scene, t)][metric] for t in paired)
                 block.update(engineering_fixed_sum=fixed_sum,
                              improvement_vs_engineering_fixed_pct=100 * (1 - sums['s1'] / fixed_sum))

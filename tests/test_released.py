@@ -24,16 +24,46 @@ def test_released_tables_recompute():
     blocks = {(b['suite'], b['condition']): b for b in report['blocks']}
     ns = blocks['nansha', 'clean']
     assert ns['improvement_vs_engineering_fixed_pct'] == pytest.approx(15.988, abs=0.001)
+    fixed_comparison = ns['engineering_fixed_comparison']
+    assert fixed_comparison['successful_pairs'] == 72
+    assert fixed_comparison['s1_wins'] == 56
+    assert fixed_comparison['s1_losses'] == 16
+    assert fixed_comparison['ties'] == 0
+    assert fixed_comparison['s1_win_rate_pct'] == pytest.approx(100 * 56 / 72)
     assert ns['junctions_within_5pct'] == 5
     ns_defocus = blocks['nansha', 'defocus-2.5']
     assert ns_defocus['successful_pairs'] == 65
     assert len(ns_defocus['failures']['s1']) == 6
     assert len(ns_defocus['failures']['visual-pressure']) == 1
     assert ns_defocus['improvement_vs_yolo_pct'] == pytest.approx(25.6904, abs=0.001)
+    # The YOLO-only failure must not remove a valid S1 versus fixed pair.
+    defocus_fixed = ns_defocus['engineering_fixed_comparison']
+    assert defocus_fixed['successful_pairs'] == 66
+    assert defocus_fixed['s1_wins'] == 46
+    assert defocus_fixed['s1_losses'] == 20
+    assert defocus_fixed['improvement_pct'] == pytest.approx(10.043, abs=0.001)
     town = blocks['town10hd-archive', 'clean']
     assert town['expected_pairs'] == town['successful_pairs'] == 20
     assert town['improvement_vs_yolo_pct'] == pytest.approx(3.1294, abs=0.001)
     assert town['improvement_vs_engineering_fixed_pct'] == pytest.approx(36.2079, abs=0.001)
+
+
+def test_fixed_comparison_distinguishes_exact_ties_from_small_wins(tmp_path):
+    module = load_script('summarize_released')
+    manifest = {'release': 'test', 'suites': {'nansha': {
+        'metric': 'J_H', 'model_version': 'test-model', 'runtime': 'test', 'horizon_s': 1298,
+        'conditions': {'clean': ['J01-win', 'J01-tie', 'J01-loss']}}}}
+    for controller in ['s1', 'visual-pressure']:
+        directory = tmp_path / 'nansha/clean' / controller
+        directory.mkdir(parents=True)
+        for tag, value in [('J01-win', 99.99), ('J01-tie', 100), ('J01-loss', 101)]:
+            (directory / (tag + '.json')).write_text(json.dumps({
+                'model_version': 'test-model', 'fail': None, 'J_H': value}))
+    fixed = [{'scene': 'nansha', 'tag': tag, 'J_H': 100, 'fail': None}
+             for tag in ['J01-win', 'J01-tie', 'J01-loss']]
+    report = module.build_report(manifest, tmp_path, fixed)
+    comparison = report['blocks'][0]['engineering_fixed_comparison']
+    assert (comparison['s1_wins'], comparison['ties'], comparison['s1_losses']) == (1, 1, 1)
 
 
 @pytest.mark.parametrize('controller', ['s1', 'visual-pressure'])

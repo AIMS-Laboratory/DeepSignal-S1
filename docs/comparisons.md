@@ -4,6 +4,22 @@
 
 The completed finite-horizon suites use explicitly named scene-specific checkpoints and matching runtimes; see [release definitions](released-results.md). They are distinct from the complete-journey demonstrations below.
 
+## 当前开发目标 / Development Targets
+
+南沙和 Town 分别按以下目标检查，目标不等于已经测得的结论：
+
+- **相对工程固定配时：** 在各自完整实验矩阵的大多数配对案例中获胜，并取得明确的整体改善。采用事先确定、具有实际工程依据的较好固定方案，不在最终测试车流上搜索最优表，也不根据模型成绩反向调弱。未在测试集搜索最优不等于已证明数学意义上的“次优”。
+- **清晰画面相对 YOLO+MP：** 争取更好，整体接近也可接受；同时核对排队、每车停车等待、停车次数和通过量，不能只用停车次数少代替等待时间改善。
+- **特殊视觉条件相对 YOLO+MP：** 在每个已选条件、每个场景内分别检验是否有明确优势，不把南沙的收益当成 Town 的结论，也不只报混合均值。当前角度测试是整回合固定角度偏移，不称为动态抖动；动态抖动需独立测试。
+
+“明显领先”与“近似持平”的数值门槛尚未在本次要求中指定，不事后依据成绩设定。完整报告保留每种条件的计划数、成功配对数、失败数、整体改善与胜/平/负案例数；少量案例的领先或接近不能代替完整矩阵验收。若未达目标，应改进模型并用新的独立种子测试，而不是改变固定方案或 YOLO+MP 来保证获胜。
+
+Nansha and Town are evaluated separately against development targets, not presumed outcomes: beat a credible engineering fixed plan on most cases with a clear aggregate gain; improve on or remain close to YOLO+MP in clean views; and show clear advantages over YOLO+MP within each selected perturbed condition. Fixed plans are set before final evaluation, neither optimized on test outcomes nor weakened to favor S1. Queueing, stopped time, stop count and throughput remain visible. Static camera offsets are not dynamic shake tests. Numeric margins for clear improvement or approximate equivalence have not been specified here and are not chosen after seeing scores. Report coverage, failures, aggregate changes and case-level wins/ties/losses; unmet targets require model development and independent testing, not baseline weakening.
+
+`scripts/summarize_released.py` 的 `engineering_fixed_comparison` 对每种视觉条件分别输出相对固定方案的胜/平/负及汇总改善。它按 S1 与固定方案双方成功的案例配对，不因 YOLO 单侧失败丢掉有效的固定方案比较；“平”仅表示已记录指标完全相等，不是已经证明近似等效。
+
+For each visual condition, `engineering_fixed_comparison` reports S1 versus engineering-fixed case counts and aggregate improvement, independently of YOLO-only failures. Exact recorded equality is a tie, not an equivalence claim.
+
 ## 主指标
 
 每辆正式车辆的行程时间为“到达时刻减计划出发时刻”，包含拥堵造成的路网外等待。所有正式车辆完成后，计算平均值，单位为秒。未完成时平均行程时间为空，不以只统计已完成车辆的方式代替。
