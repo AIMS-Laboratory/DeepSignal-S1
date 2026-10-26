@@ -1,0 +1,14 @@
+{
+  "tag": "sustained-uneven-18042",
+  "J": 1304.5,
+  "n_dec": 92,
+  "n_switch": 22,
+  "fail": null,
+  "yolo_ms_mean": 25.3,
+  "wall_seconds": 167.3,
+  "scene": "town10hd-archive",
+  "condition": "defocus-2.5",
+  "controller": "visual-pressure",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic"
+}

@@ -89,6 +89,7 @@ def main():
     arr = {}
     dec_log = []
     t_wall = time.monotonic()
+    preview_saved = False
     session = None
     conn = None
     frame_buf = deque(maxlen=70)
@@ -318,6 +319,9 @@ def main():
                 mirror()
                 (_, frames) = capture()
                 frame_buf.append((round(now, 1), snap(frames)))
+                if now >= 120 and not preview_saved:
+                    (out_json.parent / f'{tag}-camera.jpg').write_bytes(frame_buf[-1][1])
+                    preview_saved = True
                 if now >= T_END - 1e-09 or ended:
                     break
                 if not ended and trans is None and (pend is None) and (seg is None):

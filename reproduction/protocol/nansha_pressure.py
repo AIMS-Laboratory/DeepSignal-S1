@@ -57,7 +57,7 @@ def main():
     if out_json.exists():
         raise SystemExit(f'{out_json} 已存在')
     work_dir = Path(args.out) / 'frames' / TAG
-    work_dir.mkdir(parents=True)
+    work_dir.mkdir(parents=True, exist_ok=True)
     plan_dir = next((ROOT / f'out/nansha/plans-sft-final' / TAG for _ in [0]))
     plan = PlannedArrivals.load(plan_dir / 'plan.json')
     planned = {v.vehicle_id: v.planned_depart for v in plan.vehicles if v.cohort == 'formal'}
@@ -105,6 +105,7 @@ def main():
     cap_sched = []
     cap_mem = {}
     t_wall = time.monotonic()
+    preview_saved = False
     camera_cfg = ROOT / f'data/NanshaTrafficProject/outputs/nansha-twin/control/data/cameras/{JUN}.json'
 
     def raw_capture(scene):
@@ -222,6 +223,9 @@ def main():
                     scene.sync_vehicles(conn, conn.vehicle.getIDList(), appearances, turn_by_vehicle)
                     (_, comp) = raw_capture(scene)
                     jpg = cv2.imencode('.jpg', comp, [cv2.IMWRITE_JPEG_QUALITY, 92])[1].tobytes()
+                    if now >= 120 and not preview_saved:
+                        (out_json.parent / f'{TAG}-camera.jpg').write_bytes(jpg)
+                        preview_saved = True
                     cap_mem[cap] = jpg
                     for k in list(cap_mem):
                         if k < now - 6.0:

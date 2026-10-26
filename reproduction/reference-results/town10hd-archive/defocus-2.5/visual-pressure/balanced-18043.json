@@ -1,0 +1,14 @@
+{
+  "tag": "balanced-18043",
+  "J": 1382.9,
+  "n_dec": 91,
+  "n_switch": 23,
+  "fail": null,
+  "yolo_ms_mean": 26.3,
+  "wall_seconds": 173.7,
+  "scene": "town10hd-archive",
+  "condition": "defocus-2.5",
+  "controller": "visual-pressure",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic"
+}

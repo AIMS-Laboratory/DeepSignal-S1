@@ -1,0 +1,15 @@
+{
+  "tag": "balanced-18042",
+  "J": 2055.1,
+  "fail": null,
+  "n_dec": 90,
+  "infer_fail": 0,
+  "infer_ms_mean": 744.0,
+  "wall_seconds": 240.0,
+  "scene": "town10hd-archive",
+  "condition": "clean",
+  "controller": "s1",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic",
+  "model_version": "DeepSignal-S1-Town10HD-1.0-archive"
+}

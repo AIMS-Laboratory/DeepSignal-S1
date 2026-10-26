@@ -1,0 +1,14 @@
+{
+  "tag": "varyshuf-18040",
+  "J": 3741.5,
+  "n_dec": 91,
+  "n_switch": 23,
+  "fail": null,
+  "yolo_ms_mean": 27.8,
+  "wall_seconds": 166.6,
+  "scene": "town10hd-archive",
+  "condition": "clean",
+  "controller": "visual-pressure",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic"
+}

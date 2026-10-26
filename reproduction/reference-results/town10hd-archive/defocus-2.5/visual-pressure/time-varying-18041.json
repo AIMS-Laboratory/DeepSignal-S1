@@ -1,0 +1,14 @@
+{
+  "tag": "time-varying-18041",
+  "J": 1020.4,
+  "n_dec": 92,
+  "n_switch": 22,
+  "fail": null,
+  "yolo_ms_mean": 25.2,
+  "wall_seconds": 164.2,
+  "scene": "town10hd-archive",
+  "condition": "defocus-2.5",
+  "controller": "visual-pressure",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic"
+}

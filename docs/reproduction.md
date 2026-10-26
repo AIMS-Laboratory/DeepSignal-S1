@@ -1,9 +1,13 @@
 # 原矩阵复现 / Paired-Matrix Reproduction
 
+**主页已完成成绩请优先使用[发行版本复现说明](released-results.md)及 `scripts/run_released_matrix.py`。** 本页的 UE5 Town 入口用于迁移后的测试，不是 CARLA 0.9.16 Town 存档成绩的复现入口。
+
+**For published homepage results, use the [release-specific instructions](released-results.md) and `scripts/run_released_matrix.py`.** The UE5 Town entrypoints below do not reproduce the CARLA 0.9.16 archive scores.
+
 ## 材料 / Materials
 
 - GitHub 提供测试代码、112 份固定交通计划、相机和路口配置，不含训练代码。
-- HF 提供唯一最终权重与必要推理运行时。下载完整仓库，不只下载小体积文件。
+- HF 分别提供南沙发布权重、Town 存档权重与必要推理运行时。按成绩表选择匹配版本，下载完整目录，不只下载小体积文件。
 - `DeepSignal-S1-Scenes-UE5-Epic-v1.tar.gz` 同时包含南沙九路口和 Town10HD 的 UE5 运行文件、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。安装方法见 [testing.md](testing.md)。
 
 The GitHub repository contains test construction and evaluation code only. The complete model is distributed through approved HF downloads. One scene archive includes both Nansha and Town10HD.
@@ -55,7 +59,7 @@ python scripts/reproduce.py --scene nansha --controller s1 \
   --port 25020 --output runs/nansha-defocus
 ```
 
-条件包括 `clean`、`motion-blur-9`、`defocus-2.5`、`angle-8`。`angle-8` 指整回合固定的相机外参偏移，不是逐帧随机抖动。不同条件使用不同输出目录。
+条件包括 `clean`、`motion-blur-9`、`defocus-2.5`、`angle-8`、`angle-12`、`angle-16`。角度条件指整回合固定的相机外参偏移，不是逐帧随机抖动。不同条件使用不同输出目录。新增角度条件属于独立补测，不混入已发布成绩。
 
 原矩阵 YOLO+MP 使用对应检测服务；不要与精选展示客户端的不同服务接口混用：
 

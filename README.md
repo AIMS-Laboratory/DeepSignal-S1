@@ -28,7 +28,24 @@ The video preserves real timing at 1× playback, with signal actions and countdo
 | Engineering fixed timing | Pre-existing timing plan, without final-test search | Fixed phase cycle | `--controller fixed` |
 | YOLO+MP | YOLO camera-based vehicle detection | Movement-pressure control | `--controller visual-pressure` |
 
-### Selected Visual Comparisons
+### Completed Results
+
+The published suites use **two explicitly named scene-specific releases**, not one checkpoint evaluated in both scenes: `DeepSignal-S1-1.0-candidate` for Nansha (UE5/CARLA 0.10.0), and `DeepSignal-S1-Town10HD-1.0-archive` for the archived Town10HD environment (CARLA 0.9.16). The ongoing supplementary matrix is **not** used in these tables.
+
+| Scene | Camera Condition | Successful Pairs / Planned | Comparison | Journey-Metric Reduction |
+| --- | --- | ---: | --- | ---: |
+| Nansha, nine intersections | Clean | 72 / 72 | Engineering fixed timing | **15.99%** |
+| Nansha, nine intersections | Static camera offsets within +/-8 degrees | 72 / 72 | YOLO+MP | **1.12%** |
+| Nansha, nine intersections | Defocus, sigma=2.5 | 65 / 72 | YOLO+MP | **25.69%** |
+| Town10HD, archive release | Clean | 20 / 20 | Engineering fixed timing | **36.21%** |
+| Town10HD, archive release | Clean | 20 / 20 | YOLO+MP | **3.13%** |
+| Town10HD, archive release | Defocus, sigma=2.5 | 40 / 40 | YOLO+MP | **8.46%** |
+
+Nansha's clean aggregate is close to YOLO+MP: **5 of 9 intersections differ by less than 5%** in their aggregate capped journey metric. All nine intersection values are included in the [released measurements](results/released-2026-10-26.json).
+
+These finite-horizon metrics include unfinished journeys capped at the specified horizon. Defocus improvements use the 65 successful matched Nansha pairs; all six S1 failures and one YOLO+MP failure remain in the published records. Town's clean suite uses four seeds and all five demand regimes from one archive checkpoint; it does not mix earlier weights into a 40-case score. [Exact versions, test commands and scope](docs/released-results.md) · [Recompute these tables](scripts/summarize_released.py).
+
+### Selected Complete-Journey Demonstrations
 
 Measured on **October 25, 2026**, using one serving release, **DeepSignal-S1-1.0-candidate**, and three new seeds per case: **99001, 99002, 99003**. Values are vehicle-weighted mean complete journey time in seconds, including waiting before insertion. **Lower is better.** Every formal vehicle completed its journey.
 
@@ -42,7 +59,7 @@ Measured on **October 25, 2026**, using one serving release, **DeepSignal-S1-1.0
 
 [Measurements (JSON)](results/nansha-2026-10-25.json) · [Table (CSV)](results/nansha-2026-10-25.csv) · [Comparison definitions](docs/comparisons.md)
 
-These are selected Nansha J02 demonstrations, not a claim that every seed, intersection or visual condition improves. Town10HD remains an optional test scenario and is not included in the displayed results.
+These are selected Nansha J02 demonstrations, separate from the finite-horizon suites above, not a claim that every seed, intersection or visual condition improves.
 
 ### Engineering Fixed-Timing Tests
 
@@ -77,7 +94,7 @@ This fixed-timing test runs without model access or 3D assets. For camera-based 
 
 ## Model Access
 
-The Hugging Face model page and API address will be linked here after they are published. Model downloads and API calls both require an approved access request. Viewing this repository does not grant model access.
+The Hugging Face model pages and Google Drive scene download will be linked here after their owner uploads them. The complete model folders are `DeepSignal-S1` and `DeepSignal-S1-Town10HD-Archive`; select the release matching the table. Until the real links are filled in `assets/links.json`, this is not a verified public download-to-result workflow. Model downloads and API calls require an approved access request. Viewing this repository does not grant model access.
 
 Approved complete model downloads can also run locally with `scripts/serve_model.py`; a hosted API is not required. See [local inference and reproduction](docs/reproduction.md).
 
@@ -103,6 +120,8 @@ Use the same plan for paired comparisons. Live operation is reported only when `
 
 - [Test scenarios and API usage](docs/testing.md)
 - [Combined scene package and paired-matrix reproduction](docs/reproduction.md)
+- [Published results and matching model/runtime releases](docs/released-results.md)
+- [Supplementary camera-condition test protocol](docs/supplementary-evaluation.md)
 - [Metric and comparison definitions](docs/comparisons.md)
 - [Related DeepSignal project](https://github.com/AIMS-Laboratory/DeepSignal)
 - [Asset and third-party notices](NOTICE.md)

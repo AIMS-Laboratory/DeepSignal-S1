@@ -3,6 +3,8 @@ from pathlib import Path
 import sys
 from types import SimpleNamespace
 
+import pytest
+
 
 def test_town_fixed_preserves_first_green_not_formal_window(tmp_path, monkeypatch):
     root = Path(__file__).resolve().parents[1] / 'reproduction'
@@ -59,3 +61,30 @@ def test_town_angle_arms_use_identical_random_seed():
         seeds.append(eval(compile(expression, name, 'eval'), {'int': int},
                           {'seed_s': '18036', 'args': SimpleNamespace(jitter=8), 'JIT': 8}))
     assert seeds == [18116, 18116]
+
+
+@pytest.mark.parametrize('scene', ['nansha', 'town10hd'])
+@pytest.mark.parametrize('controller', ['s1', 'visual-pressure'])
+@pytest.mark.parametrize('angle', [8, 12, 16])
+def test_reproduce_passes_exact_angle(scene, controller, angle, tmp_path, monkeypatch):
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location('reproduce', root / 'scripts/reproduce.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    observed = {}
+    def run(command, **kwargs):
+        observed.update(command=command, **kwargs)
+        return 0
+    monkeypatch.setattr(module.subprocess, 'call', run)
+    monkeypatch.setattr(sys, 'argv', ['reproduce.py', '--scene', scene, '--controller', controller,
+                                    '--tag', 'test', '--condition', f'angle-{angle}',
+                                    '--output', str(tmp_path)])
+    assert module.main() == 0
+    if scene == 'nansha':
+        assert observed['env']['NS_DEG'] == 'j8'
+        assert observed['env']['NS_DEGP'] == str(angle)
+    elif controller == 's1':
+        command = observed['command']
+        assert command[command.index('--jitter') + 1] == str(angle)
+    else:
+        assert observed['env']['MP_JITTER'] == str(angle)

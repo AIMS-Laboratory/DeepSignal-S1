@@ -1,0 +1,14 @@
+{
+  "tag": "sustained-uneven-18043",
+  "J": 1873.7,
+  "n_dec": 92,
+  "n_switch": 21,
+  "fail": null,
+  "yolo_ms_mean": 28.5,
+  "wall_seconds": 173.1,
+  "scene": "town10hd-archive",
+  "condition": "clean",
+  "controller": "visual-pressure",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic"
+}

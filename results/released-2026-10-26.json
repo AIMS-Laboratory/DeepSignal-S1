@@ -1,0 +1,504 @@
+{
+  "release": "v0.2.0",
+  "source": "completed archived measurements; no supplementary results",
+  "formula": "100 * (1 - sum(S1) / sum(baseline)) over explicitly matched successful cases",
+  "blocks": [
+    {
+      "suite": "nansha",
+      "condition": "clean",
+      "model_version": "DeepSignal-S1-1.0-candidate",
+      "runtime": "CARLA-0.10.0",
+      "metric": "J_H",
+      "horizon_s": 1298,
+      "expected_pairs": 72,
+      "successful_pairs": 72,
+      "paired_tags": [
+        "J01-asym-mid-EW-flat-base-97001",
+        "J01-asym-mid-NS-flat-base-97001",
+        "J01-bal-high-eq-flat-base-97001",
+        "J01-bal-low-eq-flat-base-97001",
+        "J01-bal-mid-eq-flat-base-97001",
+        "J01-bal-mid-eq-flat-lheavy-97001",
+        "J01-tv-mid-eq-burst-base-97001",
+        "J01-tv-mid-eq-ramp-base-97001",
+        "J02-asym-mid-EW-flat-base-97001",
+        "J02-asym-mid-NS-flat-base-97001",
+        "J02-bal-high-eq-flat-base-97001",
+        "J02-bal-low-eq-flat-base-97001",
+        "J02-bal-mid-eq-flat-base-97001",
+        "J02-bal-mid-eq-flat-lheavy-97001",
+        "J02-tv-mid-eq-burst-base-97001",
+        "J02-tv-mid-eq-ramp-base-97001",
+        "J03-asym-mid-EW-flat-base-97001",
+        "J03-asym-mid-NS-flat-base-97001",
+        "J03-bal-high-eq-flat-base-97001",
+        "J03-bal-low-eq-flat-base-97001",
+        "J03-bal-mid-eq-flat-base-97001",
+        "J03-bal-mid-eq-flat-lheavy-97001",
+        "J03-tv-mid-eq-burst-base-97001",
+        "J03-tv-mid-eq-ramp-base-97001",
+        "J04-asym-mid-EW-flat-base-97001",
+        "J04-asym-mid-NS-flat-base-97001",
+        "J04-bal-high-eq-flat-base-97001",
+        "J04-bal-low-eq-flat-base-97001",
+        "J04-bal-mid-eq-flat-base-97001",
+        "J04-bal-mid-eq-flat-lheavy-97001",
+        "J04-tv-mid-eq-burst-base-97001",
+        "J04-tv-mid-eq-ramp-base-97001",
+        "J05-asym-mid-EW-flat-base-97001",
+        "J05-asym-mid-NS-flat-base-97001",
+        "J05-bal-high-eq-flat-base-97001",
+        "J05-bal-low-eq-flat-base-97001",
+        "J05-bal-mid-eq-flat-base-97001",
+        "J05-bal-mid-eq-flat-lheavy-97001",
+        "J05-tv-mid-eq-burst-base-97001",
+        "J05-tv-mid-eq-ramp-base-97001",
+        "J06-asym-mid-EW-flat-base-97001",
+        "J06-asym-mid-NS-flat-base-97001",
+        "J06-bal-high-eq-flat-base-97001",
+        "J06-bal-low-eq-flat-base-97001",
+        "J06-bal-mid-eq-flat-base-97001",
+        "J06-bal-mid-eq-flat-lheavy-97001",
+        "J06-tv-mid-eq-burst-base-97001",
+        "J06-tv-mid-eq-ramp-base-97001",
+        "J07-asym-mid-EW-flat-base-97001",
+        "J07-asym-mid-NS-flat-base-97001",
+        "J07-bal-high-eq-flat-base-97001",
+        "J07-bal-low-eq-flat-base-97001",
+        "J07-bal-mid-eq-flat-base-97001",
+        "J07-bal-mid-eq-flat-lheavy-97001",
+        "J07-tv-mid-eq-burst-base-97001",
+        "J07-tv-mid-eq-ramp-base-97001",
+        "J08-asym-mid-EW-flat-base-97001",
+        "J08-asym-mid-NS-flat-base-97001",
+        "J08-bal-high-eq-flat-base-97001",
+        "J08-bal-low-eq-flat-base-97001",
+        "J08-bal-mid-eq-flat-base-97001",
+        "J08-bal-mid-eq-flat-lheavy-97001",
+        "J08-tv-mid-eq-burst-base-97001",
+        "J08-tv-mid-eq-ramp-base-97001",
+        "J09-asym-mid-EW-flat-base-97001",
+        "J09-asym-mid-NS-flat-base-97001",
+        "J09-bal-high-eq-flat-base-97001",
+        "J09-bal-low-eq-flat-base-97001",
+        "J09-bal-mid-eq-flat-base-97001",
+        "J09-bal-mid-eq-flat-lheavy-97001",
+        "J09-tv-mid-eq-burst-base-97001",
+        "J09-tv-mid-eq-ramp-base-97001"
+      ],
+      "failures": {
+        "s1": [],
+        "visual-pressure": []
+      },
+      "paired_metric_sum": {
+        "s1": 7723.459999999998,
+        "visual-pressure": 7642.209999999998
+      },
+      "improvement_vs_yolo_pct": -1.0631741341837087,
+      "s1_paired_wins": 38,
+      "engineering_fixed_sum": 9193.32,
+      "improvement_vs_engineering_fixed_pct": 15.988348061418522,
+      "junctions": [
+        {
+          "junction": "J01",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 886.4399999999999,
+            "visual-pressure": 930.66
+          },
+          "s1_relative_difference_pct": -4.751466701050866
+        },
+        {
+          "junction": "J02",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 780.3699999999999,
+            "visual-pressure": 819.6100000000001
+          },
+          "s1_relative_difference_pct": -4.787642903332101
+        },
+        {
+          "junction": "J03",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 774.3499999999999,
+            "visual-pressure": 770.4699999999999
+          },
+          "s1_relative_difference_pct": 0.5035887185743659
+        },
+        {
+          "junction": "J04",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 712.73,
+            "visual-pressure": 721.84
+          },
+          "s1_relative_difference_pct": -1.2620525324171572
+        },
+        {
+          "junction": "J05",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 895.53,
+            "visual-pressure": 828.4399999999999
+          },
+          "s1_relative_difference_pct": 8.098353531939551
+        },
+        {
+          "junction": "J06",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 934.82,
+            "visual-pressure": 976.6999999999999
+          },
+          "s1_relative_difference_pct": -4.287908262516627
+        },
+        {
+          "junction": "J07",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 1008.8600000000001,
+            "visual-pressure": 828.4499999999999
+          },
+          "s1_relative_difference_pct": 21.776812119017475
+        },
+        {
+          "junction": "J08",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 652.86,
+            "visual-pressure": 845.81
+          },
+          "s1_relative_difference_pct": -22.812451969118353
+        },
+        {
+          "junction": "J09",
+          "case_count": 8,
+          "metric_sum": {
+            "s1": 1077.5,
+            "visual-pressure": 920.2299999999999
+          },
+          "s1_relative_difference_pct": 17.090292644230253
+        }
+      ],
+      "junctions_within_5pct": 5
+    },
+    {
+      "suite": "nansha",
+      "condition": "angle-8",
+      "model_version": "DeepSignal-S1-1.0-candidate",
+      "runtime": "CARLA-0.10.0",
+      "metric": "J_H",
+      "horizon_s": 1298,
+      "expected_pairs": 72,
+      "successful_pairs": 72,
+      "paired_tags": [
+        "J01-asym-mid-EW-flat-base-97001",
+        "J01-asym-mid-NS-flat-base-97001",
+        "J01-bal-high-eq-flat-base-97001",
+        "J01-bal-low-eq-flat-base-97001",
+        "J01-bal-mid-eq-flat-base-97001",
+        "J01-bal-mid-eq-flat-lheavy-97001",
+        "J01-tv-mid-eq-burst-base-97001",
+        "J01-tv-mid-eq-ramp-base-97001",
+        "J02-asym-mid-EW-flat-base-97001",
+        "J02-asym-mid-NS-flat-base-97001",
+        "J02-bal-high-eq-flat-base-97001",
+        "J02-bal-low-eq-flat-base-97001",
+        "J02-bal-mid-eq-flat-base-97001",
+        "J02-bal-mid-eq-flat-lheavy-97001",
+        "J02-tv-mid-eq-burst-base-97001",
+        "J02-tv-mid-eq-ramp-base-97001",
+        "J03-asym-mid-EW-flat-base-97001",
+        "J03-asym-mid-NS-flat-base-97001",
+        "J03-bal-high-eq-flat-base-97001",
+        "J03-bal-low-eq-flat-base-97001",
+        "J03-bal-mid-eq-flat-base-97001",
+        "J03-bal-mid-eq-flat-lheavy-97001",
+        "J03-tv-mid-eq-burst-base-97001",
+        "J03-tv-mid-eq-ramp-base-97001",
+        "J04-asym-mid-EW-flat-base-97001",
+        "J04-asym-mid-NS-flat-base-97001",
+        "J04-bal-high-eq-flat-base-97001",
+        "J04-bal-low-eq-flat-base-97001",
+        "J04-bal-mid-eq-flat-base-97001",
+        "J04-bal-mid-eq-flat-lheavy-97001",
+        "J04-tv-mid-eq-burst-base-97001",
+        "J04-tv-mid-eq-ramp-base-97001",
+        "J05-asym-mid-EW-flat-base-97001",
+        "J05-asym-mid-NS-flat-base-97001",
+        "J05-bal-high-eq-flat-base-97001",
+        "J05-bal-low-eq-flat-base-97001",
+        "J05-bal-mid-eq-flat-base-97001",
+        "J05-bal-mid-eq-flat-lheavy-97001",
+        "J05-tv-mid-eq-burst-base-97001",
+        "J05-tv-mid-eq-ramp-base-97001",
+        "J06-asym-mid-EW-flat-base-97001",
+        "J06-asym-mid-NS-flat-base-97001",
+        "J06-bal-high-eq-flat-base-97001",
+        "J06-bal-low-eq-flat-base-97001",
+        "J06-bal-mid-eq-flat-base-97001",
+        "J06-bal-mid-eq-flat-lheavy-97001",
+        "J06-tv-mid-eq-burst-base-97001",
+        "J06-tv-mid-eq-ramp-base-97001",
+        "J07-asym-mid-EW-flat-base-97001",
+        "J07-asym-mid-NS-flat-base-97001",
+        "J07-bal-high-eq-flat-base-97001",
+        "J07-bal-low-eq-flat-base-97001",
+        "J07-bal-mid-eq-flat-base-97001",
+        "J07-bal-mid-eq-flat-lheavy-97001",
+        "J07-tv-mid-eq-burst-base-97001",
+        "J07-tv-mid-eq-ramp-base-97001",
+        "J08-asym-mid-EW-flat-base-97001",
+        "J08-asym-mid-NS-flat-base-97001",
+        "J08-bal-high-eq-flat-base-97001",
+        "J08-bal-low-eq-flat-base-97001",
+        "J08-bal-mid-eq-flat-base-97001",
+        "J08-bal-mid-eq-flat-lheavy-97001",
+        "J08-tv-mid-eq-burst-base-97001",
+        "J08-tv-mid-eq-ramp-base-97001",
+        "J09-asym-mid-EW-flat-base-97001",
+        "J09-asym-mid-NS-flat-base-97001",
+        "J09-bal-high-eq-flat-base-97001",
+        "J09-bal-low-eq-flat-base-97001",
+        "J09-bal-mid-eq-flat-base-97001",
+        "J09-bal-mid-eq-flat-lheavy-97001",
+        "J09-tv-mid-eq-burst-base-97001",
+        "J09-tv-mid-eq-ramp-base-97001"
+      ],
+      "failures": {
+        "s1": [],
+        "visual-pressure": []
+      },
+      "paired_metric_sum": {
+        "s1": 7665.15,
+        "visual-pressure": 7751.900000000001
+      },
+      "improvement_vs_yolo_pct": 1.1190804834943835,
+      "s1_paired_wins": 36
+    },
+    {
+      "suite": "nansha",
+      "condition": "defocus-2.5",
+      "model_version": "DeepSignal-S1-1.0-candidate",
+      "runtime": "CARLA-0.10.0",
+      "metric": "J_H",
+      "horizon_s": 1298,
+      "expected_pairs": 72,
+      "successful_pairs": 65,
+      "paired_tags": [
+        "J01-asym-mid-EW-flat-base-97001",
+        "J01-asym-mid-NS-flat-base-97001",
+        "J01-bal-high-eq-flat-base-97001",
+        "J01-bal-low-eq-flat-base-97001",
+        "J01-bal-mid-eq-flat-lheavy-97001",
+        "J01-tv-mid-eq-burst-base-97001",
+        "J01-tv-mid-eq-ramp-base-97001",
+        "J02-asym-mid-EW-flat-base-97001",
+        "J02-bal-high-eq-flat-base-97001",
+        "J02-bal-low-eq-flat-base-97001",
+        "J02-bal-mid-eq-flat-base-97001",
+        "J02-bal-mid-eq-flat-lheavy-97001",
+        "J02-tv-mid-eq-burst-base-97001",
+        "J03-asym-mid-EW-flat-base-97001",
+        "J03-asym-mid-NS-flat-base-97001",
+        "J03-bal-high-eq-flat-base-97001",
+        "J03-bal-low-eq-flat-base-97001",
+        "J03-bal-mid-eq-flat-base-97001",
+        "J03-bal-mid-eq-flat-lheavy-97001",
+        "J03-tv-mid-eq-burst-base-97001",
+        "J03-tv-mid-eq-ramp-base-97001",
+        "J04-asym-mid-EW-flat-base-97001",
+        "J04-asym-mid-NS-flat-base-97001",
+        "J04-bal-high-eq-flat-base-97001",
+        "J04-bal-low-eq-flat-base-97001",
+        "J04-bal-mid-eq-flat-base-97001",
+        "J04-bal-mid-eq-flat-lheavy-97001",
+        "J04-tv-mid-eq-burst-base-97001",
+        "J04-tv-mid-eq-ramp-base-97001",
+        "J05-asym-mid-EW-flat-base-97001",
+        "J05-asym-mid-NS-flat-base-97001",
+        "J05-bal-high-eq-flat-base-97001",
+        "J05-bal-low-eq-flat-base-97001",
+        "J05-bal-mid-eq-flat-base-97001",
+        "J05-tv-mid-eq-burst-base-97001",
+        "J05-tv-mid-eq-ramp-base-97001",
+        "J06-asym-mid-EW-flat-base-97001",
+        "J06-asym-mid-NS-flat-base-97001",
+        "J06-bal-high-eq-flat-base-97001",
+        "J06-bal-low-eq-flat-base-97001",
+        "J06-bal-mid-eq-flat-lheavy-97001",
+        "J06-tv-mid-eq-burst-base-97001",
+        "J06-tv-mid-eq-ramp-base-97001",
+        "J07-asym-mid-EW-flat-base-97001",
+        "J07-asym-mid-NS-flat-base-97001",
+        "J07-bal-high-eq-flat-base-97001",
+        "J07-bal-low-eq-flat-base-97001",
+        "J07-bal-mid-eq-flat-base-97001",
+        "J07-bal-mid-eq-flat-lheavy-97001",
+        "J07-tv-mid-eq-burst-base-97001",
+        "J07-tv-mid-eq-ramp-base-97001",
+        "J08-asym-mid-EW-flat-base-97001",
+        "J08-asym-mid-NS-flat-base-97001",
+        "J08-bal-high-eq-flat-base-97001",
+        "J08-bal-low-eq-flat-base-97001",
+        "J08-bal-mid-eq-flat-base-97001",
+        "J08-bal-mid-eq-flat-lheavy-97001",
+        "J08-tv-mid-eq-burst-base-97001",
+        "J08-tv-mid-eq-ramp-base-97001",
+        "J09-asym-mid-NS-flat-base-97001",
+        "J09-bal-high-eq-flat-base-97001",
+        "J09-bal-low-eq-flat-base-97001",
+        "J09-bal-mid-eq-flat-base-97001",
+        "J09-bal-mid-eq-flat-lheavy-97001",
+        "J09-tv-mid-eq-ramp-base-97001"
+      ],
+      "failures": {
+        "s1": [
+          {
+            "tag": "J01-bal-mid-eq-flat-base-97001",
+            "fail": "decide-empty@386"
+          },
+          {
+            "tag": "J02-tv-mid-eq-ramp-base-97001",
+            "fail": "decide-empty@856"
+          },
+          {
+            "tag": "J05-bal-mid-eq-flat-lheavy-97001",
+            "fail": "decide-empty@814"
+          },
+          {
+            "tag": "J06-bal-mid-eq-flat-base-97001",
+            "fail": "decide-empty@445"
+          },
+          {
+            "tag": "J09-asym-mid-EW-flat-base-97001",
+            "fail": "decide-empty@665"
+          },
+          {
+            "tag": "J09-tv-mid-eq-burst-base-97001",
+            "fail": "decide-empty@766"
+          }
+        ],
+        "visual-pressure": [
+          {
+            "tag": "J02-asym-mid-NS-flat-base-97001",
+            "fail": "decide-empty@427"
+          }
+        ]
+      },
+      "paired_metric_sum": {
+        "s1": 7470.2300000000005,
+        "visual-pressure": 10052.849999999999
+      },
+      "improvement_vs_yolo_pct": 25.690426098071672,
+      "s1_paired_wins": 60
+    },
+    {
+      "suite": "town10hd-archive",
+      "condition": "clean",
+      "model_version": "DeepSignal-S1-Town10HD-1.0-archive",
+      "runtime": "CARLA-0.9.16",
+      "metric": "J",
+      "horizon_s": 518,
+      "expected_pairs": 20,
+      "successful_pairs": 20,
+      "paired_tags": [
+        "balanced-18040",
+        "balanced-18041",
+        "balanced-18042",
+        "balanced-18043",
+        "sustained-uneven-18040",
+        "sustained-uneven-18041",
+        "sustained-uneven-18042",
+        "sustained-uneven-18043",
+        "time-varying-18040",
+        "time-varying-18041",
+        "time-varying-18042",
+        "time-varying-18043",
+        "uneven125-18040",
+        "uneven125-18041",
+        "uneven125-18042",
+        "uneven125-18043",
+        "varyshuf-18040",
+        "varyshuf-18041",
+        "varyshuf-18042",
+        "varyshuf-18043"
+      ],
+      "failures": {
+        "s1": [],
+        "visual-pressure": []
+      },
+      "paired_metric_sum": {
+        "s1": 36427.5,
+        "visual-pressure": 37604.299999999996
+      },
+      "improvement_vs_yolo_pct": 3.129429347175716,
+      "s1_paired_wins": 12,
+      "engineering_fixed_sum": 57103.50000000001,
+      "improvement_vs_engineering_fixed_pct": 36.20793821744728
+    },
+    {
+      "suite": "town10hd-archive",
+      "condition": "defocus-2.5",
+      "model_version": "DeepSignal-S1-Town10HD-1.0-archive",
+      "runtime": "CARLA-0.9.16",
+      "metric": "J",
+      "horizon_s": 518,
+      "expected_pairs": 40,
+      "successful_pairs": 40,
+      "paired_tags": [
+        "balanced-18036",
+        "balanced-18037",
+        "balanced-18038",
+        "balanced-18039",
+        "balanced-18040",
+        "balanced-18041",
+        "balanced-18042",
+        "balanced-18043",
+        "sustained-uneven-18036",
+        "sustained-uneven-18037",
+        "sustained-uneven-18038",
+        "sustained-uneven-18039",
+        "sustained-uneven-18040",
+        "sustained-uneven-18041",
+        "sustained-uneven-18042",
+        "sustained-uneven-18043",
+        "time-varying-18036",
+        "time-varying-18037",
+        "time-varying-18038",
+        "time-varying-18039",
+        "time-varying-18040",
+        "time-varying-18041",
+        "time-varying-18042",
+        "time-varying-18043",
+        "uneven125-18036",
+        "uneven125-18037",
+        "uneven125-18038",
+        "uneven125-18039",
+        "uneven125-18040",
+        "uneven125-18041",
+        "uneven125-18042",
+        "uneven125-18043",
+        "varyshuf-18036",
+        "varyshuf-18037",
+        "varyshuf-18038",
+        "varyshuf-18039",
+        "varyshuf-18040",
+        "varyshuf-18041",
+        "varyshuf-18042",
+        "varyshuf-18043"
+      ],
+      "failures": {
+        "s1": [],
+        "visual-pressure": []
+      },
+      "paired_metric_sum": {
+        "s1": 70586.9,
+        "visual-pressure": 77111.4
+      },
+      "improvement_vs_yolo_pct": 8.461135448195723,
+      "s1_paired_wins": 30
+    }
+  ]
+}

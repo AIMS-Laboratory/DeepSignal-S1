@@ -1,0 +1,15 @@
+{
+  "tag": "time-varying-18040",
+  "J": 1263.1,
+  "fail": null,
+  "n_dec": 91,
+  "infer_fail": 0,
+  "infer_ms_mean": 744.0,
+  "wall_seconds": 238.7,
+  "scene": "town10hd-archive",
+  "condition": "clean",
+  "controller": "s1",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic",
+  "model_version": "DeepSignal-S1-Town10HD-1.0-archive"
+}

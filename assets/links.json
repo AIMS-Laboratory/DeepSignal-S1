@@ -2,6 +2,7 @@
   "youtube": null,
   "comparison_mp4": "https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4",
   "hugging_face": null,
+  "hugging_face_town_archive": null,
   "scene_package_google_drive": null,
   "model_api": null
 }

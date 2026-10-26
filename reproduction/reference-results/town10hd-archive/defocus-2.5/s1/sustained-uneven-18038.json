@@ -1,0 +1,15 @@
+{
+  "tag": "sustained-uneven-18038",
+  "J": 2052.4,
+  "fail": null,
+  "n_dec": 91,
+  "infer_fail": 0,
+  "infer_ms_mean": 743.0,
+  "wall_seconds": 238.0,
+  "scene": "town10hd-archive",
+  "condition": "defocus-2.5",
+  "controller": "s1",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic",
+  "model_version": "DeepSignal-S1-Town10HD-1.0-archive"
+}

@@ -1,5 +1,9 @@
 # 对比口径 / Comparisons
 
+主页新增的已完成原矩阵结果见[发行版本说明](released-results.md)。南沙与 Town 使用两份明确标注的权重和匹配的仿真环境；该矩阵采用有限时域截断行程，不与下述完整行程展示指标混算。
+
+The completed finite-horizon suites use explicitly named scene-specific checkpoints and matching runtimes; see [release definitions](released-results.md). They are distinct from the complete-journey demonstrations below.
+
 ## 主指标
 
 每辆正式车辆的行程时间为“到达时刻减计划出发时刻”，包含拥堵造成的路网外等待。所有正式车辆完成后，计算平均值，单位为秒。未完成时平均行程时间为空，不以只统计已完成车辆的方式代替。

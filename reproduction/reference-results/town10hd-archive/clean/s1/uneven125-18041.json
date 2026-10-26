@@ -1,0 +1,15 @@
+{
+  "tag": "uneven125-18041",
+  "J": 2148.2,
+  "fail": null,
+  "n_dec": 91,
+  "infer_fail": 0,
+  "infer_ms_mean": 747.0,
+  "wall_seconds": 241.7,
+  "scene": "town10hd-archive",
+  "condition": "clean",
+  "controller": "s1",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic",
+  "model_version": "DeepSignal-S1-Town10HD-1.0-archive"
+}

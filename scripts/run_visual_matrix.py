@@ -12,7 +12,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--scene', choices=['nansha', 'town10hd'], required=True)
     parser.add_argument('--controller', choices=['s1', 'visual-pressure'], required=True)
-    parser.add_argument('--condition', choices=['clean', 'motion-blur-9', 'defocus-2.5', 'angle-8'], required=True)
+    parser.add_argument('--condition', choices=['clean', 'motion-blur-9', 'defocus-2.5', 'angle-8', 'angle-12', 'angle-16'], required=True)
     parser.add_argument('--endpoint', default='http://127.0.0.1:18404')
     parser.add_argument('--detector-endpoint', default='http://127.0.0.1:8031/v1/detect2')
     parser.add_argument('--port', type=int, default=25020)

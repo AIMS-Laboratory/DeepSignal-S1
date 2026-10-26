@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "deepsignal-s1-demo"
-version = "0.1.0"
+version = "0.2.0"
 description = "Visual traffic-signal control demonstration and simulation tests"
 requires-python = ">=3.10,<3.11"
 dependencies = ["traci>=1.18", "sumolib>=1.18", "numpy>=1.24", "opencv-python-headless>=4.8", "Pillow>=10"]

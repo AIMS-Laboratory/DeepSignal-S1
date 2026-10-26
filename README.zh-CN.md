@@ -28,7 +28,24 @@ DeepSignal-S1 采用 **Jev-style（以直接决策为核心）的功能定位**�
 | 工程固定配时 | 既有工程方案，不针对最终测试搜索 | 固定相位循环 | `--controller fixed` |
 | YOLO+MP | YOLO 摄像头车辆检测 | 按各转向交通压力决策 | `--controller visual-pressure` |
 
-### 选定视觉条件对比
+### 已完成结果
+
+本次公开结果使用**两份明确标注的场景版本**，不声称同一权重跨场景取得这些成绩：南沙使用 `DeepSignal-S1-1.0-candidate`（UE5/CARLA 0.10.0），Town10HD 使用 `DeepSignal-S1-Town10HD-1.0-archive`（CARLA 0.9.16）。后台正在进行的补测**不计入**下表。
+
+| 场景 | 画面条件 | 成功配对 / 计划 | 对照 | 行程指标改善 |
+| --- | --- | ---: | --- | ---: |
+| 南沙九路口 | 清晰 | 72 / 72 | 工程固定配时 | **15.99%** |
+| 南沙九路口 | 整回合固定的相机角度偏移，范围 ±8° | 72 / 72 | YOLO+MP | **1.12%** |
+| 南沙九路口 | 失焦，sigma=2.5 | 65 / 72 | YOLO+MP | **25.69%** |
+| Town10HD 存档版 | 清晰 | 20 / 20 | 工程固定配时 | **36.21%** |
+| Town10HD 存档版 | 清晰 | 20 / 20 | YOLO+MP | **3.13%** |
+| Town10HD 存档版 | 失焦，sigma=2.5 | 40 / 40 | YOLO+MP | **8.46%** |
+
+南沙清晰画面下与 YOLO+MP 整体接近：**9 个路口中有 5 个的汇总截断行程指标相差不到 5%**。九个路口的完整数值均见[公开结果](results/released-2026-10-26.json)。
+
+上述指标按指定时域截断，未完成行程仍计入。南沙失焦改善率来自双方均成功的 65 对，模型 6 个失败和 YOLO+MP 1 个失败的记录均保留。Town 清晰测试使用同一存档权重的四个种子、全部五类需求，不把早期权重成绩混入 40 回合汇总。[版本、复测命令及范围](docs/released-results.md) · [重新计算表格](scripts/summarize_released.py)。
+
+### 选定完整行程展示
 
 测试日期为 **2026 年 10 月 25 日**。全部展示回合使用同一模型服务版本 **DeepSignal-S1-1.0-candidate**，每组包含三个新种子：**99001、99002、99003**。下表为按车辆数加权的完整平均行程时间，单位为秒，包含进入路网前的等待，**越低越好**。所有正式车辆均完成行程。
 
@@ -42,7 +59,7 @@ DeepSignal-S1 采用 **Jev-style（以直接决策为核心）的功能定位**�
 
 [测试数据（JSON）](results/nansha-2026-10-25.json) · [表格（CSV）](results/nansha-2026-10-25.csv) · [对比口径](docs/comparisons.md)
 
-以上为南沙 J02 选定场景的功能展示，不表述为每个种子、任意路口或所有视觉条件下均有收益。Town10HD 保留为可选测试场景，不计入主页展示结果。
+以上为南沙 J02 选定场景的功能展示，与前述截断指标分别统计，不表述为每个种子、任意路口或所有视觉条件下均有收益。
 
 ### 工程固定配时测试
 
@@ -77,7 +94,7 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 
 ## 模型访问
 
-Hugging Face 模型主页与 API 发布后将在这里添加链接。模型下载与 API 调用均需要申请并获批；访问本 GitHub 仓库不代表已获得模型权限。
+Hugging Face 模型主页和 Google Drive 场景包将在所有者上传后添加正式链接。完整模型目录分别为 `DeepSignal-S1` 和 `DeepSignal-S1-Town10HD-Archive`，需选择与成绩表对应的版本。在 `assets/links.json` 填入真实地址前，尚不能视为已验证的公开下载到复现流程。模型下载与 API 调用均需要申请并获批；访问本 GitHub 仓库不代表已获得模型权限。
 
 获批下载完整模型后，也可以通过 `scripts/serve_model.py` 启动本地推理，不依赖远程 API。详见[本地推理与复现说明](docs/reproduction.md)。
 
@@ -103,6 +120,8 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 
 - [测试场景与 API 使用](docs/testing.md)
 - [统一场景包与原矩阵复现](docs/reproduction.md)
+- [公开成绩与对应模型、场景版本](docs/released-results.md)
+- [补充视觉条件测试方案](docs/supplementary-evaluation.md)
 - [指标与对比口径](docs/comparisons.md)
 - [此前 DeepSignal 项目](https://github.com/AIMS-Laboratory/DeepSignal)
 - [场景素材及第三方说明](NOTICE.md)

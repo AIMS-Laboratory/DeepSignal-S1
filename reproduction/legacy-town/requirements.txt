@@ -1,0 +1,6 @@
+numpy==2.2.6
+opencv-python==5.0.0.93
+Pillow==10.4.0
+traci==1.18.0
+sumolib==1.18.0
+lxml==5.4.0

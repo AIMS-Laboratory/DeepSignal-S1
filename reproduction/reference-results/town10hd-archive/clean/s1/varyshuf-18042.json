@@ -1,0 +1,15 @@
+{
+  "tag": "varyshuf-18042",
+  "J": 3265.3,
+  "fail": null,
+  "n_dec": 90,
+  "infer_fail": 0,
+  "infer_ms_mean": 745.0,
+  "wall_seconds": 239.6,
+  "scene": "town10hd-archive",
+  "condition": "clean",
+  "controller": "s1",
+  "runtime": "CARLA-0.9.16",
+  "quality": "Epic",
+  "model_version": "DeepSignal-S1-Town10HD-1.0-archive"
+}
