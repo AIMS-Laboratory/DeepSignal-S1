@@ -14,6 +14,7 @@ from sumo_fork_probe import adaptive_controller, start_sumo, table_answer
 from deepsignal.decision_loop import FinalAnswer
 from deepsignal.runtime import CarlaSession, clear_idle_watchdog_flag
 from deepsignal.cameras import load_camera_rig_config, mount_forward_cameras
+from intersection_metrics import IntersectionMetrics
 from deepsignal.cosimulation import sumo_to_carla_transform
 from deepsignal.spatial import actor_front_offset
 from deepsignal.ue4_junction import TARGET_JUNCTION_ID, JunctionSignalMirror, mount_junction_markings
@@ -83,6 +84,7 @@ def main():
     t_wall = time.monotonic()
     preview_saved = False
     yolo_ms = []
+    detector_trace = []
     session = None
     conn = None
     frame_buf = deque(maxlen=70)
@@ -116,16 +118,19 @@ def main():
                 return camera
             junction_lights = list(world.get_traffic_lights_in_junction(TARGET_JUNCTION_ID))
             cameras = mount_forward_cameras(world, junction_lights, camera_config, register_actor=register_camera)
-            import random as _rnd
-            jr = _rnd.Random(int(seed_s) + int(JIT * 10))
-            for (name, camera) in cameras.items():
-                t = camera.get_transform()
-                (dy, dp, dr) = (jr.uniform(-JIT, JIT), jr.uniform(-JIT, JIT), jr.uniform(-JIT / 2, JIT / 2))
-                t.rotation.yaw += dy
-                t.rotation.pitch += dp
-                t.rotation.roll += dr
-                camera.set_transform(t)
-                print(f'[jitter] {name}: yaw{dy:+.1f} pitch{dp:+.1f} roll{dr:+.1f}', flush=True)
+            if JIT > 0:
+                # UE5 publishes newly spawned actor transforms on the next world tick.
+                world.tick()
+                import random as _rnd
+                jr = _rnd.Random(int(seed_s) + int(JIT * 10))
+                for (name, camera) in cameras.items():
+                    t = camera.get_transform()
+                    (dy, dp, dr) = (jr.uniform(-JIT, JIT), jr.uniform(-JIT, JIT), jr.uniform(-JIT / 2, JIT / 2))
+                    t.rotation.yaw += dy
+                    t.rotation.pitch += dp
+                    t.rotation.roll += dr
+                    camera.set_transform(t)
+                    print(f'[jitter] {name}: yaw{dy:+.1f} pitch{dp:+.1f} roll{dr:+.1f}', flush=True)
             queues = {name: queue_mod.Queue() for name in cameras}
             for (name, camera) in cameras.items():
                 camera.listen(queues[name].put)
@@ -143,6 +148,7 @@ def main():
             for _ in range(15):
                 capture()
             conn = start_sumo(NET, routes, raw, out_json.parent / f'tripinfo-{tag}.xml', f'bmp2j-{tag}')
+            evaluation = IntersectionMetrics(conn, sfp.TARGET_TLS_ID)
             c = adaptive_controller(raw, NET, TABLE_GREEN)
             update = c.current_update(0.0)
             from signal_states import STATES
@@ -162,7 +168,9 @@ def main():
                 return {m: (snaps[4.0].get(m, 0.0), snaps[2.0].get(m, 0.0), snaps[0.0].get(m, 0.0)) for m in ALL_MOVES}
 
             def mp_decide(tt, cur, G, red_age):
-                dec = decide_mp_v2(hist3_v2(tt), cur, G, red_age)
+                observations = hist3_v2(tt)
+                dec = decide_mp_v2(observations, cur, G, red_age)
+                detector_trace.append({'time_s': tt, 'movements': observations, 'phase': cur, 'action': dec})
                 n_dec[0] += 1
                 if isinstance(dec, tuple):
                     n_switch[0] += 1
@@ -196,6 +204,7 @@ def main():
                     conn.trafficlight.setRedYellowGreenState(str(sfp.TARGET_TLS_ID), update.state)
                     conn.simulationStep()
                     now = conn.simulation.getTime()
+                    evaluation.update(now)
                     for v in conn.simulation.getArrivedIDList():
                         if v in formal_set and v not in arr:
                             arr[v] = now
@@ -249,6 +258,7 @@ def main():
                     continue
                 conn.simulationStep()
                 now = conn.simulation.getTime()
+                evaluation.update(now)
                 for v in conn.simulation.getArrivedIDList():
                     if v in formal_set and v not in arr:
                         arr[v] = now
@@ -323,6 +333,8 @@ def main():
     if fail[0] is None:
         J[0] = round(sum((min(arr.get(v, T_END), T_END) - d for (v, d) in planned.items() if d < T_END)), 1)
     out_json.write_text(json.dumps({'tag': tag, 'J': J[0], 'n_dec': n_dec[0], 'n_switch': n_switch[0], 'fail': fail[0], 'yolo_ms_mean': round(sum(yolo_ms) / len(yolo_ms), 1) if yolo_ms else None, 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
+    evaluation.write(out_json.parent / f'{tag}-metrics.json', out_json.parent / f'tripinfo-{tag}.xml', planned, fail[0])
+    (out_json.parent / f'{tag}-detector-trace.json').write_text(json.dumps(detector_trace) + '\n')
     print(f'{tag}: J={J[0]} n_dec={n_dec[0]} sw={n_switch[0]} fail={fail[0]} yolo_mean={(sum(yolo_ms) / len(yolo_ms) if yolo_ms else 0):.0f}ms {time.monotonic() - t_wall:.0f}s', flush=True)
 if __name__ == '__main__':
     main()

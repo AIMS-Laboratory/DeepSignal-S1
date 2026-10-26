@@ -36,6 +36,7 @@ from network_routes import probe_links, state_str, _imports
 from deepsignal.demand_plan import PlannedArrivals
 from deepsignal.observation import carla_image_to_bgr, compose_tiled_frame
 from deepsignal.cameras import covers_of
+from intersection_metrics import IntersectionMetrics
 STEP = 0.1
 H_OFFICIAL = 1298.0
 HYST_BIAS = 1.0
@@ -79,8 +80,10 @@ def main():
                 pass
         world.tick()
     label = f'nsmp-{TAG}'[:50]
-    traci.start(['sumo', '--net-file', str(cfg['net']), '--route-files', str(routes), '--step-length', str(STEP), '--time-to-teleport', '-1', '--no-step-log', 'true', '--seed', str(plan.seed)], label=label)
+    tripinfo = work_dir / 'tripinfo.xml'
+    traci.start(['sumo', '--net-file', str(cfg['net']), '--route-files', str(routes), '--step-length', str(STEP), '--time-to-teleport', '-1', '--no-step-log', 'true', '--seed', str(plan.seed), '--tripinfo-output', str(tripinfo), '--tripinfo-output.write-unfinished', 'true'], label=label)
     conn = traci.getConnection(label)
+    evaluation = IntersectionMetrics(conn, cfg['tls'], end=H_OFFICIAL)
 
     def _close():
         try:
@@ -179,6 +182,7 @@ def main():
             while True:
                 conn.simulationStep()
                 now = conn.simulation.getTime()
+                evaluation.update(now)
                 for v in conn.simulation.getArrivedIDList():
                     if v in formal and v not in arr:
                         arr[v] = now
@@ -267,6 +271,7 @@ def main():
     if fail is None and N:
         J_H = round(sum((min(arr.get(v, H_OFFICIAL), H_OFFICIAL) - planned[v] for v in formal)) / N, 2)
     mss = yolo_ms or [0]
+    evaluation.write(out_json.parent / f'{TAG}-metrics.json', tripinfo, planned, fail)
     out_json.write_text(json.dumps({'tag': TAG, 'J_H': J_H, 'fail': fail, 'n_dec': len(dec_log), 'yolo_ms_mean': round(sum(yolo_ms) / len(mss), 1), 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
     print(f'{TAG}: J_H={J_H} fail={fail} 决策 {len(dec_log)} yolo均值 {sum(mss) / len(mss):.0f}ms {time.monotonic() - t_wall:.0f}s', flush=True)
     os._exit(0)

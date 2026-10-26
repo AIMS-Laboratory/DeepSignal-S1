@@ -133,6 +133,7 @@ Use the same plan for paired comparisons. Live operation is reported only when `
 - [Published results and matching model/runtime releases](docs/released-results.md)
 - [Supplementary camera-condition test protocol](docs/supplementary-evaluation.md)
 - [Metric and comparison definitions](docs/comparisons.md)
+- [Intersection queue, waiting-time and throughput metrics](docs/intersection-metrics.md)
 - [Related DeepSignal project](https://github.com/AIMS-Laboratory/DeepSignal)
 - [Asset and third-party notices](NOTICE.md)
 

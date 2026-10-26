@@ -5,6 +5,7 @@ import sumo_fork_probe as sfp
 from deepsignal.decision_loop import FinalAnswer
 from episode_settings import make_raw, TABLE_GREEN, NET
 from signal_states import warm_states
+from intersection_metrics import IntersectionMetrics
 T_END = 518.0
 B2 = Path('protocol')
 
@@ -18,6 +19,7 @@ def run_fixed_arm(tag):
     formal_set = set(planned)
     label = f'bfix-{tag}'[:60]
     conn = start_sumo(NET, routes, raw, B2 / 'tripinfo' / f'{label}.xml', label)
+    evaluation = IntersectionMetrics(conn, sfp.TARGET_TLS_ID)
     c = adaptive_controller(raw, NET, TABLE_GREEN)
     update = c.current_update(0.0)
     arr = {}
@@ -26,6 +28,7 @@ def run_fixed_arm(tag):
             conn.trafficlight.setRedYellowGreenState(str(sfp.TARGET_TLS_ID), update.state)
             conn.simulationStep()
             now = conn.simulation.getTime()
+            evaluation.update(now)
             for v in conn.simulation.getArrivedIDList():
                 if v in formal_set and v not in arr:
                     arr[v] = now
@@ -43,4 +46,5 @@ def run_fixed_arm(tag):
     finally:
         conn.close()
     J = round(sum((min(arr.get(v, T_END), T_END) - d for (v, d) in planned.items() if d < T_END)), 1)
+    evaluation.write(B2 / f'{tag}-metrics.json', B2 / 'tripinfo' / f'{label}.xml', planned)
     return J

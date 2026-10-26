@@ -15,6 +15,7 @@ from sumo_fork_probe import adaptive_controller, start_sumo, table_answer
 from deepsignal.decision_loop import FinalAnswer
 from deepsignal.runtime import CarlaSession, clear_idle_watchdog_flag
 from deepsignal.cameras import load_camera_rig_config, mount_forward_cameras
+from intersection_metrics import IntersectionMetrics
 from deepsignal.cosimulation import sumo_to_carla_transform
 from deepsignal.spatial import actor_front_offset
 from deepsignal.ue4_junction import TARGET_JUNCTION_ID, JunctionSignalMirror, mount_junction_markings
@@ -154,6 +155,8 @@ def main():
             junction_lights = list(world.get_traffic_lights_in_junction(TARGET_JUNCTION_ID))
             cameras = mount_forward_cameras(world, junction_lights, camera_config, register_actor=register_camera)
             if args.jitter > 0:
+                # Read the mounted poses only after UE5 has published the new actors.
+                world.tick()
                 import random as _rnd
                 jr = _rnd.Random(int(seed_s) + int(args.jitter * 10))
                 for (name, camera) in cameras.items():
@@ -185,6 +188,7 @@ def main():
             for _ in range(15):
                 capture()
             conn = start_sumo(NET, routes, raw, Path(args.out) / f'tripinfo-{tag}.xml', f'bs1-{tag}')
+            evaluation = IntersectionMetrics(conn, sfp.TARGET_TLS_ID)
             c = adaptive_controller(raw, NET, TABLE_GREEN)
             update = c.current_update(0.0)
             from signal_states import STATES
@@ -218,6 +222,7 @@ def main():
                     conn.trafficlight.setRedYellowGreenState(str(sfp.TARGET_TLS_ID), update.state)
                     conn.simulationStep()
                     now = conn.simulation.getTime()
+                    evaluation.update(now)
                     for v in conn.simulation.getArrivedIDList():
                         if v in formal_set and v not in arr:
                             arr[v] = now
@@ -270,6 +275,7 @@ def main():
                     continue
                 conn.simulationStep()
                 now = conn.simulation.getTime()
+                evaluation.update(now)
                 for v in conn.simulation.getArrivedIDList():
                     if v in formal_set and v not in arr:
                         arr[v] = now
@@ -345,6 +351,7 @@ def main():
     if fail[0] is None:
         J[0] = round(sum((min(arr.get(v, T_END), T_END) - d for (v, d) in planned.items() if d < T_END)), 1)
     mss = [m for (_, _, m) in dec_log if m]
+    evaluation.write(out_json.parent / f'{tag}-metrics.json', out_json.parent / f'tripinfo-{tag}.xml', planned, fail[0])
     out_json.write_text(json.dumps({'tag': tag, 'J': J[0], 'fail': fail[0], 'n_dec': len(dec_log), 'infer_fail': n_fail_infer[0], 'infer_ms_mean': round(sum(mss) / len(mss), 0) if mss else None, 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
     print(out_json.read_text(), flush=True)
 if __name__ == '__main__':

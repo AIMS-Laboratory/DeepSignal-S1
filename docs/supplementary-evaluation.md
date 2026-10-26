@@ -13,6 +13,14 @@ This round evaluates the released **DeepSignal-S1-1.0-candidate** with the packa
 
 Nansha retains nine intersections, eight demand regimes and seed 97001. Town retains five regimes and seeds 18036 through 18043. Plans and routes are indexed by `reproduction/matrix.json`. Completed engineering fixed-timing runs remain the image-independent reference.
 
+南沙清晰、±8° 与失焦属于此前已完成的矩阵，不在新增 528 回合中重复。南沙失焦为 65/72 对双方均成功、相对 YOLO+MP 改善 25.69%，同时保留模型 6 个失败和 YOLO+MP 1 个失败，见[已发布结果](released-results.md)。
+
+Nansha clean, +/-8 degrees and defocus belong to the previously completed suite, not the new 528 runs. Nansha defocus has 65/72 jointly successful pairs and 25.69% improvement, with all controller failures retained; see [released results](released-results.md).
+
+**2026-10-26 相机修正：** 修复前的 UE5 Town 补测因相机位姿初始化错误而作废，原始记录保留，完整 240 回合重跑，不按胜负筛选。南沙已结束的 288 回合保留。新回合另外记录交叉口排队、停车等待与通过量，具体定义及版本范围见[交叉口指标](intersection-metrics.md)。
+
+**Camera correction, 2026-10-26:** pre-fix UE5 Town supplementary comparisons are invalidated due to camera initialization, with original records retained and all 240 Town runs rerun. Completed Nansha runs are retained. New runs add [intersection metrics](intersection-metrics.md).
+
 ## 角度与失焦 / Camera Conditions
 
 `angle-a` 表示每个相机的偏航角和俯仰角分别在 ±a 度内取样，滚转角在 ±a/2 度内取样；整回合保持不变，不是逐帧随机抖动。南沙使用交通种子生成扰动，因此两个角度档位采用同一组归一化方向；每个档位两种方法的偏移相同。Town 两种方法使用相同的 `seed + int(a * 10)` 生成偏移。

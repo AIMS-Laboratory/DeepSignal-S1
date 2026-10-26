@@ -36,6 +36,7 @@ from network_routes import probe_links, state_str, _imports
 from intersection_state import build_ns_state
 from deepsignal.demand_plan import PlannedArrivals
 from deepsignal.observation import carla_image_to_bgr, compose_tiled_frame
+from intersection_metrics import IntersectionMetrics
 STEP = 0.1
 H_OFFICIAL = 1298.0
 
@@ -98,8 +99,10 @@ def main():
     client = connect_ue5(int(os.environ.get('NS_UE5_PORT', '25000')))
     clean_world(client)
     label = f'nsbe-{TAG}'[:50]
-    traci.start(['sumo', '--net-file', str(cfg['net']), '--route-files', str(routes), '--step-length', str(STEP), '--time-to-teleport', '-1', '--no-step-log', 'true', '--seed', str(plan.seed)], label=label)
+    tripinfo = work_dir / 'tripinfo.xml'
+    traci.start(['sumo', '--net-file', str(cfg['net']), '--route-files', str(routes), '--step-length', str(STEP), '--time-to-teleport', '-1', '--no-step-log', 'true', '--seed', str(plan.seed), '--tripinfo-output', str(tripinfo), '--tripinfo-output.write-unfinished', 'true'], label=label)
     conn = traci.getConnection(label)
+    evaluation = IntersectionMetrics(conn, cfg['tls'], end=H_OFFICIAL)
 
     def _close():
         try:
@@ -197,6 +200,7 @@ def main():
             while True:
                 conn.simulationStep()
                 now = conn.simulation.getTime()
+                evaluation.update(now)
                 for v in conn.simulation.getArrivedIDList():
                     if v in formal and v not in arr:
                         arr[v] = now
@@ -296,6 +300,7 @@ def main():
     if fail is None and N:
         J_H = round(sum((min(arr.get(v, H_OFFICIAL), H_OFFICIAL) - planned[v] for v in formal)) / N, 2)
     mss = [m for (_, _, m, _) in dec_log if m]
+    evaluation.write(out_json.parent / f'{TAG}-metrics.json', tripinfo, planned, fail)
     out_json.write_text(json.dumps({'tag': TAG, 'J_H': J_H, 'fail': fail, 'n_dec': len(dec_log), 'n_interlock': n_interlock, 'infer_fail': n_fail_infer, 'infer_ms_mean': round(sum(mss) / len(mss)) if mss else None, 'arrived': len(arr), 'N': N, 'frames': n_saved, 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
     print(out_json.read_text(), flush=True)
     os._exit(0)

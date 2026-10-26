@@ -133,6 +133,7 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 - [公开成绩与对应模型、场景版本](docs/released-results.md)
 - [补充视觉条件测试方案](docs/supplementary-evaluation.md)
 - [指标与对比口径](docs/comparisons.md)
+- [交叉口排队、停车等待与通过量指标](docs/intersection-metrics.md)
 - [此前 DeepSignal 项目](https://github.com/AIMS-Laboratory/DeepSignal)
 - [场景素材及第三方说明](NOTICE.md)
 

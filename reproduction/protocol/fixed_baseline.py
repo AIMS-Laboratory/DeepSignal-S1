@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import sys
 import xml.etree.ElementTree as ET
+from intersection_metrics import IntersectionMetrics
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / 'src'), str(ROOT / 'protocol'), str(ROOT / 'scripts/carla')]
 
@@ -22,6 +23,7 @@ def nansha(tag, output):
     label = f'engineering-{tag}'
     traci.start(['sumo', '--net-file', cfg['net'], '--route-files', str(routes), '--step-length', '0.1', '--time-to-teleport', '-1', '--no-step-log', 'true', '--seed', str(plan.seed), '--tripinfo-output', str(output / 'tripinfo.xml'), '--tripinfo-output.write-unfinished', 'true'], label=label)
     conn = traci.getConnection(label)
+    evaluation = IntersectionMetrics(conn, cfg['tls'], end=1298.0)
     phases = cfg['phases']
     (index, stage, deadline) = (0, 'initial', 0.1)
     arrivals = {}
@@ -30,6 +32,7 @@ def nansha(tag, output):
         while True:
             conn.simulationStep()
             now = conn.simulation.getTime()
+            evaluation.update(now)
             for vid in conn.simulation.getArrivedIDList():
                 if vid in planned:
                     arrivals.setdefault(vid, now)
@@ -49,6 +52,7 @@ def nansha(tag, output):
                 break
     finally:
         conn.close()
+    evaluation.write(output / f'{tag}-metrics.json', output / 'tripinfo.xml', planned)
     return {'tag': tag, 'J_H': round(sum((min(arrivals.get(v, 1298), 1298) - d for (v, d) in planned.items())) / len(planned), 2), 'N': len(planned), 'arrived': len(arrivals), 'unfinished': len(planned) - len(arrivals), 'fail': None, 'table': cfg['tuned'], 'baseline': 'engineering-fixed', 'horizon_s': 1298}
 
 def town(tag, output):
