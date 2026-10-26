@@ -1,10 +1,14 @@
 # DeepSignal-S1
 
-**Vision-based traffic signal control. S1 means one system.**
+**One system, from visual traffic observations to signal decisions.**
 
 English | [简体中文](README.zh-CN.md)
 
-DeepSignal-S1 observes intersection camera views and produces adaptive signal-control actions. This repository provides the simulation scenarios and test client.
+**DeepSignal-S1 is a vision-first System One decision model for real-time traffic signal control. S1 means one system:** visual traffic understanding and signal-action selection are brought together in one multimodal decision model.
+
+Following a **Jev-style, decision-first formulation**, DeepSignal-S1 takes intersection camera views and current signal context, then directly selects a permitted signal action rather than generating a conversational response. Traffic observations come from the images; a separate YOLO perception stage is not required by the S1 controller. **YOLO+MP is a comparison baseline, not a component of DeepSignal-S1.**
+
+For a related System One traffic-control reference, see [JevLight](https://github.com/usail-hkust/JevLight). This repository provides DeepSignal-S1's simulation scenarios, demonstration results and test client.
 
 ## Demonstration Video
 
@@ -92,6 +96,7 @@ Use the same plan for paired comparisons. Live operation is reported only when `
 - [Test scenarios and API usage](docs/testing.md)
 - [Metric and comparison definitions](docs/comparisons.md)
 - [Related DeepSignal project](https://github.com/AIMS-Laboratory/DeepSignal)
+- [JevLight: Jev / System One traffic-control reference](https://github.com/usail-hkust/JevLight)
 - [Asset and third-party notices](NOTICE.md)
 
 Contact: [dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)

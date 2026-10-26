@@ -1,10 +1,14 @@
 # DeepSignal-S1
 
-**基于视觉交通状态的实时信号控制。S1 代表 one system。**
+**One system：从视觉交通观察到信号决策的一体化系统。**
 
 [English](README.md) | 简体中文
 
-DeepSignal-S1 观察路口摄像头画面，给出自适应信号控制动作。本仓库提供仿真测试场景与模型调用客户端。
+**DeepSignal-S1 是面向实时交通信号控制、以视觉为主要交通观察输入的 System One 决策模型。S1 代表 one system**：将视觉交通理解与信号动作选择统一在一个多模态决策模型中。
+
+DeepSignal-S1 采用 **Jev-style（以直接决策为核心）的功能定位**：接收路口摄像头画面与当前信号状态，直接选择允许执行的信号动作，而不是生成聊天式回答。交通观察来自画面，S1 控制器不需要单独的 YOLO 感知阶段。**YOLO+MP 是对照基线，不是 DeepSignal-S1 的组成模块。**
+
+相关的 System One 交通信控项目可参考 [JevLight](https://github.com/usail-hkust/JevLight)。本仓库提供 DeepSignal-S1 的仿真测试场景、功能展示结果与模型调用客户端。
 
 ## 对比视频
 
@@ -92,6 +96,7 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 - [测试场景与 API 使用](docs/testing.md)
 - [指标与对比口径](docs/comparisons.md)
 - [此前 DeepSignal 项目](https://github.com/AIMS-Laboratory/DeepSignal)
+- [JevLight：Jev / System One 交通信控参考](https://github.com/usail-hkust/JevLight)
 - [场景素材及第三方说明](NOTICE.md)
 
 联系：[dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)
