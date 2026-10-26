@@ -8,9 +8,9 @@
 
 - GitHub 提供测试代码、112 份固定交通计划、相机和路口配置，不含训练代码。
 - 当前 [HF 仓库](https://huggingface.co/AIMS2025/DeepSignal-S1)只提供当前发布权重与完整推理运行时，不包含 Town 存档权重。请下载完整目录，不只下载小体积文件；不要将历史 Town 成绩归给当前 HF 模型。
-- `DeepSignal-S1-Scenes-UE5-Epic-v1.tar.gz` 同时包含南沙九路口和 Town10HD 的 UE5 运行文件、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。安装方法见 [testing.md](testing.md)。
+- [HF 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)公开托管 `DeepSignal-S1-Scenes-v2.tar.gz`（27.60 GiB），包含南沙九路口和 Town10HD 的 UE5 运行文件、Town 存档 Docker 镜像、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。无需 Google Drive，上传就绪状态见数据集卡片。安装方法见 [testing.md](testing.md)。
 
-The GitHub repository contains test construction and evaluation code only. The complete model is distributed through approved HF downloads. One scene archive includes both Nansha and Town10HD.
+The GitHub repository contains test construction and evaluation code only. The complete current model is distributed through approved HF downloads. The public HF scene dataset hosts one v2 archive for both Nansha and Town10HD, including the archived runtime but not its separate model weights.
 
 ## 环境 / Environments
 
@@ -77,6 +77,6 @@ python scripts/reproduce.py --scene nansha --controller visual-pressure \
 
 `reproduction/matrix.json` 列出全部原始车流。南沙 `J_H` 是 1298 秒时域内的截断平均行程；Town `J` 是 518 秒时域内的截断总行程。均从计划到达时刻计时，未完成车辆按时域末端计入，不删车；两种指标不能混合。
 
-原始 Town 视觉程序使用 CARLA 0.9.16；本场景包为 UE5/CARLA 0.10.0，并使用其实际提供的车辆素材。因此保留原车流与控制时序，但迁移后的视觉成绩必须重新验证，不能直接继承旧运行环境的数字。最终南沙权重也不能继承早期 Town 专用权重的成绩。
+原始 Town 视觉程序使用 CARLA 0.9.16；本页迁移入口使用 v2 包中的 UE5/CARLA 0.10.0 及其实际提供的车辆素材。因此保留原车流与控制时序，但迁移后的视觉成绩必须重新验证，不能直接继承旧运行环境的数字。v2 另含原 0.9.16 Docker 环境，其入口见[发行版本说明](released-results.md)；当前 HF 模型不包含所需 Town 存档权重。最终南沙权重也不能继承早期 Town 专用权重的成绩。
 
 Nansha reports capped mean journey time at 1298 s; Town reports capped total journey time at 518 s. The UE5 port preserves fixed traffic plans and signal rules, but historical Town visual results from a different runtime/checkpoint are not scores of this release. This matrix is distinct from the complete-journey showcase protocol and does not by itself certify real-time operation.

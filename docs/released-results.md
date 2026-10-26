@@ -15,9 +15,15 @@ This page covers completed measurements in `v0.2.0`, excluding the ongoing 528-r
 
 The combined `DeepSignal-S1-Scenes-v2.tar.gz` includes the UE5 runtimes, the archived CARLA 0.9.16 Docker image, matching client wheels, fixed plans and licenses. UE5 Town is for the migration/supplementary suite, **not** the archived Town scores. The older UE5 v1 package lacks the archive environment.
 
-HF 和 Google Drive 的真实地址由模型与素材所有者填写至 `assets/links.json`。地址尚未提供时，代码和参考记录公开不等于模型及大文件已可公开下载。下列 `/path/to/...` 是本地下载位置，不是假下载地址。
+当前模型为 [AIMS2025/DeepSignal-S1](https://huggingface.co/AIMS2025/DeepSignal-S1)，须申请访问权限；统一场景包公开托管于 [AIMS2025/DeepSignal-S1-Scenes](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)，上传就绪状态以数据集卡片为准，不再需要 Google Drive。场景包不含模型权重，当前 HF 模型仓库也不含 Town 存档权重，因此尚不能仅靠上述下载复跑历史 Town 的模型成绩。`assets/links.json` 保存下载入口，下列 `/path/to/...` 是本地下载位置。
 
-Real HF and Google Drive URLs are populated by the asset owner in `assets/links.json`. Public code/reference records do not establish public model/asset availability until those links exist. The `/path/to/...` values below denote local download locations.
+The current [model repository](https://huggingface.co/AIMS2025/DeepSignal-S1) requires approved access. The combined [public scene dataset](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) replaces Google Drive; check its card for upload readiness. Neither the scene bundle nor the current HF model repository includes the archive Town checkpoint, so these downloads alone do not reproduce historical Town model scores. Download entrypoints are recorded in `assets/links.json`; `/path/to/...` denotes local paths.
+
+```bash
+pip install -U huggingface_hub
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+  --repo-type dataset --local-dir downloads
+```
 
 ## 环境准备 / Environment Setup
 

@@ -92,11 +92,19 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 
 This fixed-timing test runs without model access or 3D assets. For camera-based tests, see [scene setup and model access](docs/testing.md).
 
-## Model Access
+## Model and Scene Access
 
 The current model page is **[AIMS2025/DeepSignal-S1 on Hugging Face](https://huggingface.co/AIMS2025/DeepSignal-S1)**. It contains only `DeepSignal-S1-1.0-candidate`, not the historical Town checkpoint. Check its model card for upload readiness and request access before downloading. Historical Town measurements remain explicitly associated with their separate archive release, not with this HF checkpoint.
 
-The Google Drive scene download is still pending in `assets/links.json`; a full public download-to-result replay has not yet been certified. Viewing this GitHub repository does not grant model access or create a hosted API service.
+The combined **[Nansha + Town10HD scene dataset](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)** hosts `DeepSignal-S1-Scenes-v2.tar.gz` (**27.60 GiB**). Check the dataset card for upload readiness. No Google Drive download is needed. The scenes are public; model access is approved separately. A full public download-to-result replay has not yet been certified.
+
+```bash
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+  --repo-type dataset --local-dir downloads
+deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v2.tar.gz
+```
+
+The v2 bundle includes both UE5 scenes and the archived CARLA 0.9.16 Town runtime, not the separate archive model weights. See [installation and version matching](docs/released-results.md). Viewing this GitHub repository does not grant model access or create a hosted API service.
 
 Approved complete model downloads can also run locally with `scripts/serve_model.py`; a hosted API is not required. See [local inference and reproduction](docs/reproduction.md).
 

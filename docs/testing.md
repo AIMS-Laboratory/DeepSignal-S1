@@ -2,10 +2,13 @@
 
 ## 场景安装 / Scene Setup
 
-南沙九路口与 Town10HD 共用一个场景压缩包，通过独立下载链接提供。下载后安装一次，再选择场景启动：
+南沙九路口与 Town10HD 共用一个 **27.60 GiB** 场景压缩包，公开托管于 [HF 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)，无需 Google Drive。请先查看数据集卡片的上传就绪状态，下载后安装一次，再选择场景启动：
 
 ```bash
-deepsignal-s1 install-assets --archive /path/to/DeepSignal-S1-Scenes-UE5-Epic-v1.tar.gz
+pip install -e '.[download]'
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+  --repo-type dataset --local-dir downloads
+deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v2.tar.gz
 pip install assets/runtime/python/carla-0.10.0-cp310-cp310-linux_x86_64.whl
 deepsignal-s1 launch-scene --scene scenarios/nansha-j02/scene.json \
   --assets assets/runtime --port 25020 --adapter 0
@@ -17,7 +20,7 @@ The scene server runs in the foreground with Epic quality. Start tests in anothe
 
 Town10HD 已包含在同一个压缩包内，使用 `--scene scenarios/town10hd/scene.json` 启动；两套运行文件在包内分开存放，不覆盖彼此。原矩阵测试入口与指标见[复现指南](reproduction.md)。
 
-Both scene runtimes are included in one archive. Install once and choose the scene with `--scene`; the Nansha and Town10HD engine directories remain separate.
+Both UE5 scene runtimes are included in the same public HF archive. Install once and choose the scene with `--scene`; the Nansha and Town10HD engine directories remain separate. The v2 bundle also supplies the archived CARLA 0.9.16 Town environment; use the [release-specific instructions](released-results.md) and a separate matching client for it, not the UE5 commands above.
 
 ## 模型闭环 / Model Test
 

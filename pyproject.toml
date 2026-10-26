@@ -11,7 +11,7 @@ dependencies = ["traci>=1.18", "sumolib>=1.18", "numpy>=1.24", "opencv-python-he
 
 [project.optional-dependencies]
 test = ["pytest>=8"]
-download = ["gdown>=5"]
+download = ["huggingface_hub>=1.0"]
 baseline = ["ultralytics>=8.3", "fastapi>=0.115", "uvicorn>=0.30"]
 reproduction = ["lxml>=5"]
 
