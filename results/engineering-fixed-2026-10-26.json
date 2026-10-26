@@ -1,0 +1,1800 @@
+{
+  "date": "2026-10-26",
+  "baseline": "pre-existing engineering timing, no final-test search",
+  "metrics": {
+    "nansha": {
+      "name": "J_H",
+      "horizon_s": 1298,
+      "aggregation": "mean capped journey time"
+    },
+    "town10hd": {
+      "name": "J",
+      "horizon_s": 518,
+      "aggregation": "sum capped journey times"
+    }
+  },
+  "cpu": {
+    "jobs": 4,
+    "cases": 112,
+    "failures": [],
+    "peak_sampled_system_cpu_percent": 44.95295124037639
+  },
+  "records": [
+    {
+      "scene": "nansha",
+      "tag": "J01-asym-mid-EW-flat-base-97001",
+      "J_H": 118.3,
+      "N": 129,
+      "arrived": 129,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-asym-mid-NS-flat-base-97001",
+      "J_H": 178.53,
+      "N": 123,
+      "arrived": 123,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-high-eq-flat-base-97001",
+      "J_H": 134.43,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-low-eq-flat-base-97001",
+      "J_H": 105.35,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-mid-eq-flat-base-97001",
+      "J_H": 110.82,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 107.99,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-tv-mid-eq-burst-base-97001",
+      "J_H": 110.05,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-tv-mid-eq-ramp-base-97001",
+      "J_H": 123.32,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 10.0,
+        "n3": 22.0,
+        "n4": 38.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-asym-mid-EW-flat-base-97001",
+      "J_H": 130.45,
+      "N": 133,
+      "arrived": 133,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-asym-mid-NS-flat-base-97001",
+      "J_H": 135.26,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-high-eq-flat-base-97001",
+      "J_H": 136.31,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-low-eq-flat-base-97001",
+      "J_H": 101.93,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-mid-eq-flat-base-97001",
+      "J_H": 109.43,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 127.84,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-tv-mid-eq-burst-base-97001",
+      "J_H": 116.92,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-tv-mid-eq-ramp-base-97001",
+      "J_H": 125.78,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 35.0,
+        "n2": 14.0,
+        "n3": 10.0,
+        "n4": 17.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-asym-mid-EW-flat-base-97001",
+      "J_H": 111.95,
+      "N": 129,
+      "arrived": 129,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-asym-mid-NS-flat-base-97001",
+      "J_H": 214.17,
+      "N": 123,
+      "arrived": 123,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-high-eq-flat-base-97001",
+      "J_H": 158.48,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-low-eq-flat-base-97001",
+      "J_H": 106.21,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-mid-eq-flat-base-97001",
+      "J_H": 133.22,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 124.55,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-tv-mid-eq-burst-base-97001",
+      "J_H": 117.98,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-tv-mid-eq-ramp-base-97001",
+      "J_H": 139.14,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 47.0,
+        "n2": 10.0,
+        "n3": 17.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-asym-mid-EW-flat-base-97001",
+      "J_H": 98.69,
+      "N": 112,
+      "arrived": 112,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-asym-mid-NS-flat-base-97001",
+      "J_H": 184.51,
+      "N": 78,
+      "arrived": 78,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-high-eq-flat-base-97001",
+      "J_H": 111.4,
+      "N": 136,
+      "arrived": 136,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-low-eq-flat-base-97001",
+      "J_H": 97.3,
+      "N": 53,
+      "arrived": 53,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-mid-eq-flat-base-97001",
+      "J_H": 96.66,
+      "N": 90,
+      "arrived": 90,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 96.58,
+      "N": 90,
+      "arrived": 90,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-tv-mid-eq-burst-base-97001",
+      "J_H": 100.33,
+      "N": 69,
+      "arrived": 69,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-tv-mid-eq-ramp-base-97001",
+      "J_H": 95.03,
+      "N": 90,
+      "arrived": 90,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 48.0,
+        "n2": 10.0,
+        "n3": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-asym-mid-EW-flat-base-97001",
+      "J_H": 117.58,
+      "N": 131,
+      "arrived": 131,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-asym-mid-NS-flat-base-97001",
+      "J_H": 232.89,
+      "N": 124,
+      "arrived": 124,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-high-eq-flat-base-97001",
+      "J_H": 174.07,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-low-eq-flat-base-97001",
+      "J_H": 116.27,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-mid-eq-flat-base-97001",
+      "J_H": 132.04,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 132.21,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-tv-mid-eq-burst-base-97001",
+      "J_H": 125.98,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-tv-mid-eq-ramp-base-97001",
+      "J_H": 139.71,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 21.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 35.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-asym-mid-EW-flat-base-97001",
+      "J_H": 250.41,
+      "N": 123,
+      "arrived": 123,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-asym-mid-NS-flat-base-97001",
+      "J_H": 123.72,
+      "N": 129,
+      "arrived": 129,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-high-eq-flat-base-97001",
+      "J_H": 195.29,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-low-eq-flat-base-97001",
+      "J_H": 105.35,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-mid-eq-flat-base-97001",
+      "J_H": 153.25,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 128.24,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-tv-mid-eq-burst-base-97001",
+      "J_H": 127.94,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-tv-mid-eq-ramp-base-97001",
+      "J_H": 148.3,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 32.0,
+        "n2": 10.0,
+        "n3": 10.0,
+        "n4": 30.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-asym-mid-EW-flat-base-97001",
+      "J_H": 131.14,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-asym-mid-NS-flat-base-97001",
+      "J_H": 169.13,
+      "N": 133,
+      "arrived": 133,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-high-eq-flat-base-97001",
+      "J_H": 133.61,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-low-eq-flat-base-97001",
+      "J_H": 94.23,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-mid-eq-flat-base-97001",
+      "J_H": 118.35,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 117.55,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-tv-mid-eq-burst-base-97001",
+      "J_H": 109.35,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-tv-mid-eq-ramp-base-97001",
+      "J_H": 108.58,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 33.0,
+        "n2": 23.0,
+        "n3": 10.0,
+        "n4": 23.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-asym-mid-EW-flat-base-97001",
+      "J_H": 147.8,
+      "N": 133,
+      "arrived": 133,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-asym-mid-NS-flat-base-97001",
+      "J_H": 117.39,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-high-eq-flat-base-97001",
+      "J_H": 128.48,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-low-eq-flat-base-97001",
+      "J_H": 76.51,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-mid-eq-flat-base-97001",
+      "J_H": 89.06,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 94.58,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-tv-mid-eq-burst-base-97001",
+      "J_H": 80.91,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-tv-mid-eq-ramp-base-97001",
+      "J_H": 86.59,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 10.0,
+        "n2": 35.0,
+        "n3": 10.0,
+        "n4": 29.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-asym-mid-EW-flat-base-97001",
+      "J_H": 125.72,
+      "N": 129,
+      "arrived": 129,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-asym-mid-NS-flat-base-97001",
+      "J_H": 163.35,
+      "N": 123,
+      "arrived": 123,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-high-eq-flat-base-97001",
+      "J_H": 136.23,
+      "N": 181,
+      "arrived": 181,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-low-eq-flat-base-97001",
+      "J_H": 108.3,
+      "N": 72,
+      "arrived": 72,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-mid-eq-flat-base-97001",
+      "J_H": 116.19,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-mid-eq-flat-lheavy-97001",
+      "J_H": 130.05,
+      "N": 118,
+      "arrived": 118,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-tv-mid-eq-burst-base-97001",
+      "J_H": 121.88,
+      "N": 96,
+      "arrived": 96,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-tv-mid-eq-ramp-base-97001",
+      "J_H": 126.18,
+      "N": 122,
+      "arrived": 122,
+      "unfinished": 0,
+      "fail": null,
+      "table": {
+        "n1": 30.0,
+        "n2": 10.0,
+        "n3": 30.0,
+        "n4": 10.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 1298
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18036",
+      "J": 2561.6,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18036",
+      "J": 1998.0,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18036",
+      "J": 1943.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18036",
+      "J": 3410.2,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18036",
+      "J": 1247.0,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18037",
+      "J": 2475.3,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18037",
+      "J": 2146.2,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18037",
+      "J": 1598.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18037",
+      "J": 2832.2,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18037",
+      "J": 1223.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18038",
+      "J": 2451.9,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18038",
+      "J": 2580.4,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18038",
+      "J": 3485.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18038",
+      "J": 3789.5,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18038",
+      "J": 1549.6,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18039",
+      "J": 2312.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18039",
+      "J": 1770.1,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18039",
+      "J": 2004.3,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18039",
+      "J": 3484.4,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18039",
+      "J": 993.1,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18040",
+      "J": 1908.1,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18040",
+      "J": 2157.0,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18040",
+      "J": 3606.2,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18040",
+      "J": 3835.1,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18040",
+      "J": 4533.9,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18041",
+      "J": 2148.3,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18041",
+      "J": 1570.6,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18041",
+      "J": 1952.0,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18041",
+      "J": 4185.4,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18041",
+      "J": 3552.5,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18042",
+      "J": 2124.3,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18042",
+      "J": 1990.2,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18042",
+      "J": 1855.5,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18042",
+      "J": 4609.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18042",
+      "J": 3905.2,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18043",
+      "J": 2092.8,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18043",
+      "J": 2115.7,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18043",
+      "J": 3729.7,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18043",
+      "J": 4045.9,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18043",
+      "J": 1185.3,
+      "fail": null,
+      "table": {
+        "ew_straight": 31.0,
+        "ew_left": 6.0,
+        "ns_straight": 31.0,
+        "ns_left": 6.0
+      },
+      "baseline": "engineering-fixed",
+      "horizon_s": 518
+    }
+  ]
+}

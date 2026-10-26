@@ -1,0 +1,193 @@
+[
+  {
+    "id": "J01",
+    "name": "进港大道 × 凤凰大道",
+    "osm_node_ids": [
+      "2456473985",
+      "2456473987",
+      "691167162",
+      "691167164"
+    ],
+    "longitude": 113.52293315,
+    "latitude": 22.8060377,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8060377&mlon=113.5229332#map=18/22.8060377/113.5229332",
+    "sumo_node": "J01",
+    "sumo_xy": [
+      1022.47,
+      1233.68
+    ],
+    "snap_distance_m": 0.005,
+    "sumo_tls": "J01",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J02",
+    "name": "进港大道 × 环市大道",
+    "osm_node_ids": [
+      "2456473956",
+      "2456473959",
+      "2456473961",
+      "691167174"
+    ],
+    "longitude": 113.532583425,
+    "latitude": 22.80327265,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8032727&mlon=113.5325834#map=18/22.8032727/113.5325834",
+    "sumo_node": "J02",
+    "sumo_xy": [
+      2018.78,
+      944.34
+    ],
+    "snap_distance_m": 0.004,
+    "sumo_tls": "J02",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J03",
+    "name": "进港大道 × 金隆路",
+    "osm_node_ids": [
+      "2426556914",
+      "2456473963",
+      "6436910414",
+      "6436910416"
+    ],
+    "longitude": 113.5411972,
+    "latitude": 22.803338275,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8033383&mlon=113.5411972#map=18/22.8033383/113.5411972",
+    "sumo_node": "J03",
+    "sumo_xy": [
+      2903.29,
+      966.81
+    ],
+    "snap_distance_m": 0.007,
+    "sumo_tls": "J03",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J04",
+    "name": "进港大道 × 金岭北路",
+    "osm_node_ids": [
+      "1415634432",
+      "4853736591",
+      "4853737302"
+    ],
+    "longitude": 113.54511986666667,
+    "latitude": 22.803289633333332,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8032896&mlon=113.5451199#map=18/22.8032896/113.5451199",
+    "sumo_node": "J04",
+    "sumo_xy": [
+      3306.25,
+      968.35
+    ],
+    "snap_distance_m": 0.007,
+    "sumo_tls": "J04",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J05",
+    "name": "南府路 × 柳园路",
+    "osm_node_ids": [
+      "13914879175"
+    ],
+    "longitude": 113.5174588,
+    "latitude": 22.8030213,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8030213&mlon=113.5174588#map=18/22.8030213/113.5174588",
+    "sumo_node": "13914879175",
+    "sumo_xy": [
+      465.96,
+      889.95
+    ],
+    "snap_distance_m": 0.003,
+    "sumo_tls": "13914879175",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J06",
+    "name": "南府路 × 凤凰大道",
+    "osm_node_ids": [
+      "5206432732",
+      "5206432754"
+    ],
+    "longitude": 113.52105234999999,
+    "latitude": 22.8020072,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8020072&mlon=113.5210523#map=18/22.8020072/113.5210523",
+    "sumo_node": "J06",
+    "sumo_xy": [
+      836.93,
+      783.91
+    ],
+    "snap_distance_m": 0.002,
+    "sumo_tls": "J06",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J07",
+    "name": "南府路 × 蕉西路",
+    "osm_node_ids": [
+      "5206432093",
+      "5206432112",
+      "8602642229"
+    ],
+    "longitude": 113.52467323333333,
+    "latitude": 22.8011279,
+    "identification": "OSM shared nodes; screenshot match",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8011279&mlon=113.5246732#map=18/22.8011279/113.5246732",
+    "sumo_node": "J07",
+    "sumo_xy": [
+      1210.47,
+      692.86
+    ],
+    "snap_distance_m": 0.008,
+    "sumo_tls": "J07",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J08",
+    "name": "金岭一横路 × 海滨路",
+    "osm_node_ids": [
+      "8602642232",
+      "8602642233",
+      "8602642234",
+      "8602642235"
+    ],
+    "longitude": 113.527706275,
+    "latitude": 22.8006119,
+    "identification": "PROVISIONAL: east red circle; screenshot road name absent",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8006119&mlon=113.5277063#map=18/22.8006119/113.5277063",
+    "sumo_node": "J08",
+    "sumo_xy": [
+      1522.94,
+      641.03
+    ],
+    "snap_distance_m": 0.005,
+    "sumo_tls": "J08",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  },
+  {
+    "id": "J09",
+    "name": "市南大道 × 环市大道",
+    "osm_node_ids": [
+      "2456474032",
+      "2456474033",
+      "2963365601",
+      "2963365602"
+    ],
+    "longitude": 113.5364985,
+    "latitude": 22.812384275,
+    "identification": "User confirmed supplied photos are this additional junction, outside original eight; geographic center from OSM shared nodes",
+    "osm_url": "https://www.openstreetmap.org/?mlat=22.8123843&mlon=113.5364985#map=18/22.8123843/113.5364985",
+    "sumo_node": "J09",
+    "sumo_xy": [
+      2403.53,
+      1960.57
+    ],
+    "snap_distance_m": 0.007,
+    "sumo_tls": "J09",
+    "phase_source": "SUMO-generated demo, NOT field timing"
+  }
+]

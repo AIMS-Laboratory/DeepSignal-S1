@@ -1,0 +1,14 @@
+{
+  "tag": "J08-bal-mid-eq-flat-lheavy-97001",
+  "J_H": 77.23,
+  "fail": null,
+  "n_dec": 32,
+  "n_interlock": 0,
+  "infer_fail": 0,
+  "infer_ms_mean": 457,
+  "arrived": 118,
+  "N": 118,
+  "frames": 98,
+  "wall_seconds": 43.8,
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

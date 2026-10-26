@@ -7,3 +7,5 @@ CARLA is distributed separately with its original license and required asset not
 General surface materials originating from Poly Haven retain their CC0-1.0 designation. See [Poly Haven](https://polyhaven.com/).
 
 仿真道路、程序化环境及合成车流用于功能测试，不代表测绘级现场复原或真实道路部署结果。
+
+YOLO+MP uses the stock Ultralytics YOLO11m detector as an independent baseline. The combined scene archive includes the tested detector file and the accompanying upstream Ultralytics license in `reproduction/baselines/`. It is not a component of DeepSignal-S1.

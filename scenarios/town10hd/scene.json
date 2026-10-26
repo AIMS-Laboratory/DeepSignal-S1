@@ -50,7 +50,7 @@
           "SR"
         ]
       ],
-      "fixed_green_s": 40,
+      "fixed_green_s": 31,
       "yellow_s": 3,
       "all_red_s": 2
     },
@@ -82,7 +82,7 @@
           "SR"
         ]
       ],
-      "fixed_green_s": 20,
+      "fixed_green_s": 31,
       "yellow_s": 3,
       "all_red_s": 2
     },
@@ -248,5 +248,6 @@
       "S": "945",
       "N": "954"
     }
-  }
+  },
+  "fixed_timing_source": "pre-existing engineering plan; no final-test search"
 }

@@ -196,7 +196,7 @@
           "L"
         ]
       ],
-      "fixed_green_s": 14,
+      "fixed_green_s": 35,
       "yellow_s": 3,
       "all_red_s": 11
     },
@@ -212,7 +212,7 @@
           "L"
         ]
       ],
-      "fixed_green_s": 13,
+      "fixed_green_s": 14,
       "yellow_s": 3,
       "all_red_s": 11
     },
@@ -228,7 +228,7 @@
           "L"
         ]
       ],
-      "fixed_green_s": 16,
+      "fixed_green_s": 10,
       "yellow_s": 3,
       "all_red_s": 11
     },
@@ -244,9 +244,10 @@
           "L"
         ]
       ],
-      "fixed_green_s": 23,
+      "fixed_green_s": 17,
       "yellow_s": 3,
       "all_red_s": 11
     }
-  ]
+  ],
+  "fixed_timing_source": "pre-existing engineering plan; no final-test search"
 }

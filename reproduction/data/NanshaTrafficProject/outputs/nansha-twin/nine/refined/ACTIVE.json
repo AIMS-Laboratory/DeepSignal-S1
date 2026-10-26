@@ -1,0 +1,18 @@
+{
+  "level": "NanshaNineRefined",
+  "activated_utc": "2026-09-22T07:20:45.684032+00:00",
+  "status": "Photo-constrained reconstruction applied; dimensions estimated; static and nine-junction live smoke checks passed",
+  "continuous_traffic": 420,
+  "calibration_version": "cctv-20260921-v2",
+  "map_asset": "/Game/NanshaTwin/Maps/Photo20260922/NanshaNineRefined",
+  "visual_version": "visual-20260922-v6",
+  "visual_activated_utc": "2026-09-22T09:24:32.087766+00:00",
+  "render_priority": "quality",
+  "live_started_utc": "2026-09-21T00:38:47.174495+00:00",
+  "camera_optics_version": "signal-radar-20260922-v2-front",
+  "camera_optics_activated_utc": "2026-09-22T07:20:45.684032+00:00",
+  "surface_version": "photo22-bridge-v1",
+  "visual_verified_utc": "2026-09-22T09:30:02.094026+00:00",
+  "legacy_camera_video_connected": false,
+  "distant_backdrop": false
+}

@@ -1,0 +1,38 @@
+{
+ "step": 0.1,
+ "countdown": 5.0,
+ "yellow": 3.0,
+ "all_red": 2.0,
+ "initial_red": 4.0,
+ "warmup_min": 60.0,
+ "window_duration": 120.0,
+ "clearance_limit": 180.0,
+ "queue_speed_threshold": 0.1,
+ "regime": "time_varying",
+ "regime_params": {
+  "balanced_rate_vph": 360.0,
+  "asymmetric_heavy_vph": 600.0,
+  "asymmetric_light_vph": 120.0,
+  "time_varying_rates_vph": [
+   [
+    0.0,
+    200.0
+   ],
+   [
+    60.0,
+    200.0
+   ],
+   [
+    120.0,
+    700.0
+   ]
+  ],
+  "turn_split": {
+   "s": 0.7,
+   "r": 0.15,
+   "l": 0.15
+  },
+  "max_speed": 8.0
+ },
+ "seed": 8005
+}

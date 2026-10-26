@@ -1,0 +1,14 @@
+{
+  "tag": "J02-tv-mid-eq-ramp-base-97001",
+  "J_H": 109.15,
+  "fail": null,
+  "n_dec": 31,
+  "n_interlock": 0,
+  "infer_fail": 0,
+  "infer_ms_mean": 461,
+  "arrived": 122,
+  "N": 122,
+  "frames": 95,
+  "wall_seconds": 44.7,
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

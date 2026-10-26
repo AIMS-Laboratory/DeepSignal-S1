@@ -112,14 +112,14 @@ def test_illegal_action_not_replaced(scene):
     assert control.waiting
 
 
-def test_fixed_uses_tuned_table_not_inherited_greens(scene):
+def test_fixed_uses_frozen_engineering_table(scene):
     control = SignalController(scene, fixed=True)
     control.advance(0.2)
-    assert control.green_total == 14
-    control.advance(14.2)
-    control.advance(17.2)
-    control.advance(28.2)
-    assert control.phase == "n2" and control.green_total == 13
+    assert control.green_total == 35
+    control.advance(35.2)
+    control.advance(38.2)
+    control.advance(49.2)
+    assert control.phase == "n2" and control.green_total == 14
 
 
 def test_journey_includes_entry_wait_and_no_completed_only_bias():

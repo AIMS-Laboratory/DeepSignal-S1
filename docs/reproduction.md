@@ -1,0 +1,78 @@
+# 原矩阵复现 / Paired-Matrix Reproduction
+
+## 材料 / Materials
+
+- GitHub 提供测试代码、112 份固定交通计划、相机和路口配置，不含训练代码。
+- HF 提供唯一最终权重与必要推理运行时。下载完整仓库，不只下载小体积文件。
+- `DeepSignal-S1-Scenes-UE5-Epic-v1.tar.gz` 同时包含南沙九路口和 Town10HD 的 UE5 运行文件、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。安装方法见 [testing.md](testing.md)。
+
+The GitHub repository contains test construction and evaluation code only. The complete model is distributed through approved HF downloads. One scene archive includes both Nansha and Town10HD.
+
+## 环境 / Environments
+
+仿真客户端使用 Python 3.10，安装 SUMO 后执行：
+
+```bash
+pip install -e '.[test,reproduction]'
+pip install assets/runtime/python/carla-0.10.0-cp310-cp310-linux_x86_64.whl
+```
+
+模型推理单独使用 Python 3.12 环境，按 HF 模型卡安装依赖：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /path/to/inference/python scripts/serve_model.py \
+  --model /path/to/DeepSignal-S1 --port 18404
+```
+
+The simulator and model use separate Python environments. The local inference service does not require a remote hosted endpoint.
+
+## 固定对照 / Fixed Baseline
+
+南沙采用各路口既有 `v2` 工程表，J02 为 35/14/10/17 秒；Town 采用 31/6/31/6 秒。均不针对正式测试搜索。Town 沿用原协议的首段绿灯及其首次倒计时接管点，不将正式车辆窗口起点 98 秒误作接管点；首段结束后按工程表轮转。南沙原协议为共同全红冷启动，不额外添加 Town 预热。
+
+```bash
+python scripts/reproduce.py --scene nansha --controller fixed \
+  --tag J02-asym-mid-EW-flat-base-97001 --output runs/fixed-example
+
+python scripts/run_fixed_matrix.py --jobs 4 --output runs/engineering-fixed
+```
+
+批处理保持四任务并行，在整机 CPU 达到 65% 时暂停本批、回落至 60% 以下恢复，给 70% 目标留余量。不能限制其他外部进程自身的负载。失败回合不会作为成功结果跳过。
+
+Fixed control runs in SUMO without a GPU. The engineering tables are frozen before evaluation, not selected for their performance against the released model. The original warmup/cold-start protocol is preserved.
+
+## 视觉闭环 / Visual Closed Loop
+
+先单独启动对应的场景服务器，再运行：
+
+```bash
+python scripts/reproduce.py --scene town10hd --controller s1 \
+  --tag balanced-18036 --condition clean --port 25020 \
+  --endpoint http://127.0.0.1:18404 --output runs/town-clean
+
+python scripts/reproduce.py --scene nansha --controller s1 \
+  --tag J02-asym-mid-EW-flat-base-97001 --condition defocus-2.5 \
+  --port 25020 --output runs/nansha-defocus
+```
+
+条件包括 `clean`、`motion-blur-9`、`defocus-2.5`、`angle-8`。`angle-8` 指整回合固定的相机外参偏移，不是逐帧随机抖动。不同条件使用不同输出目录。
+
+原矩阵 YOLO+MP 使用对应检测服务；不要与精选展示客户端的不同服务接口混用：
+
+```bash
+CUDA_VISIBLE_DEVICES=1 /path/to/detector/python scripts/archived_detector_service.py \
+  --model assets/runtime/reproduction/baselines/yolo11m.pt --port 8031
+
+python scripts/reproduce.py --scene nansha --controller visual-pressure \
+  --tag J02-asym-mid-EW-flat-base-97001 --condition defocus-2.5 \
+  --detector-endpoint http://127.0.0.1:8031/v1/detect2 \
+  --port 25020 --output runs/nansha-defocus-yolo
+```
+
+## 指标与版本 / Metrics and Versions
+
+`reproduction/matrix.json` 列出全部原始车流。南沙 `J_H` 是 1298 秒时域内的截断平均行程；Town `J` 是 518 秒时域内的截断总行程。均从计划到达时刻计时，未完成车辆按时域末端计入，不删车；两种指标不能混合。
+
+原始 Town 视觉程序使用 CARLA 0.9.16；本场景包为 UE5/CARLA 0.10.0，并使用其实际提供的车辆素材。因此保留原车流与控制时序，但迁移后的视觉成绩必须重新验证，不能直接继承旧运行环境的数字。最终南沙权重也不能继承早期 Town 专用权重的成绩。
+
+Nansha reports capped mean journey time at 1298 s; Town reports capped total journey time at 518 s. The UE5 port preserves fixed traffic plans and signal rules, but historical Town visual results from a different runtime/checkpoint are not scores of this release. This matrix is distinct from the complete-journey showcase protocol and does not by itself certify real-time operation.

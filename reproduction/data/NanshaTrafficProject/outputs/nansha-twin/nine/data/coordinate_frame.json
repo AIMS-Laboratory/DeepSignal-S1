@@ -1,0 +1,21 @@
+{
+  "source": "EPSG:4326",
+  "projection": "+proj=utm +zone=49 +datum=WGS84 +units=m +no_defs",
+  "sumo_net_offset_m": [
+    -757958.47,
+    -2523025.89
+  ],
+  "sumo_boundary_m": [
+    0.0,
+    0.0,
+    3706.75,
+    2375.95
+  ],
+  "scene_origin_sumo_xy_m": [
+    1853.375,
+    852.7900000000373
+  ],
+  "blender": "metres, X=east, Y=north, Z=up; point = SUMO point minus scene origin",
+  "unreal": "centimetres, X=east, Y=south, Z=up; explicit handedness/scale validation required at import",
+  "elevation": "flat datum for prototype; OSM layer is retained as metadata, NOT surveyed elevation"
+}

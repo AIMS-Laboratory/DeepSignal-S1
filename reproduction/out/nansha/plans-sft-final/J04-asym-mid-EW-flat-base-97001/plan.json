@@ -1,0 +1,1909 @@
+{
+  "regime": "asymmetric",
+  "seed": 97001,
+  "window": [
+    0,
+    398.0
+  ],
+  "params_digest": "99c5af89915a7b236faa9065ec4e5006e0e4481a393b80db7f523ffefca8cc08",
+  "time_varying_origin": null,
+  "demand_case": "asym-mid-EW-flat-base",
+  "vehicles": [
+    {
+      "vehicle_id": "E-s-001",
+      "planned_depart": 2.8,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-001",
+      "planned_depart": 2.95,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-001",
+      "planned_depart": 6.38,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-002",
+      "planned_depart": 7.4,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-003",
+      "planned_depart": 8.56,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-004",
+      "planned_depart": 13.84,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-002",
+      "planned_depart": 13.86,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-003",
+      "planned_depart": 14.25,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-005",
+      "planned_depart": 16.73,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-006",
+      "planned_depart": 16.84,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-004",
+      "planned_depart": 18.13,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-007",
+      "planned_depart": 19.69,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-002",
+      "planned_depart": 24.24,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-003",
+      "planned_depart": 25.96,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-005",
+      "planned_depart": 26.95,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "N-l-001",
+      "planned_depart": 28.28,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-008",
+      "planned_depart": 28.77,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-009",
+      "planned_depart": 33.44,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-006",
+      "planned_depart": 34.1,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-007",
+      "planned_depart": 35.56,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-004",
+      "planned_depart": 35.78,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-008",
+      "planned_depart": 39.85,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-010",
+      "planned_depart": 41.89,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-005",
+      "planned_depart": 42.73,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-011",
+      "planned_depart": 47.2,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-012",
+      "planned_depart": 48.39,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-013",
+      "planned_depart": 51.03,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-014",
+      "planned_depart": 51.6,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "N-l-002",
+      "planned_depart": 53.43,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-015",
+      "planned_depart": 55.88,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-009",
+      "planned_depart": 56.09,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-006",
+      "planned_depart": 65.72,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-010",
+      "planned_depart": 66.59,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-016",
+      "planned_depart": 67.49,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-017",
+      "planned_depart": 67.73,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "N-l-003",
+      "planned_depart": 71.06,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-011",
+      "planned_depart": 72.33,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-007",
+      "planned_depart": 76.55,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-018",
+      "planned_depart": 77.14,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-019",
+      "planned_depart": 78.88,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-020",
+      "planned_depart": 80.24,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "N-l-004",
+      "planned_depart": 81.48,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-021",
+      "planned_depart": 81.78,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-008",
+      "planned_depart": 86.38,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "W-s-022",
+      "planned_depart": 93.25,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-s-012",
+      "planned_depart": 93.77,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "warmup"
+    },
+    {
+      "vehicle_id": "E-l-009",
+      "planned_depart": 99.51,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-023",
+      "planned_depart": 100.9,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-010",
+      "planned_depart": 101.88,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-005",
+      "planned_depart": 111.48,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-024",
+      "planned_depart": 113.4,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-013",
+      "planned_depart": 113.53,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-014",
+      "planned_depart": 114.12,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-025",
+      "planned_depart": 117.27,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-026",
+      "planned_depart": 124.37,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-015",
+      "planned_depart": 126.58,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-006",
+      "planned_depart": 127.56,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-027",
+      "planned_depart": 129.83,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-007",
+      "planned_depart": 130.76,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-028",
+      "planned_depart": 131.46,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-029",
+      "planned_depart": 133.36,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-030",
+      "planned_depart": 133.41,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-016",
+      "planned_depart": 133.92,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-008",
+      "planned_depart": 138.2,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-017",
+      "planned_depart": 146.18,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-031",
+      "planned_depart": 146.56,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-018",
+      "planned_depart": 149.41,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-011",
+      "planned_depart": 152.38,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-032",
+      "planned_depart": 153.86,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-033",
+      "planned_depart": 155.34,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-019",
+      "planned_depart": 157.47,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-012",
+      "planned_depart": 159.34,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-013",
+      "planned_depart": 159.75,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-009",
+      "planned_depart": 160.83,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-034",
+      "planned_depart": 161.32,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-035",
+      "planned_depart": 162.38,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-020",
+      "planned_depart": 168.0,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-036",
+      "planned_depart": 171.3,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-037",
+      "planned_depart": 179.9,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-021",
+      "planned_depart": 181.89,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-038",
+      "planned_depart": 188.72,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-039",
+      "planned_depart": 198.71,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-022",
+      "planned_depart": 199.41,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-040",
+      "planned_depart": 199.9,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-023",
+      "planned_depart": 204.06,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-014",
+      "planned_depart": 204.63,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-041",
+      "planned_depart": 211.92,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-024",
+      "planned_depart": 217.83,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-010",
+      "planned_depart": 219.91,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-015",
+      "planned_depart": 221.86,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-025",
+      "planned_depart": 227.53,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-016",
+      "planned_depart": 229.87,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-017",
+      "planned_depart": 232.42,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-042",
+      "planned_depart": 233.23,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-043",
+      "planned_depart": 237.18,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-044",
+      "planned_depart": 239.62,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-045",
+      "planned_depart": 240.05,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-026",
+      "planned_depart": 243.53,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-046",
+      "planned_depart": 243.92,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-047",
+      "planned_depart": 247.16,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-027",
+      "planned_depart": 248.41,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-028",
+      "planned_depart": 248.73,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-018",
+      "planned_depart": 249.07,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-048",
+      "planned_depart": 249.9,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-049",
+      "planned_depart": 250.72,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-050",
+      "planned_depart": 254.31,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-051",
+      "planned_depart": 259.35,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-029",
+      "planned_depart": 264.9,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-052",
+      "planned_depart": 267.66,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-053",
+      "planned_depart": 269.21,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-019",
+      "planned_depart": 275.25,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-011",
+      "planned_depart": 277.02,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-030",
+      "planned_depart": 277.95,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-020",
+      "planned_depart": 278.01,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-054",
+      "planned_depart": 279.01,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-021",
+      "planned_depart": 284.18,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-031",
+      "planned_depart": 286.22,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-012",
+      "planned_depart": 288.45,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-032",
+      "planned_depart": 288.79,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-022",
+      "planned_depart": 291.8,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-033",
+      "planned_depart": 294.23,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-034",
+      "planned_depart": 295.57,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-055",
+      "planned_depart": 295.68,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-056",
+      "planned_depart": 296.05,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-023",
+      "planned_depart": 297.47,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-024",
+      "planned_depart": 301.05,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-057",
+      "planned_depart": 304.43,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-035",
+      "planned_depart": 304.64,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-058",
+      "planned_depart": 307.06,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-036",
+      "planned_depart": 311.28,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-025",
+      "planned_depart": 314.26,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-059",
+      "planned_depart": 320.53,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-013",
+      "planned_depart": 330.07,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-060",
+      "planned_depart": 334.32,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "N-l-014",
+      "planned_depart": 336.4,
+      "approach": "N",
+      "turn": "l",
+      "route_edges": [
+        "906847970#1",
+        "906847973#1",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-061",
+      "planned_depart": 336.87,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-026",
+      "planned_depart": 339.59,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-062",
+      "planned_depart": 340.14,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-037",
+      "planned_depart": 343.14,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-038",
+      "planned_depart": 346.01,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-063",
+      "planned_depart": 349.35,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-039",
+      "planned_depart": 352.4,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-064",
+      "planned_depart": 353.32,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-s-040",
+      "planned_depart": 353.59,
+      "approach": "E",
+      "turn": "s",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459487#0"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-027",
+      "planned_depart": 353.99,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-028",
+      "planned_depart": 355.12,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-065",
+      "planned_depart": 356.72,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-066",
+      "planned_depart": 362.43,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-067",
+      "planned_depart": 373.98,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-068",
+      "planned_depart": 381.97,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-029",
+      "planned_depart": 383.63,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-030",
+      "planned_depart": 385.51,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-069",
+      "planned_depart": 386.62,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-070",
+      "planned_depart": 388.28,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "W-s-071",
+      "planned_depart": 390.0,
+      "approach": "W",
+      "turn": "s",
+      "route_edges": [
+        "907459485#13",
+        "54929339#0",
+        "54929339#2"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-031",
+      "planned_depart": 393.74,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-032",
+      "planned_depart": 395.59,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    },
+    {
+      "vehicle_id": "E-l-033",
+      "planned_depart": 396.42,
+      "approach": "E",
+      "turn": "l",
+      "route_edges": [
+        "237768203#1",
+        "237768203#2",
+        "907459486#1"
+      ],
+      "cohort": "formal"
+    }
+  ]
+}

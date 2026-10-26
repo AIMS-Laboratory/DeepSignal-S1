@@ -1,0 +1,252 @@
+{
+  "id": "town10hd",
+  "name": "Town10HD",
+  "map": "Town10HD_Opt",
+  "network": "network.net.xml",
+  "tls_id": "189",
+  "approach_edges": {
+    "E": "20",
+    "W": "-18",
+    "S": "-22",
+    "N": "-14"
+  },
+  "green_min_s": 6,
+  "green_max_s": 60,
+  "max_red_s": 150,
+  "horizon_s": 1298,
+  "scene_origin": [
+    109.34,
+    135.96
+  ],
+  "vehicle_blueprint": "vehicle.ue4.audi.tt",
+  "tile_size": [
+    640,
+    360
+  ],
+  "model_input_size": [
+    1280,
+    720
+  ],
+  "cameras": {},
+  "demand": {
+    "heavy_vph": 600,
+    "light_vph": 120,
+    "turn_split": {
+      "s": 0.7,
+      "r": 0.15,
+      "l": 0.15
+    }
+  },
+  "phases": [
+    {
+      "key": "ew_straight",
+      "movements": [
+        [
+          "E",
+          "SR"
+        ],
+        [
+          "W",
+          "SR"
+        ]
+      ],
+      "fixed_green_s": 40,
+      "yellow_s": 3,
+      "all_red_s": 2
+    },
+    {
+      "key": "ew_left",
+      "movements": [
+        [
+          "E",
+          "L"
+        ],
+        [
+          "W",
+          "L"
+        ]
+      ],
+      "fixed_green_s": 6,
+      "yellow_s": 3,
+      "all_red_s": 2
+    },
+    {
+      "key": "ns_straight",
+      "movements": [
+        [
+          "N",
+          "SR"
+        ],
+        [
+          "S",
+          "SR"
+        ]
+      ],
+      "fixed_green_s": 20,
+      "yellow_s": 3,
+      "all_red_s": 2
+    },
+    {
+      "key": "ns_left",
+      "movements": [
+        [
+          "N",
+          "L"
+        ],
+        [
+          "S",
+          "L"
+        ]
+      ],
+      "fixed_green_s": 6,
+      "yellow_s": 3,
+      "all_red_s": 2
+    }
+  ],
+  "routes": {
+    "N": {
+      "s": {
+        "edges": [
+          "-14",
+          "-15"
+        ],
+        "depart_lane": "3"
+      },
+      "l": {
+        "edges": [
+          "-14",
+          "19"
+        ],
+        "depart_lane": "4"
+      },
+      "r": {
+        "edges": [
+          "-14",
+          "-20"
+        ],
+        "depart_lane": "3"
+      }
+    },
+    "S": {
+      "s": {
+        "edges": [
+          "-22",
+          "14"
+        ],
+        "depart_lane": "3"
+      },
+      "l": {
+        "edges": [
+          "-22",
+          "-20"
+        ],
+        "depart_lane": "4"
+      },
+      "r": {
+        "edges": [
+          "-22",
+          "19"
+        ],
+        "depart_lane": "3"
+      }
+    },
+    "W": {
+      "r": {
+        "edges": [
+          "-18",
+          "14"
+        ],
+        "depart_lane": "3"
+      },
+      "s": {
+        "edges": [
+          "-18",
+          "-20"
+        ],
+        "depart_lane": "3"
+      },
+      "l": {
+        "edges": [
+          "-18",
+          "-15"
+        ],
+        "depart_lane": "4"
+      }
+    },
+    "E": {
+      "s": {
+        "edges": [
+          "20",
+          "19"
+        ],
+        "depart_lane": "3"
+      },
+      "l": {
+        "edges": [
+          "20",
+          "14"
+        ],
+        "depart_lane": "4"
+      },
+      "r": {
+        "edges": [
+          "20",
+          "-15"
+        ],
+        "depart_lane": "3"
+      }
+    }
+  },
+  "camera_mounts": {
+    "E": {
+      "height": 10.0,
+      "pitch": -35.8,
+      "inward_offset": 16.0,
+      "lateral_offset": 7.0,
+      "x_offset": 0.0,
+      "y_offset": 0.0,
+      "yaw_offset": 0.0
+    },
+    "W": {
+      "height": 10.0,
+      "pitch": -35.8,
+      "inward_offset": 16.0,
+      "lateral_offset": 0.0,
+      "x_offset": 0.0,
+      "y_offset": 0.0,
+      "yaw_offset": 0.0
+    },
+    "S": {
+      "height": 10.0,
+      "pitch": -35.8,
+      "inward_offset": 16.0,
+      "lateral_offset": 0.0,
+      "x_offset": 0.0,
+      "y_offset": 0.0,
+      "yaw_offset": 0.0
+    },
+    "N": {
+      "height": 10.0,
+      "pitch": -35.8,
+      "inward_offset": 16.0,
+      "lateral_offset": 0.0,
+      "x_offset": 0.0,
+      "y_offset": 0.0,
+      "yaw_offset": 0.0
+    }
+  },
+  "native_lights": {
+    "straight_light_odr": {
+      "E": "952",
+      "W": "949",
+      "S": "951",
+      "N": "950"
+    },
+    "left_light_odr": {
+      "E": "959",
+      "W": "961",
+      "S": "945",
+      "N": "954"
+    }
+  }
+}

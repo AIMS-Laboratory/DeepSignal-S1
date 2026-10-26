@@ -1,0 +1,14 @@
+{
+  "tag": "J05-tv-mid-eq-burst-base-97001",
+  "J_H": 111.72,
+  "fail": null,
+  "n_dec": 57,
+  "n_interlock": 0,
+  "infer_fail": 0,
+  "infer_ms_mean": 481,
+  "arrived": 96,
+  "N": 96,
+  "frames": 173,
+  "wall_seconds": 67.9,
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

@@ -1,0 +1,14 @@
+{
+  "tag": "J05-bal-high-eq-flat-base-97001",
+  "J_H": 132.06,
+  "fail": null,
+  "n_dec": 77,
+  "n_interlock": 0,
+  "infer_fail": 0,
+  "infer_ms_mean": 480,
+  "arrived": 181,
+  "N": 181,
+  "frames": 232,
+  "wall_seconds": 122.1,
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

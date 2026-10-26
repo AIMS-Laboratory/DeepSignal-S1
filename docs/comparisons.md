@@ -16,7 +16,7 @@ Mean journey time is calculated over all formal vehicles, including waiting befo
 
 - 同一到达计划、路线、车辆参数、随机种子和停止规则。
 - 同一模型版本完成全部选定展示回合，不混合不同模型的成绩。
-- 同样的相位转换和安全执行规则；固定配时使用场景内已冻结的调优配时表。
+- 同样的相位转换和安全执行规则。当前默认固定配时使用既有工程表；2026-10-25 存档和视频使用另一套已标明的调优参考表，不能与当前默认方案混淆。
 - 相机方法使用相同机位、观察窗和指定视觉扰动。闭环策略不同之后，车辆状态自然会不同，不宣称双方始终看到逐像素相同的画面。
 - 三帧观察间隔为两秒；模型交通信息来自画面，信号时钟和静态路口信息作为必要执行上下文。
 
@@ -28,11 +28,11 @@ Town adaptive runs start with a 9-second green to establish the observation hist
 
 ## YOLO+MP 对照
 
-所有展示条件均同时比较 YOLO+MP 与调优固定配时。失焦条件重点比较 DeepSignal-S1 与 YOLO+MP：双方使用相同机位、同一失焦处理与同样的三帧观察时刻。固定配时不依赖画面，因此不能将失焦条件下相对固定配时的收益解释为视觉鲁棒性证据。
+2026-10-25 的存档展示条件均同时比较 YOLO+MP 与当时的调优固定参考。该参考配置保留为各场景的 `scene.tuned-reference.json`；当前 `scene.json` 默认改为工程固定配时，不能用当前默认表复算旧固定数字。失焦条件重点比较 DeepSignal-S1 与 YOLO+MP：双方使用相同机位、同一失焦处理与同样的三帧观察时刻。固定配时不依赖画面，因此不能将失焦条件下相对固定配时的收益解释为视觉鲁棒性证据。
 
 YOLO+MP 使用 YOLO11m 检测车辆，再按进口转向汇总相位压力；本测试场景的出口按无阻塞处理。三个观察时刻按 0.25、0.25、0.5 平滑，保留当前相位滞回；压力相同时按红灯等待时间、再按相位顺序选择。检测服务不接收 SUMO 的车辆数或排队真值。控制器命令标识为 `visual-pressure`，结果版本为 `yolo-mp-v1`。
 
-Every displayed condition compares against both YOLO+MP and tuned fixed timing. Defocus comparisons primarily target YOLO+MP under the same camera degradation and observation schedule. Fixed timing does not consume images, so its defocus comparison alone is not evidence of visual robustness. YOLO+MP uses image detections and incoming-movement pressure with unblocked exits; signal red age resolves equal-pressure ties. No simulator traffic counts are supplied to the detector.
+The archived October 25 comparisons include YOLO+MP and the then-used tuned fixed reference. Reproduce those fixed numbers with `scene.tuned-reference.json`, not the current engineering-timing default. Defocus comparisons primarily target YOLO+MP under the same camera degradation and observation schedule. Fixed timing does not consume images, so its defocus comparison alone is not evidence of visual robustness. YOLO+MP uses image detections and incoming-movement pressure with unblocked exits; signal red age resolves equal-pressure ties. No simulator traffic counts are supplied to the detector.
 
 ## 辅助指标
 

@@ -1,0 +1,8 @@
+{
+  "tag": "J02-asym-mid-NS-flat-base-97001",
+  "J_H": null,
+  "fail": "decide-empty@427",
+  "n_dec": 55,
+  "yolo_ms_mean": 59.5,
+  "wall_seconds": 39.5
+}

@@ -1,0 +1,11 @@
+{
+  "tile_width": 640,
+  "tile_height": 360,
+  "fov": 90.0,
+  "poses": {
+    "E": {"height": 10.0, "pitch": -35.8, "inward_offset": 16.0, "lateral_offset": 7.0, "x_offset": 0.0, "y_offset": 0.0, "yaw_offset": 0.0},
+    "W": {"height": 10.0, "pitch": -35.8, "inward_offset": 16.0, "lateral_offset": 0.0, "x_offset": 0.0, "y_offset": 0.0, "yaw_offset": 0.0},
+    "S": {"height": 10.0, "pitch": -35.8, "inward_offset": 16.0, "lateral_offset": 0.0, "x_offset": 0.0, "y_offset": 0.0, "yaw_offset": 0.0},
+    "N": {"height": 10.0, "pitch": -35.8, "inward_offset": 16.0, "lateral_offset": 0.0, "x_offset": 0.0, "y_offset": 0.0, "yaw_offset": 0.0}
+  }
+}

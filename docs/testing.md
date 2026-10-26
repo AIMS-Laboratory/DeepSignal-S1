@@ -2,10 +2,10 @@
 
 ## 场景安装 / Scene Setup
 
-南沙场景包通过 Google Drive 单独提供。下载链接发布后，先下载压缩包，再安装：
+南沙九路口与 Town10HD 共用一个场景压缩包，通过独立下载链接提供。下载后安装一次，再选择场景启动：
 
 ```bash
-deepsignal-s1 install-assets --archive /path/to/DeepSignal-S1-Nansha-UE5-Epic-v1.tar.gz
+deepsignal-s1 install-assets --archive /path/to/DeepSignal-S1-Scenes-UE5-Epic-v1.tar.gz
 pip install assets/runtime/python/carla-0.10.0-cp310-cp310-linux_x86_64.whl
 deepsignal-s1 launch-scene --scene scenarios/nansha-j02/scene.json \
   --assets assets/runtime --port 25020 --adapter 0
@@ -15,7 +15,9 @@ deepsignal-s1 launch-scene --scene scenarios/nansha-j02/scene.json \
 
 The scene server runs in the foreground with Epic quality. Start tests in another terminal and give each simulation session its own server. The client refuses to remove vehicles or sensors belonging to an existing session.
 
-Town10HD 使用另外的匹配 CARLA UE5 官方运行包，服务器需预先加载 Town10HD。南沙素材包不替代 Town 的地图包。Town 客户端配置在 `scenarios/town10hd/`，补充测试矩阵在 `scenarios/town-supplement.json`。
+Town10HD 已包含在同一个压缩包内，使用 `--scene scenarios/town10hd/scene.json` 启动；两套运行文件在包内分开存放，不覆盖彼此。原矩阵测试入口与指标见[复现指南](reproduction.md)。
+
+Both scene runtimes are included in one archive. Install once and choose the scene with `--scene`; the Nansha and Town10HD engine directories remain separate.
 
 ## 模型闭环 / Model Test
 

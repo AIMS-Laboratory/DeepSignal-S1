@@ -387,5 +387,12 @@ class CameraScene:
         if self.original_settings:
             self.world.apply_settings(self.original_settings)
             self.world.set_weather(self.original_weather)
+            if self.original_settings.synchronous_mode:
+                self.world.tick(30)
+            else:
+                self.world.wait_for_tick(30)
+        self.cameras.clear()
+        self.queues.clear()
+        self.vehicles.clear()
         if encoding_error and exc[0] is None:
             raise RuntimeError("Video encoding failed")

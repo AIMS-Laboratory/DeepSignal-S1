@@ -1,0 +1,14 @@
+{
+  "tag": "J02-asym-mid-EW-flat-base-97001",
+  "J_H": 83.98,
+  "fail": null,
+  "n_dec": 35,
+  "n_interlock": 0,
+  "infer_fail": 0,
+  "infer_ms_mean": 482,
+  "arrived": 133,
+  "N": 133,
+  "frames": 107,
+  "wall_seconds": 47.7,
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

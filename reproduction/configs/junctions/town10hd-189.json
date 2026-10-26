@@ -1,0 +1,14 @@
+{
+  "name": "town10hd-189",
+  "map_name": "Town10HD",
+  "junction_id": 189,
+  "tls_id": "189",
+  "tls_link_count": 28,
+  "approach_edges": {"E": "20", "W": "-18", "S": "-22", "N": "-14"},
+  "upstream_approach_edges": {"E": "21", "W": "-5", "S": "-6", "N": "-13"},
+  "straight_light_odr": {"E": "952", "W": "949", "S": "951", "N": "950"},
+  "left_light_odr": {"E": "959", "W": "961", "S": "945", "N": "954"},
+  "straight_lane": 3,
+  "left_lane": 4,
+  "default_network": "out/vlm-realtime-control-r3/scene/network/junction.net.xml"
+}

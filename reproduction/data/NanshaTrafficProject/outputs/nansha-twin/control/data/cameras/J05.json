@@ -1,0 +1,357 @@
+{
+  "profile_id": "nine-signal-radar",
+  "profile_label": "信号灯杆雷视 · 正对进口",
+  "site": "南府路 × 柳园路",
+  "junction_id": "J05",
+  "sumo_tls": "13914879175",
+  "poles": {
+    "J05_signal_1": {
+      "x": -1375.5056938609225,
+      "y": 42.02763427384233,
+      "ground_z": 0.04,
+      "kind": "existing_signal_mast",
+      "edge": "754852609"
+    },
+    "J05_signal_2": {
+      "x": -1378.2188708929114,
+      "y": 28.16951278238326,
+      "ground_z": 0.04,
+      "kind": "existing_signal_mast",
+      "edge": "754960705#5"
+    },
+    "J05_signal_3": {
+      "x": -1399.3242902345141,
+      "y": 32.29237809364152,
+      "ground_z": 0.04,
+      "kind": "existing_signal_mast",
+      "edge": "-754852610#3"
+    },
+    "J05_signal_4": {
+      "x": -1396.611079666059,
+      "y": 46.150460120795294,
+      "ground_z": 0.04,
+      "kind": "existing_signal_mast",
+      "edge": "-754960705#7"
+    }
+  },
+  "cameras": [
+    {
+      "id": "A1",
+      "global_id": "J05_A1",
+      "junction_id": "J05",
+      "pole": "J05_signal_1",
+      "corner": "信号灯横臂",
+      "looks_at": "东",
+      "height_agl_m": 7.11,
+      "image_width": 1920,
+      "image_height": 1080,
+      "analysis_width": 800,
+      "analysis_height": 450,
+      "sensor_tick": 0.5,
+      "stop_center": [
+        -1372.42,
+        -35.664999999962674
+      ],
+      "upstream": [
+        0.9449345287108698,
+        0.3272594329426829
+      ],
+      "half_width": 3.5,
+      "counting": true,
+      "in_edge": "754852609",
+      "out_edge": "-754852610#0",
+      "exit": {
+        "stop_center": [
+          -1374.71,
+          -29.054999999962774
+        ],
+        "upstream": [
+          0.944898426696543,
+          0.3273636559338832
+        ],
+        "half_width": 3.5,
+        "flow_direction": "outbound",
+        "near": -8,
+        "far": 85
+      },
+      "location": [
+        -1376.6726614147294,
+        -37.13782538711434,
+        7.1499999999999995
+      ],
+      "enu_location": [
+        -1376.6726614147294,
+        37.13782538711434,
+        7.1499999999999995
+      ],
+      "rotation": {
+        "pitch": -29.500000000000004,
+        "yaw": 19.10251837840121,
+        "roll": 0
+      },
+      "fov": 94.81,
+      "enu_target": [
+        -1294.4297464793503,
+        8.654614235941768,
+        -42.09235601034672
+      ],
+      "far": 160,
+      "near": 0,
+      "measurement_regions": [
+        "entry"
+      ],
+      "exit_observed": false,
+      "photo_surface": true,
+      "device_type": "radar_video_integrated",
+      "video_connected": true,
+      "mount_edge": "754852609",
+      "mount_location": [
+        -1377.1451286790848,
+        -37.30145510358568,
+        6.6
+      ],
+      "mount_fraction": 0.6755594073030319,
+      "view_role": "head_on_entry"
+    },
+    {
+      "id": "A2",
+      "global_id": "J05_A2",
+      "junction_id": "J05",
+      "pole": "J05_signal_2",
+      "corner": "信号灯横臂",
+      "looks_at": "南",
+      "height_agl_m": 7.11,
+      "image_width": 1920,
+      "image_height": 1080,
+      "analysis_width": 800,
+      "analysis_height": 450,
+      "sensor_tick": 0.5,
+      "stop_center": [
+        -1382.83,
+        -22.804999999962774
+      ],
+      "upstream": [
+        0.0749488074015642,
+        0.9971873827265783
+      ],
+      "half_width": 3.5,
+      "counting": true,
+      "in_edge": "754960705#5",
+      "out_edge": "-754960705#5",
+      "exit": {
+        "stop_center": [
+          -1389.81,
+          -22.279999999962797
+        ],
+        "upstream": [
+          0.0749488074015642,
+          0.9971873827265783
+        ],
+        "half_width": 3.5,
+        "flow_direction": "outbound",
+        "near": -8,
+        "far": 85
+      },
+      "location": [
+        -1383.1671683579218,
+        -27.290995762015097,
+        7.1499999999999995
+      ],
+      "enu_location": [
+        -1383.1671683579218,
+        27.290995762015097,
+        7.1499999999999995
+      ],
+      "rotation": {
+        "pitch": -29.999999999999996,
+        "yaw": 85.70171909385064,
+        "roll": 0
+      },
+      "fov": 93.83,
+      "enu_target": [
+        -1376.6764112386115,
+        -59.06796481543816,
+        -42.849999999999994
+      ],
+      "far": 85,
+      "near": 0,
+      "measurement_regions": [
+        "entry"
+      ],
+      "exit_observed": false,
+      "photo_surface": true,
+      "device_type": "radar_video_integrated",
+      "video_connected": true,
+      "mount_edge": "754960705#5",
+      "mount_location": [
+        -1383.2046427616226,
+        -27.789589453378387,
+        6.6
+      ],
+      "mount_fraction": 0.675665059758337,
+      "view_role": "head_on_entry"
+    },
+    {
+      "id": "B1",
+      "global_id": "J05_B1",
+      "junction_id": "J05",
+      "pole": "J05_signal_3",
+      "corner": "信号灯横臂",
+      "looks_at": "西",
+      "height_agl_m": 7.11,
+      "image_width": 1920,
+      "image_height": 1080,
+      "analysis_width": 800,
+      "analysis_height": 450,
+      "sensor_tick": 0.5,
+      "stop_center": [
+        -1402.4099999999999,
+        -38.6499999999628
+      ],
+      "upstream": [
+        -0.9448823869592428,
+        -0.32740994916801747
+      ],
+      "half_width": 3.5,
+      "counting": true,
+      "in_edge": "-754852610#3",
+      "out_edge": "754852610#1",
+      "exit": {
+        "stop_center": [
+          -1400.12,
+          -45.26499999996281
+        ],
+        "upstream": [
+          -0.944908823141626,
+          -0.3273336462221801
+        ],
+        "half_width": 3.5,
+        "flow_direction": "outbound",
+        "near": -8,
+        "far": 85
+      },
+      "location": [
+        -1398.1568916783415,
+        -37.1762610472435,
+        7.1499999999999995
+      ],
+      "enu_location": [
+        -1398.1568916783415,
+        37.1762610472435,
+        7.1499999999999995
+      ],
+      "rotation": {
+        "pitch": -29.999999999999996,
+        "yaw": -160.8883548703562,
+        "roll": 0
+      },
+      "fov": 93.83,
+      "enu_target": [
+        -1479.9861067478598,
+        65.53079439037099,
+        -42.849999999999994
+      ],
+      "far": 85,
+      "near": 0,
+      "measurement_regions": [
+        "entry"
+      ],
+      "exit_observed": false,
+      "photo_surface": true,
+      "device_type": "radar_video_integrated",
+      "video_connected": true,
+      "mount_edge": "-754852610#3",
+      "mount_location": [
+        -1397.6844504848618,
+        -37.01255607265949,
+        6.6
+      ],
+      "mount_fraction": 0.6758223732602137,
+      "view_role": "head_on_entry"
+    },
+    {
+      "id": "B2",
+      "global_id": "J05_B2",
+      "junction_id": "J05",
+      "pole": "J05_signal_4",
+      "corner": "信号灯横臂",
+      "looks_at": "北",
+      "height_agl_m": 7.11,
+      "image_width": 1920,
+      "image_height": 1080,
+      "analysis_width": 800,
+      "analysis_height": 450,
+      "sensor_tick": 0.5,
+      "stop_center": [
+        -1392.0,
+        -51.51499999996281
+      ],
+      "upstream": [
+        -0.07495868807968317,
+        -0.9971866400435642
+      ],
+      "half_width": 3.5,
+      "counting": true,
+      "in_edge": "-754960705#7",
+      "out_edge": "754960705#6",
+      "exit": {
+        "stop_center": [
+          -1385.02,
+          -52.03999999996279
+        ],
+        "upstream": [
+          -0.07487799087357437,
+          -0.9971927027825349
+        ],
+        "half_width": 3.5,
+        "flow_direction": "outbound",
+        "near": -8,
+        "far": 85
+      },
+      "location": [
+        -1391.6627867864652,
+        -47.0290021790596,
+        7.1499999999999995
+      ],
+      "enu_location": [
+        -1391.6627867864652,
+        47.0290021790596,
+        7.1499999999999995
+      ],
+      "rotation": {
+        "pitch": -29.500000000000004,
+        "yaw": -94.29884862428898,
+        "roll": 0
+      },
+      "fov": 94.81,
+      "enu_target": [
+        -1398.1868588994987,
+        133.81970938676824,
+        -42.09235601034672
+      ],
+      "far": 160,
+      "near": 0,
+      "measurement_regions": [
+        "entry"
+      ],
+      "exit_observed": false,
+      "photo_surface": true,
+      "device_type": "radar_video_integrated",
+      "video_connected": true,
+      "mount_edge": "-754960705#7",
+      "mount_location": [
+        -1391.6253074424253,
+        -46.53040885903782,
+        6.6
+      ],
+      "mount_fraction": 0.6756649501108154,
+      "view_role": "head_on_entry"
+    }
+  ],
+  "queue_speed_mps": 0.2777777777777778,
+  "queue_dwell_s": 3,
+  "model": "yolo11m.pt",
+  "confidence": 0.15,
+  "imgsz": 960,
+  "calibration": "signal-radar-20260922-v2-front; estimated dimensions; lane topology unchanged"
+}

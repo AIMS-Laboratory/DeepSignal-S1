@@ -34,10 +34,8 @@ def launch(directory, scene, *, port=25020, adapter=0):
         raise ValueError(
             "This asset package does not contain the requested scene; use its matching runtime"
         )
-    binary = (
-        directory
-        / "runtime/Linux/CarlaUnreal/Binaries/Linux/CarlaUnreal-Linux-Shipping"
-    )
+    runtime = directory / manifest["runtimes"][scene["id"]]
+    binary = runtime / "CarlaUnreal/Binaries/Linux/CarlaUnreal-Linux-Shipping"
     if not binary.exists():
         raise ValueError("Install the scene runtime package first")
     if not os.access(binary, os.X_OK):
@@ -46,9 +44,10 @@ def launch(directory, scene, *, port=25020, adapter=0):
         str(binary),
         "CarlaUnreal",
         f"-carla-rpc-port={port}",
+        f"-carla-streaming-port={port + 1}",
         f"-graphicsadapter={adapter}",
         "-quality-level=Epic",
         "-RenderOffScreen",
         "-nosound",
     ]
-    return subprocess.call(command, cwd=directory / "runtime/Linux")
+    return subprocess.call(command, cwd=runtime)

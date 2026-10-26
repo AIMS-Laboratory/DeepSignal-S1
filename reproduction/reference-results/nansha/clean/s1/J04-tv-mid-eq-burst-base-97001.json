@@ -1,0 +1,14 @@
+{
+  "tag": "J04-tv-mid-eq-burst-base-97001",
+  "J_H": 89.18,
+  "fail": null,
+  "n_dec": 40,
+  "n_interlock": 0,
+  "infer_fail": 0,
+  "infer_ms_mean": 458,
+  "arrived": 69,
+  "N": 69,
+  "frames": 122,
+  "wall_seconds": 42.8,
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

@@ -1,0 +1,583 @@
+{
+  "cases": [
+    {
+      "scene": "nansha",
+      "tag": "J01-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J01-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J01-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J01-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J02-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J02-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J02-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J03-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J03-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J03-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J04-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J04-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J04-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J05-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J05-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J05-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J06-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J06-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J06-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J07-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J07-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J07-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J08-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J08-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J08-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-asym-mid-EW-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-asym-mid-EW-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-asym-mid-NS-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-asym-mid-NS-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-high-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-bal-high-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-low-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-bal-low-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-mid-eq-flat-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-bal-mid-eq-flat-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-bal-mid-eq-flat-lheavy-97001",
+      "plan": "out/nansha/plans-sft-final/J09-bal-mid-eq-flat-lheavy-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-tv-mid-eq-burst-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-tv-mid-eq-burst-base-97001/plan.json"
+    },
+    {
+      "scene": "nansha",
+      "tag": "J09-tv-mid-eq-ramp-base-97001",
+      "plan": "out/nansha/plans-sft-final/J09-tv-mid-eq-ramp-base-97001/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18036",
+      "plan": "out/s1-e0/plans/nc-balanced-18036/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18036",
+      "plan": "out/s1-e0/plans/nc-time-varying-18036/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18036",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18036/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18036",
+      "plan": "out/s1-e0/plans/nc-uneven125-18036/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18036",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18036/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18037",
+      "plan": "out/s1-e0/plans/nc-balanced-18037/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18037",
+      "plan": "out/s1-e0/plans/nc-time-varying-18037/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18037",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18037/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18037",
+      "plan": "out/s1-e0/plans/nc-uneven125-18037/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18037",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18037/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18038",
+      "plan": "out/s1-e0/plans/nc-balanced-18038/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18038",
+      "plan": "out/s1-e0/plans/nc-time-varying-18038/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18038",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18038/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18038",
+      "plan": "out/s1-e0/plans/nc-uneven125-18038/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18038",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18038/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18039",
+      "plan": "out/s1-e0/plans/nc-balanced-18039/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18039",
+      "plan": "out/s1-e0/plans/nc-time-varying-18039/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18039",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18039/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18039",
+      "plan": "out/s1-e0/plans/nc-uneven125-18039/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18039",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18039/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18040",
+      "plan": "out/s1-e0/plans/nc-balanced-18040/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18040",
+      "plan": "out/s1-e0/plans/nc-time-varying-18040/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18040",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18040/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18040",
+      "plan": "out/s1-e0/plans/nc-uneven125-18040/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18040",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18040/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18041",
+      "plan": "out/s1-e0/plans/nc-balanced-18041/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18041",
+      "plan": "out/s1-e0/plans/nc-time-varying-18041/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18041",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18041/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18041",
+      "plan": "out/s1-e0/plans/nc-uneven125-18041/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18041",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18041/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18042",
+      "plan": "out/s1-e0/plans/nc-balanced-18042/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18042",
+      "plan": "out/s1-e0/plans/nc-time-varying-18042/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18042",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18042/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18042",
+      "plan": "out/s1-e0/plans/nc-uneven125-18042/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18042",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18042/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "balanced-18043",
+      "plan": "out/s1-e0/plans/nc-balanced-18043/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "time-varying-18043",
+      "plan": "out/s1-e0/plans/nc-time-varying-18043/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "sustained-uneven-18043",
+      "plan": "out/s1-e0/plans/nc-sustained-uneven-18043/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "uneven125-18043",
+      "plan": "out/s1-e0/plans/nc-uneven125-18043/plan.json"
+    },
+    {
+      "scene": "town10hd",
+      "tag": "varyshuf-18043",
+      "plan": "out/s1-e0/plans/nc-varyshuf-18043/plan.json"
+    }
+  ],
+  "conditions": [
+    "clean",
+    "motion-blur-9",
+    "defocus-2.5",
+    "angle-8"
+  ],
+  "metrics": {
+    "nansha": {
+      "name": "J_H",
+      "horizon_s": 1298,
+      "aggregation": "mean capped journey time"
+    },
+    "town10hd": {
+      "name": "J",
+      "horizon_s": 518,
+      "aggregation": "sum capped journey times"
+    }
+  },
+  "model_version": "DeepSignal-S1-1.0-candidate"
+}

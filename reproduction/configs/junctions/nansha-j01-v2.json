@@ -1,0 +1,208 @@
+{
+  "name": "进港大道 × 凤凰大道",
+  "junction_code": "J01",
+  "map_name": "NanshaNineRefined",
+  "junction_id": 0,
+  "tls_id": "J01",
+  "tls_link_count": 22,
+  "approach_labels": [
+    "E",
+    "N",
+    "S",
+    "W"
+  ],
+  "approach_edges": {
+    "N": "1364448935#0",
+    "S": "237768227#2",
+    "W": "907459477#1",
+    "E": "907567025#0"
+  },
+  "upstream_approach_edges": {
+    "N": "1364448935#0",
+    "S": "237768227#2",
+    "W": "907459477#1",
+    "E": "907567025#0"
+  },
+  "straight_light_odr": {
+    "N": "",
+    "S": "",
+    "W": "",
+    "E": ""
+  },
+  "left_light_odr": {
+    "N": "",
+    "S": "",
+    "W": "",
+    "E": ""
+  },
+  "straight_lane": "0",
+  "left_lane": "2",
+  "default_network": "out/nansha/network/validated.net.xml",
+  "insertion_paths": {
+    "N": [
+      "873101609",
+      "851757283#0",
+      "851757283#1",
+      "1364448935#0"
+    ],
+    "S": [
+      "237768227#0",
+      "237768227#1",
+      "237768227#2"
+    ],
+    "W": [
+      "561753031#2",
+      "907459477#0",
+      "907459477#1"
+    ],
+    "E": [
+      "237768243#2",
+      "907567025#0"
+    ]
+  },
+  "green_range": [
+    10,
+    60
+  ],
+  "phases": [
+    {
+      "key": "n1",
+      "movements": [
+        [
+          "N",
+          "SR"
+        ],
+        [
+          "N",
+          "L"
+        ]
+      ],
+      "fixed_green_s": 10,
+      "permitted": [],
+      "unlinked": [],
+      "transition": {
+        "yellow_s": 3,
+        "all_red_s": 10,
+        "keep_permitted_right": false
+      }
+    },
+    {
+      "key": "n2",
+      "movements": [
+        [
+          "S",
+          "SR"
+        ],
+        [
+          "S",
+          "L"
+        ]
+      ],
+      "fixed_green_s": 10,
+      "permitted": [],
+      "unlinked": [],
+      "transition": {
+        "yellow_s": 3,
+        "all_red_s": 10,
+        "keep_permitted_right": false
+      }
+    },
+    {
+      "key": "n3",
+      "movements": [
+        [
+          "W",
+          "L"
+        ],
+        [
+          "W",
+          "SR"
+        ]
+      ],
+      "fixed_green_s": 22,
+      "permitted": [],
+      "unlinked": [],
+      "transition": {
+        "yellow_s": 3,
+        "all_red_s": 10,
+        "keep_permitted_right": false
+      }
+    },
+    {
+      "key": "n4",
+      "movements": [
+        [
+          "E",
+          "L"
+        ],
+        [
+          "E",
+          "SR"
+        ]
+      ],
+      "fixed_green_s": 38,
+      "permitted": [],
+      "unlinked": [],
+      "transition": {
+        "yellow_s": 3,
+        "all_red_s": 10,
+        "keep_permitted_right": false
+      }
+    }
+  ],
+  "approach_lanes": {
+    "N": {
+      "straight_lanes": [
+        "0",
+        "1",
+        "2"
+      ],
+      "left_lanes": [
+        "3"
+      ],
+      "shared_sl_lanes": [
+        "4"
+      ],
+      "controlled_right": false
+    },
+    "S": {
+      "straight_lanes": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "left_lanes": [
+        "4"
+      ],
+      "shared_sl_lanes": [
+        "5"
+      ],
+      "controlled_right": false
+    },
+    "W": {
+      "straight_lanes": [
+        "0",
+        "1"
+      ],
+      "left_lanes": [],
+      "shared_sl_lanes": [
+        "2"
+      ],
+      "controlled_right": false
+    },
+    "E": {
+      "straight_lanes": [
+        "0",
+        "1"
+      ],
+      "left_lanes": [
+        "2"
+      ],
+      "shared_sl_lanes": [
+        "3"
+      ],
+      "controlled_right": false
+    }
+  }
+}
