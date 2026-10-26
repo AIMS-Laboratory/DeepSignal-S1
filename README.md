@@ -94,7 +94,9 @@ This fixed-timing test runs without model access or 3D assets. For camera-based 
 
 ## Model Access
 
-The Hugging Face model pages and Google Drive scene download will be linked here after their owner uploads them. The complete model folders are `DeepSignal-S1` and `DeepSignal-S1-Town10HD-Archive`; select the release matching the table. Until the real links are filled in `assets/links.json`, this is not a verified public download-to-result workflow. Model downloads and API calls require an approved access request. Viewing this repository does not grant model access.
+The current model page is **[AIMS2025/DeepSignal-S1 on Hugging Face](https://huggingface.co/AIMS2025/DeepSignal-S1)**. It contains only `DeepSignal-S1-1.0-candidate`, not the historical Town checkpoint. Check its model card for upload readiness and request access before downloading. Historical Town measurements remain explicitly associated with their separate archive release, not with this HF checkpoint.
+
+The Google Drive scene download is still pending in `assets/links.json`; a full public download-to-result replay has not yet been certified. Viewing this GitHub repository does not grant model access or create a hosted API service.
 
 Approved complete model downloads can also run locally with `scripts/serve_model.py`; a hosted API is not required. See [local inference and reproduction](docs/reproduction.md).
 

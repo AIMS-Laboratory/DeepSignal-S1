@@ -7,7 +7,7 @@
 ## 材料 / Materials
 
 - GitHub 提供测试代码、112 份固定交通计划、相机和路口配置，不含训练代码。
-- HF 分别提供南沙发布权重、Town 存档权重与必要推理运行时。按成绩表选择匹配版本，下载完整目录，不只下载小体积文件。
+- 当前 [HF 仓库](https://huggingface.co/AIMS2025/DeepSignal-S1)只提供当前发布权重与完整推理运行时，不包含 Town 存档权重。请下载完整目录，不只下载小体积文件；不要将历史 Town 成绩归给当前 HF 模型。
 - `DeepSignal-S1-Scenes-UE5-Epic-v1.tar.gz` 同时包含南沙九路口和 Town10HD 的 UE5 运行文件、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。安装方法见 [testing.md](testing.md)。
 
 The GitHub repository contains test construction and evaluation code only. The complete model is distributed through approved HF downloads. One scene archive includes both Nansha and Town10HD.

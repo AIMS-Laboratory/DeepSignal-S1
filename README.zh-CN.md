@@ -94,7 +94,9 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 
 ## 模型访问
 
-Hugging Face 模型主页和 Google Drive 场景包将在所有者上传后添加正式链接。完整模型目录分别为 `DeepSignal-S1` 和 `DeepSignal-S1-Town10HD-Archive`，需选择与成绩表对应的版本。在 `assets/links.json` 填入真实地址前，尚不能视为已验证的公开下载到复现流程。模型下载与 API 调用均需要申请并获批；访问本 GitHub 仓库不代表已获得模型权限。
+当前模型主页为 **[Hugging Face：AIMS2025/DeepSignal-S1](https://huggingface.co/AIMS2025/DeepSignal-S1)**，只提供 `DeepSignal-S1-1.0-candidate`，不包含历史 Town 权重。下载前请查看模型卡中的上传就绪状态并申请访问权限。历史 Town 成绩仍明确对应独立存档版本，不能归给这份 HF 权重。
+
+Google Drive 场景包地址仍待填入 `assets/links.json`，从公开下载开始的完整复跑尚未验收。访问本 GitHub 仓库不代表已获得模型权限，也不等于开通了远程托管 API。
 
 获批下载完整模型后，也可以通过 `scripts/serve_model.py` 启动本地推理，不依赖远程 API。详见[本地推理与复现说明](docs/reproduction.md)。
 
