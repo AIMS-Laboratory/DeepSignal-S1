@@ -95,7 +95,9 @@ Clean videos: [Nansha](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Sc
 | Subsequent calls | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
 <!-- FUSION_LATENCY:END -->
 
-The unquantized BF16 checkpoint takes three frames over a four-second observation window. Statistics cover 133 S1 cases: 72 Nansha clean cases and 61 fusion-pilot S1 cases. Camera capture, rendering and control execution are excluded. First calls include initialization effects; subsequent calls characterize steady state. An informal RTX 4090 observation is excluded because its conditions were not recorded or verified. Quantized performance and a universal sub-second guarantee have not been established.
+The unquantized BF16 checkpoint takes three frames over a four-second observation window. Statistics cover 133 S1 cases: 72 Nansha clean cases and 61 fusion-pilot S1 cases. Camera capture, rendering and control execution are excluded. First calls include initialization effects; subsequent calls characterize steady state.
+
+**Deployment direction:** sub-second steady-state decisions on a consumer RTX 5090 make signal-control workstations a practical target. A colleague also reported approximately **900 ms on an RTX 4090** with the unquantized model; its measurement conditions remain unverified, so it is not included in the benchmark. Quantization and edge-device deployment are future work, not demonstrated capabilities. A universal sub-second guarantee has not been established.
 
 ## Download and Quickstart
 
