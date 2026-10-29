@@ -8,7 +8,7 @@
 
 - GitHub 提供测试代码、112 份固定交通计划、相机和路口配置，不含训练代码。
 - 当前 [HF 仓库](https://huggingface.co/AIMS2025/DeepSignal-S1)只提供当前发布权重与完整推理运行时，不包含 Town 存档权重。请下载完整目录，不只下载小体积文件；不要将历史 Town 成绩归给当前 HF 模型。
-- [HF 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)公开托管 `DeepSignal-S1-Scenes-v2.tar.gz`（27.60 GiB），包含南沙九路口和 Town10HD 的 UE5 运行文件、Town 存档 Docker 镜像、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。无需 Google Drive，上传就绪状态见数据集卡片。安装方法见 [testing.md](testing.md)。
+- [HF 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)公开托管 `DeepSignal-S1-Scenes-v3.tar.gz`（27.60 GiB），包含南沙九路口和 Town10HD 的 UE5 运行文件、Town 存档 Docker 镜像、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。无需 Google Drive，上传就绪状态见数据集卡片。安装方法见 [testing.md](testing.md)。
 
 The GitHub repository contains test construction and evaluation code only. The complete current model is distributed through approved HF downloads. The public HF scene dataset hosts one v2 archive for both Nansha and Town10HD, including the archived runtime but not its separate model weights.
 
@@ -31,6 +31,8 @@ CUDA_VISIBLE_DEVICES=0 /path/to/inference/python scripts/serve_model.py \
 The simulator and model use separate Python environments. The local inference service does not require a remote hosted endpoint.
 
 ## 固定对照 / Fixed Baseline
+
+**唯一固定基线为下述冻结工程方案。正常视觉比较S1、工程固定配时与YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。固定运行器只接受正常视觉，不再提供其他调优固定参考。**
 
 南沙采用各路口既有 `v2` 工程表，J02 为 35/14/10/17 秒；Town 采用 31/6/31/6 秒。均不针对正式测试搜索。Town 沿用原协议的首段绿灯及其首次倒计时接管点，不将正式车辆窗口起点 98 秒误作接管点；首段结束后按工程表轮转。南沙原协议为共同全红冷启动，不额外添加 Town 预热。
 

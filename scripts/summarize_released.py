@@ -25,6 +25,8 @@ def load_fixed(path):
 
 def build_report(manifest, reference, fixed_records):
     reference = Path(reference)
+    if any(r.get('baseline') != 'engineering-fixed' for r in fixed_records):
+        raise ValueError('Only frozen engineering-fixed records are supported')
     fixed = {(r['scene'], r['tag']): r for r in fixed_records}
     blocks = []
     for suite_name, suite in manifest['suites'].items():
@@ -53,31 +55,41 @@ def build_report(manifest, reference, fixed_records):
                      'failures': {a: [{'tag': t, 'fail': r['fail']} for t, r in records.items() if r.get('fail')]
                                   for a, records in arms.items()},
                      'paired_metric_sum': sums,
-                     'improvement_vs_yolo_pct': 100 * (1 - sums['s1'] / sums['visual-pressure']),
+                     'improvement_vs_yolo_pct': (100 * (1 - sums['s1'] / sums['visual-pressure'])
+                                                 if sums['visual-pressure'] else None),
                      's1_paired_wins': sum(arms['s1'][t][metric] < arms['visual-pressure'][t][metric] for t in paired)}
-            fixed_scene = 'town10hd' if suite_name == 'town10hd-archive' else suite_name
-            fixed_paired = [t for t in tags if arms['s1'][t].get('fail') is None
-                            and fixed.get((fixed_scene, t), {}).get('fail') is None
-                            and isinstance(fixed.get((fixed_scene, t), {}).get(metric), (int, float))]
-            fixed_values = {t: fixed[(fixed_scene, t)][metric] for t in fixed_paired}
-            s1_sum = sum(arms['s1'][t][metric] for t in fixed_paired)
-            fixed_sum = sum(fixed_values.values())
-            wins = sum(arms['s1'][t][metric] < fixed_values[t] for t in fixed_paired)
-            ties = sum(arms['s1'][t][metric] == fixed_values[t] for t in fixed_paired)
-            block['engineering_fixed_comparison'] = {
-                'expected_pairs': len(tags), 'successful_pairs': len(fixed_paired),
-                'paired_tags': fixed_paired, 's1_wins': wins, 'ties': ties,
-                's1_losses': len(fixed_paired) - wins - ties,
-                's1_win_rate_pct': 100 * wins / len(fixed_paired) if fixed_paired else None,
-                'paired_metric_sum': {'s1': s1_sum, 'engineering_fixed': fixed_sum},
-                'improvement_pct': 100 * (1 - s1_sum / fixed_sum) if fixed_sum else None,
-                'scope': 'S1 and fixed successful pairs, independent of YOLO success; '
-                         'image-independent fixed results reused per condition. '
-                         'Exact metric equality is a tie, not approximate equivalence.'}
             if condition == 'clean':
-                fixed_sum = sum(fixed[(fixed_scene, t)][metric] for t in paired)
+                fixed_scene = 'town10hd' if suite_name == 'town10hd-archive' else suite_name
+                fixed_paired = [t for t in tags if arms['s1'][t].get('fail') is None
+                                and fixed.get((fixed_scene, t), {}).get('fail') is None
+                                and isinstance(fixed.get((fixed_scene, t), {}).get(metric), (int, float))]
+                fixed_values = {t: fixed[(fixed_scene, t)][metric] for t in fixed_paired}
+                s1_sum = sum(arms['s1'][t][metric] for t in fixed_paired)
+                fixed_sum = sum(fixed_values.values())
+                wins = sum(arms['s1'][t][metric] < fixed_values[t] for t in fixed_paired)
+                ties = sum(arms['s1'][t][metric] == fixed_values[t] for t in fixed_paired)
+                block['engineering_fixed_comparison'] = {
+                    'expected_pairs': len(tags), 'successful_pairs': len(fixed_paired),
+                    'paired_tags': fixed_paired, 's1_wins': wins, 'ties': ties,
+                    's1_losses': len(fixed_paired) - wins - ties,
+                    's1_win_rate_pct': 100 * wins / len(fixed_paired) if fixed_paired else None,
+                    'paired_metric_sum': {'s1': s1_sum, 'engineering_fixed': fixed_sum},
+                    'improvement_pct': 100 * (1 - s1_sum / fixed_sum) if fixed_sum else None,
+                    'scope': 'S1 and fixed successful pairs, independent of YOLO success; '
+                             'clean visual conditions only. '
+                             'Exact metric equality is a tie, not approximate equivalence.'}
+            if condition == 'clean':
+                three_way = [t for t in paired if t in fixed_paired]
+                three_sums = {'s1': sum(arms['s1'][t][metric] for t in three_way),
+                              'visual-pressure': sum(arms['visual-pressure'][t][metric] for t in three_way),
+                              'engineering-fixed': sum(fixed[(fixed_scene, t)][metric] for t in three_way)}
+                block['three_way_comparison'] = {'successful_pairs': len(three_way),
+                                                'expected_pairs': len(tags), 'paired_tags': three_way,
+                                                'paired_metric_sum': three_sums}
+                fixed_sum = three_sums['engineering-fixed']
                 block.update(engineering_fixed_sum=fixed_sum,
-                             improvement_vs_engineering_fixed_pct=100 * (1 - sums['s1'] / fixed_sum))
+                             improvement_vs_engineering_fixed_pct=(100 * (1 - three_sums['s1'] / fixed_sum)
+                                                                   if fixed_sum else None))
                 if suite_name == 'nansha':
                     junctions = []
                     for junction in sorted({t.split('-')[0] for t in paired}):

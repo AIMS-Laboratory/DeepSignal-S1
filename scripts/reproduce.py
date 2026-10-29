@@ -18,6 +18,8 @@ def main():
     parser.add_argument('--port', type=int, default=25020)
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
+    if args.controller == 'fixed' and args.condition != 'clean':
+        parser.error('Frozen engineering fixed timing is compared only under clean visual conditions.')
     workspace = Path(__file__).resolve().parents[1] / 'reproduction'
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)

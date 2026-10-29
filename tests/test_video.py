@@ -18,6 +18,7 @@ def footage(tmp_path, request):
         directory = tmp_path / controller
         report = {
             "controller": controller,
+            "baseline": "engineering-fixed" if controller == "fixed" else None,
             "complete": True,
             "failure": None,
             "quality": "Epic",

@@ -27,6 +27,7 @@ def paired(tmp_path):
                     "complete": True,
                     "failure": None,
                     "model_version": "release-a" if controller == "s1" else None,
+                    "baseline": "engineering-fixed" if controller == "fixed" else None,
                     "metrics": {
                         "complete": True,
                         "vehicles": 10,
@@ -94,3 +95,20 @@ def test_different_arrivals_cannot_be_compared(paired):
     )
     with pytest.raises(ValueError, match="Arrival plans differ"):
         summarize(paired, paired / "suite.json", ("s1", "fixed"))
+
+
+def test_special_summary_does_not_require_or_emit_fixed_records(paired):
+    suite = read_json(paired / "suite.json")
+    suite['cases'][0]['condition'] = 'defocus'
+    write_json(paired / 'suite.json', suite)
+    for seed in suite['seeds']:
+        for controller in ('s1', 'visual-pressure'):
+            source = paired / f'demo-east-west-clean-{seed}/s1'
+            target = paired / f'demo-east-west-defocus-{seed}' / controller
+            report = read_json(source / 'report.json')
+            report.update(condition='defocus', controller=controller)
+            write_json(target / 'report.json', report)
+            write_json(target / 'plan.json', read_json(source / 'plan.json'))
+    result = summarize(paired, paired / 'suite.json')
+    assert set(result['rows'][0]['mean_journey_s']) == {'s1', 'visual-pressure'}
+    assert 'fixed' not in result['rows'][0]['improvement_pct']

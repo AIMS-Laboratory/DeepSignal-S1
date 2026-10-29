@@ -11,13 +11,18 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
     pairs = []
     versions = set()
     for case in suite["cases"]:
+        active_controllers = [c for c in controllers if c != "fixed" or case["condition"] == "clean"]
+        if case["condition"] != "clean" and not {"s1", "visual-pressure"}.issubset(active_controllers):
+            raise ValueError("Perturbed comparisons require S1 and YOLO+MP, not fixed timing")
         for seed in suite["seeds"]:
             case_id = f"{case['scene']}-{case['regime']}-{case['condition']}-{seed}"
             reports = {}
             reference_plan = None
-            for controller in controllers:
+            for controller in active_controllers:
                 directory = root / case_id / controller
                 report = read_json(directory / "report.json")
+                if controller == "fixed" and report.get("baseline") != "engineering-fixed":
+                    raise ValueError("Only identified engineering-fixed records may be compared")
                 plan = read_json(directory / "plan.json")
                 if (
                     not report["complete"]
@@ -65,7 +70,7 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
             if (p["scene"], p["regime"], p["condition"]) == (scene, regime, condition)
         ]
         means = {}
-        for controller in controllers:
+        for controller in selected[0]["reports"]:
             total = sum(
                 p["reports"][controller]["metrics"]["vehicles"] for p in selected
             )
@@ -86,7 +91,7 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
                 "mean_journey_s": means,
                 "improvement_pct": {
                     c: 100 * (1 - means["s1"] / means[c])
-                    for c in controllers
+                    for c in means
                     if c != "s1"
                 },
             }
@@ -99,20 +104,26 @@ def summarize(root, suite_path, controllers=("s1", "fixed", "visual-pressure")):
         "pairs": pairs,
     }
     write_json(root / "comparison.json", result)
-    lines = [
-        "| Scenario | Demand | Condition | Pairs | DeepSignal-S1 (s) | Tuned fixed (s) | YOLO+MP (s) |",
-        "| --- | --- | --- | ---: | ---: | ---: | ---: |",
-    ]
-    for row in rows:
-        m = row["mean_journey_s"]
-        values = [
-            f"{m[c]:.2f}" if c in m else "--"
-            for c in ("s1", "fixed", "visual-pressure")
-        ]
-        lines.append(
-            f"| {row['scene']} | {row['regime']} | {row['condition']} | {row['paired_runs']} | "
-            + " | ".join(values)
-            + " |"
-        )
+    lines = []
+    for clean, title, columns in [
+        (True, "正常视觉三方对照 / Clean Views",
+         (("s1", "DeepSignal-S1"), ("fixed", "Engineering fixed"), ("visual-pressure", "YOLO+MP"))),
+        (False, "特殊视觉双方对照 / Perturbed Views",
+         (("s1", "DeepSignal-S1"), ("visual-pressure", "YOLO+MP"))),
+    ]:
+        selected = [row for row in rows if (row["condition"] == "clean") == clean]
+        if not selected:
+            continue
+        lines.extend(["", "## " + title, "",
+                      "| Scenario | Demand | Condition | Pairs | " +
+                      " | ".join(label + " (s)" for _, label in columns) + " |",
+                      "| --- | --- | --- | ---: | " + " | ".join("---:" for _ in columns) + " |"])
+        for row in selected:
+            means = row["mean_journey_s"]
+            values = [f"{means[c]:.2f}" if c in means else "--" for c, _ in columns]
+            lines.append(
+                f"| {row['scene']} | {row['regime']} | {row['condition']} | {row['paired_runs']} | "
+                + " | ".join(values) + " |"
+            )
     (root / "comparison.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return result

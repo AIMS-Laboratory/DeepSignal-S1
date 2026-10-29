@@ -30,18 +30,18 @@ def test_released_tables_recompute():
     assert fixed_comparison['s1_losses'] == 16
     assert fixed_comparison['ties'] == 0
     assert fixed_comparison['s1_win_rate_pct'] == pytest.approx(100 * 56 / 72)
+    assert ns['three_way_comparison']['successful_pairs'] == 72
+    assert set(ns['three_way_comparison']['paired_metric_sum']) == {'s1', 'visual-pressure', 'engineering-fixed'}
     assert ns['junctions_within_5pct'] == 5
     ns_defocus = blocks['nansha', 'defocus-2.5']
     assert ns_defocus['successful_pairs'] == 65
     assert len(ns_defocus['failures']['s1']) == 6
     assert len(ns_defocus['failures']['visual-pressure']) == 1
     assert ns_defocus['improvement_vs_yolo_pct'] == pytest.approx(25.6904, abs=0.001)
-    # The YOLO-only failure must not remove a valid S1 versus fixed pair.
-    defocus_fixed = ns_defocus['engineering_fixed_comparison']
-    assert defocus_fixed['successful_pairs'] == 66
-    assert defocus_fixed['s1_wins'] == 46
-    assert defocus_fixed['s1_losses'] == 20
-    assert defocus_fixed['improvement_pct'] == pytest.approx(10.043, abs=0.001)
+    assert 'engineering_fixed_comparison' not in ns_defocus
+    assert all('engineering_fixed_comparison' not in b
+               for b in report['blocks'] if b['condition'] != 'clean')
+    assert all('three_way_comparison' not in b for b in report['blocks'] if b['condition'] != 'clean')
     town = blocks['town10hd-archive', 'clean']
     assert town['expected_pairs'] == town['successful_pairs'] == 20
     assert town['improvement_vs_yolo_pct'] == pytest.approx(3.1294, abs=0.001)
@@ -59,7 +59,7 @@ def test_fixed_comparison_distinguishes_exact_ties_from_small_wins(tmp_path):
         for tag, value in [('J01-win', 99.99), ('J01-tie', 100), ('J01-loss', 101)]:
             (directory / (tag + '.json')).write_text(json.dumps({
                 'model_version': 'test-model', 'fail': None, 'J_H': value}))
-    fixed = [{'scene': 'nansha', 'tag': tag, 'J_H': 100, 'fail': None}
+    fixed = [{'scene': 'nansha', 'tag': tag, 'J_H': 100, 'fail': None, 'baseline': 'engineering-fixed'}
              for tag in ['J01-win', 'J01-tie', 'J01-loss']]
     report = module.build_report(manifest, tmp_path, fixed)
     comparison = report['blocks'][0]['engineering_fixed_comparison']
@@ -127,3 +127,21 @@ def test_fixed_release_runner_retains_each_case(tmp_path, monkeypatch):
     directory = tmp_path / 'town10hd-archive/clean/fixed'
     assert len(list(directory.glob('*/result.json'))) == 20
     assert len(load_script('summarize_released').load_fixed(tmp_path)) == 20
+
+
+@pytest.mark.parametrize('script,selector', [('reproduce', ['--scene', 'nansha']),
+                                          ('reproduce_archive', []),
+                                          ('run_released_matrix', ['--suite', 'nansha'])])
+def test_fixed_baseline_rejects_special_visual_conditions(script, selector, tmp_path, monkeypatch):
+    module = load_script(script)
+    monkeypatch.setattr(module.subprocess, 'call', lambda *a, **k: pytest.fail('Fixed special run was launched'))
+    monkeypatch.setattr(module.subprocess, 'run', lambda *a, **k: pytest.fail('Fixed special run was launched'))
+    arguments = [script + '.py', *selector, '--controller', 'fixed',
+                 '--condition', 'defocus-2.5', '--output', str(tmp_path)]
+    if script != 'run_released_matrix':
+        arguments += ['--tag', 'J01-bal-mid-eq-flat-base-97001']
+    monkeypatch.setattr(sys, 'argv', arguments)
+    with pytest.raises(SystemExit) as error:
+        module.main()
+    assert error.value.code == 2
+    assert not list(tmp_path.iterdir())

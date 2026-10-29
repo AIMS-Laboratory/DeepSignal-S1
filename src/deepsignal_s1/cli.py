@@ -106,6 +106,8 @@ def main(argv=None):
             else:
                 suite = read_json(args.suite)
                 for case in suite["cases"]:
+                    if args.controller == "fixed" and case["condition"] != "clean":
+                        continue
                     scene = load_scene(args.suite.resolve().parent / case["scene_file"])
                     for seed in suite["seeds"]:
                         plan = build_plan(

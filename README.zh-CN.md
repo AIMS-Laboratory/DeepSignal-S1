@@ -10,15 +10,7 @@ DeepSignal-S1 采用 **Jev-style（以直接决策为核心）的功能定位**�
 
 本仓库提供 DeepSignal-S1 的仿真测试场景、功能展示结果与模型调用客户端。完整模型文件与独立推理运行时通过 Hugging Face 单独提供。
 
-## 对比视频
-
-[![DeepSignal-S1 对比视频](assets/comparison-cover.jpg)](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)
-
-**[观看 / 下载 4K 对比视频](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)** · YouTube 人工上传后补充正式链接。
-
-**左侧 DeepSignal-S1，右侧调优固定配时。** 两个回合均以真实时间运行，采用 Epic 画质、相同车流计划和种子 99001；两侧 121 辆正式车辆均完成行程。完整平均行程为 **81.42 秒与 90.82 秒，缩短 10.35%**。
-
-视频保持原速，展示真实信号动作和倒计时。此处为实际录制的单回合成绩，与下方三种子汇总分别统计。[录制回合数据](results/video-nansha-99001.json)。
+**唯一固定基线：已冻结的工程固定配时。正常视觉比较S1、工程固定配时和YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。历史其他固定参考及其视频不再作为当前复现入口。**
 
 ## 与基线对比
 
@@ -47,27 +39,12 @@ DeepSignal-S1 采用 **Jev-style（以直接决策为核心）的功能定位**�
 
 上述指标按指定时域截断，未完成行程仍计入。南沙失焦改善率来自双方均成功的 65 对，模型 6 个失败和 YOLO+MP 1 个失败的记录均保留。Town 清晰测试使用同一存档权重的四个种子、全部五类需求，不把早期权重成绩混入 40 回合汇总。[版本、复测命令及范围](docs/released-results.md) · [重新计算表格](scripts/summarize_released.py)。
 
-### 选定完整行程展示
-
-测试日期为 **2026 年 10 月 25 日**。全部展示回合使用同一模型服务版本 **DeepSignal-S1-1.0-candidate**，每组包含三个新种子：**99001、99002、99003**。下表为按车辆数加权的完整平均行程时间，单位为秒，包含进入路网前的等待，**越低越好**。所有正式车辆均完成行程。
-
-| 南沙 J02 车流 | 视觉条件 | DeepSignal-S1 | YOLO+MP | 相对 YOLO+MP 缩短 |
-| --- | --- | ---: | ---: | ---: |
-| 东西向需求偏高 | **失焦** | **80.42** | 82.19 | **2.15%** |
-| 东西向需求偏高 | 清晰 | **78.85** | 80.75 | **2.36%** |
-| 南北向需求偏高 | 清晰 | **91.62** | 93.55 | **2.06%** |
-
-**失焦条件重点与 YOLO+MP 比较**，其他清晰条件也均包含 YOLO+MP 对照。两种视觉方法使用相同的失焦处理和观察时刻；固定配时不依赖摄像头画面。
-
-[测试数据（JSON）](results/nansha-2026-10-25.json) · [表格（CSV）](results/nansha-2026-10-25.csv) · [对比口径](docs/comparisons.md)
-
-以上为南沙 J02 选定场景的功能展示，与前述截断指标分别统计，不表述为每个种子、任意路口或所有视觉条件下均有收益。
 
 ### 工程固定配时测试
 
 当前固定对照采用事先冻结的工程方案：南沙使用各路口既有配置（J02 为 **35/14/10/17 秒**），Town10HD 使用 **31/6/31/6 秒**，不针对最终测试车流搜索最优配时。**72 个南沙和 40 个 Town10HD 固定对照回合均已完成。** 在南沙 72 个清晰条件配对回合上，发布模型相对工程固定方案的逐回合截断平均行程汇总改善 **15.99%**。该有限时域指标与上方完整平均行程分别统计。[固定对照数据](results/engineering-fixed-2026-10-26.json) · [矩阵复现说明](docs/reproduction.md)。
 
-现有视频和 10 月 25 日存档中的固定对照使用另一套调优参考表，保留原标签，不冒充此次工程固定方案的成绩。两个测试协议分别统计。
+其他历史固定参考和相应视频仅保留归档，不作为当前复现方案。发布模型与融合权重模型分别统计，不继承对方成绩。
 
 ## 仿真场景
 
@@ -98,12 +75,12 @@ deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
 
 当前模型主页为 **[Hugging Face：AIMS2025/DeepSignal-S1](https://huggingface.co/AIMS2025/DeepSignal-S1)**，只提供 `DeepSignal-S1-1.0-candidate`，不包含历史 Town 权重。下载前请查看模型卡中的上传就绪状态并申请访问权限。历史 Town 成绩仍明确对应独立存档版本，不能归给这份 HF 权重。
 
-统一的 **[南沙 + Town10HD 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)** 托管 `DeepSignal-S1-Scenes-v2.tar.gz`（**27.60 GiB**），上传就绪状态以数据集卡片为准。无需 Google Drive；场景公开下载，模型另行申请权限。从公开下载开始的完整复跑尚未验收。
+统一的 **[南沙 + Town10HD 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)** 托管 `DeepSignal-S1-Scenes-v3.tar.gz`（**27.60 GiB**），上传就绪状态以数据集卡片为准。无需 Google Drive；场景公开下载，模型另行申请权限。从公开下载开始的完整复跑尚未验收。
 
 ```bash
-hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v3.tar.gz \
   --repo-type dataset --local-dir downloads
-deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v2.tar.gz
+deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v3.tar.gz
 ```
 
 v2 包包含两套 UE5 场景与历史 Town 的 CARLA 0.9.16 运行环境，不包含独立的历史模型权重。请按[安装及版本对应说明](docs/released-results.md)运行。访问本 GitHub 仓库不代表已获得模型权限，也不等于开通了远程托管 API。

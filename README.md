@@ -10,15 +10,7 @@ Following a **Jev-style, decision-first formulation**, DeepSignal-S1 takes inter
 
 This repository provides DeepSignal-S1's simulation scenarios, demonstration results and test client. Model files and the standalone inference runtime are distributed separately through Hugging Face.
 
-## Demonstration Video
-
-[![DeepSignal-S1 comparison video](assets/comparison-cover.jpg)](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)
-
-**[Watch / download the 4K comparison](https://github.com/AIMS-Laboratory/DeepSignal-S1/releases/download/v0.1.0/DeepSignal-S1-vs-fixed.mp4)** · YouTube link to follow after upload.
-
-**DeepSignal-S1 on the left; tuned fixed timing on the right.** Both episodes ran in real time with Epic rendering, the same arrival plan and seed 99001. All 121 formal vehicles completed their journeys. Mean complete journey time is **81.42 s vs 90.82 s: 10.35% shorter**.
-
-The video preserves real timing at 1× playback, with signal actions and countdowns. Its single-episode measurements are separate from the three-seed table below. [Recorded-case measurements](results/video-nansha-99001.json).
+**The sole fixed baseline is the frozen engineering timing plan. Clean views compare S1, engineering fixed timing and YOLO+MP; perturbed views compare S1 with YOLO+MP only. Other historical fixed references and their videos are not current reproduction entrypoints.**
 
 ## Baseline Comparisons
 
@@ -47,27 +39,12 @@ Nansha's clean aggregate is close to YOLO+MP: **5 of 9 intersections differ by l
 
 These finite-horizon metrics include unfinished journeys capped at the specified horizon. Defocus improvements use the 65 successful matched Nansha pairs; all six S1 failures and one YOLO+MP failure remain in the published records. Town's clean suite uses four seeds and all five demand regimes from one archive checkpoint; it does not mix earlier weights into a 40-case score. [Exact versions, test commands and scope](docs/released-results.md) · [Recompute these tables](scripts/summarize_released.py).
 
-### Selected Complete-Journey Demonstrations
-
-Measured on **October 25, 2026**, using one serving release, **DeepSignal-S1-1.0-candidate**, and three new seeds per case: **99001, 99002, 99003**. Values are vehicle-weighted mean complete journey time in seconds, including waiting before insertion. **Lower is better.** Every formal vehicle completed its journey.
-
-| Nansha J02 Demand | Camera Condition | DeepSignal-S1 | YOLO+MP | Shorter vs YOLO+MP |
-| --- | --- | ---: | ---: | ---: |
-| East-west heavy | **Defocus** | **80.42** | 82.19 | **2.15%** |
-| East-west heavy | Clean | **78.85** | 80.75 | **2.36%** |
-| North-south heavy | Clean | **91.62** | 93.55 | **2.06%** |
-
-**YOLO+MP is the primary comparison for defocus**, and is also evaluated in every clean case. Both camera-based methods receive the same degradation and observation schedule. Fixed timing does not consume camera images.
-
-[Measurements (JSON)](results/nansha-2026-10-25.json) · [Table (CSV)](results/nansha-2026-10-25.csv) · [Comparison definitions](docs/comparisons.md)
-
-These are selected Nansha J02 demonstrations, separate from the finite-horizon suites above, not a claim that every seed, intersection or visual condition improves.
 
 ### Engineering Fixed-Timing Tests
 
 The current baseline uses frozen engineering plans: Nansha's existing per-intersection configuration (J02: **35/14/10/17 s**) and Town10HD's **31/6/31/6 s** plan, without search on the final traffic plans. All **72 Nansha and 40 Town10HD fixed-baseline cases** completed. On Nansha's 72 matched clean cases, the released model reduces the sum of per-case capped mean journey times by **15.99%** versus engineering fixed timing. This finite-horizon metric is distinct from the complete-journey table above. [Baseline measurements](results/engineering-fixed-2026-10-26.json) · [Reproduce the matrix](docs/reproduction.md).
 
-The video and the archived October 25 fixed-timing numbers used a different, tuned reference. They retain their original labels and are not measurements of the engineering baseline. The two evaluation protocols are reported separately.
+Other historical fixed references and associated videos remain archived, not current reproduction options. Released-checkpoint and fused-checkpoint results are kept separate.
 
 ## Simulation Scene
 
@@ -98,12 +75,12 @@ This fixed-timing test runs without model access or 3D assets. For camera-based 
 
 The current model page is **[AIMS2025/DeepSignal-S1 on Hugging Face](https://huggingface.co/AIMS2025/DeepSignal-S1)**. It contains only `DeepSignal-S1-1.0-candidate`, not the historical Town checkpoint. Check its model card for upload readiness and request access before downloading. Historical Town measurements remain explicitly associated with their separate archive release, not with this HF checkpoint.
 
-The combined **[Nansha + Town10HD scene dataset](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)** hosts `DeepSignal-S1-Scenes-v2.tar.gz` (**27.60 GiB**). Check the dataset card for upload readiness. No Google Drive download is needed. The scenes are public; model access is approved separately. A full public download-to-result replay has not yet been certified.
+The combined **[Nansha + Town10HD scene dataset](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)** hosts `DeepSignal-S1-Scenes-v3.tar.gz` (**27.60 GiB**). Check the dataset card for upload readiness. No Google Drive download is needed. The scenes are public; model access is approved separately. A full public download-to-result replay has not yet been certified.
 
 ```bash
-hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v3.tar.gz \
   --repo-type dataset --local-dir downloads
-deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v2.tar.gz
+deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v3.tar.gz
 ```
 
 The v2 bundle includes both UE5 scenes and the archived CARLA 0.9.16 Town runtime, not the separate archive model weights. See [installation and version matching](docs/released-results.md). Viewing this GitHub repository does not grant model access or create a hosted API service.

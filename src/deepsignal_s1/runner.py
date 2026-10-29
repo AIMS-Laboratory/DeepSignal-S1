@@ -35,6 +35,8 @@ def run_episode(
 ):
     import traci
 
+    if controller == "fixed" and condition != "clean":
+        raise ValueError("Frozen engineering fixed timing is compared only under clean visual conditions")
     if cpu and controller != "fixed":
         raise ValueError("Camera-based controllers cannot run in CPU-only mode")
     if cpu and record:
@@ -255,6 +257,9 @@ def run_episode(
             "seed": plan["seed"],
             "condition": condition,
             "controller": controller,
+            "baseline": "engineering-fixed" if controller == "fixed" else None,
+            "fixed_green_s": ({p["key"]: p["fixed_green_s"] for p in scene["phases"]}
+                              if controller == "fixed" else None),
             "model_version": version,
             "quality": None if cpu else "Epic",
             "engine": "SUMO" if cpu else "UE5",

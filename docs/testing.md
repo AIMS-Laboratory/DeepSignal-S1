@@ -6,9 +6,9 @@
 
 ```bash
 pip install -e '.[download]'
-hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v3.tar.gz \
   --repo-type dataset --local-dir downloads
-deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v2.tar.gz
+deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v3.tar.gz
 pip install assets/runtime/python/carla-0.10.0-cp310-cp310-linux_x86_64.whl
 deepsignal-s1 launch-scene --scene scenarios/nansha-j02/scene.json \
   --assets assets/runtime --port 25020 --adapter 0

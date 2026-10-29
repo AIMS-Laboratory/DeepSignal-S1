@@ -1,5 +1,9 @@
 # 已发布结果的复现 / Reproducing Published Results
 
+**唯一固定对照：已经冻结的工程固定配时。正常视觉三方比较S1、工程固定配时和YOLO+MP；特殊视觉只比较S1与YOLO+MP。其他历史固定参考不再作为当前复现选项，原始材料内部归档。**
+
+**Sole fixed baseline:** frozen engineering timing. Clean views use all three controllers; perturbed views compare S1 with YOLO+MP only. Other historical fixed references are archived, not current reproduction options.
+
 本页对应 `v0.2.0` 的已完成测量，不使用正在进行的 528 回合补测。两套场景采用同一视觉到决策接口，但使用**两份明确标注的冻结权重**，不声称单一权重跨场景取得全部成绩。
 
 This page covers completed measurements in `v0.2.0`, excluding the ongoing 528-run supplement. Both suites share the visual-to-decision interface but use **two explicitly identified frozen checkpoints**, not one cross-scene checkpoint.
@@ -15,9 +19,9 @@ This page covers completed measurements in `v0.2.0`, excluding the ongoing 528-r
 | 南沙 / Nansha | `DeepSignal-S1` | `DeepSignal-S1-1.0-candidate` | UE5 / CARLA 0.10.0 |
 | Town 存档 / Town Archive | `DeepSignal-S1-Town10HD-Archive` | `DeepSignal-S1-Town10HD-1.0-archive` | CARLA 0.9.16, Town10HD_Opt |
 
-统一场景包为 `DeepSignal-S1-Scenes-v2.tar.gz`，包含原 UE5 南沙与 Town10HD、Town 存档所需的 CARLA 0.9.16 Docker 镜像、两个匹配的 Python wheel、场景测试材料及许可。UE5 Town 用于迁移后的补测，**不能用来复算本页的 Town 存档成绩**。原 UE5 v1 包仍可使用，但没有 Town 存档环境。
+统一场景包为 `DeepSignal-S1-Scenes-v3.tar.gz`，包含原 UE5 南沙与 Town10HD、Town 存档所需的 CARLA 0.9.16 Docker 镜像、两个匹配的 Python wheel、场景测试材料及许可。UE5 Town 用于迁移后的补测，**不能用来复算本页的 Town 存档成绩**。原 UE5 v1 包仍可使用，但没有 Town 存档环境。
 
-The combined `DeepSignal-S1-Scenes-v2.tar.gz` includes the UE5 runtimes, the archived CARLA 0.9.16 Docker image, matching client wheels, fixed plans and licenses. UE5 Town is for the migration/supplementary suite, **not** the archived Town scores. The older UE5 v1 package lacks the archive environment.
+The combined `DeepSignal-S1-Scenes-v3.tar.gz` includes the UE5 runtimes, the archived CARLA 0.9.16 Docker image, matching client wheels, fixed plans and licenses. UE5 Town is for the migration/supplementary suite, **not** the archived Town scores. The older UE5 v1 package lacks the archive environment.
 
 当前模型为 [AIMS2025/DeepSignal-S1](https://huggingface.co/AIMS2025/DeepSignal-S1)，须申请访问权限；统一场景包公开托管于 [AIMS2025/DeepSignal-S1-Scenes](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)，上传就绪状态以数据集卡片为准，不再需要 Google Drive。场景包不含模型权重，当前 HF 模型仓库也不含 Town 存档权重，因此尚不能仅靠上述下载复跑历史 Town 的模型成绩。`assets/links.json` 保存下载入口，下列 `/path/to/...` 是本地下载位置。
 
@@ -25,7 +29,7 @@ The current [model repository](https://huggingface.co/AIMS2025/DeepSignal-S1) re
 
 ```bash
 pip install -U huggingface_hub
-hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v3.tar.gz \
   --repo-type dataset --local-dir downloads
 ```
 
@@ -36,7 +40,7 @@ hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v2.tar.gz \
 Both suites use **SUMO 1.18.0**. Inference uses the model folder's Python 3.12 requirements. Simulation clients use separate Python 3.10 environments; do **not** install both CARLA wheels into one environment.
 
 ```bash
-tar -xzf /path/to/DeepSignal-S1-Scenes-v2.tar.gz -C /path/to/empty-assets-directory
+tar -xzf /path/to/DeepSignal-S1-Scenes-v3.tar.gz -C /path/to/empty-assets-directory
 
 # Nansha / UE5 client
 python3.10 -m venv .venv-nansha

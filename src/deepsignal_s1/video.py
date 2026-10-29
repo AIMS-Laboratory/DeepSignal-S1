@@ -16,6 +16,8 @@ def render(model_run, fixed_run, output):
     reports = [read_json(d / "report.json") for d in directories]
     if [r["controller"] for r in reports] != ["s1", "fixed"]:
         raise ValueError("Select a model run on the left and fixed timing on the right")
+    if reports[1].get("baseline") != "engineering-fixed" or any(r["condition"] != "clean" for r in reports):
+        raise ValueError("Current comparison footage requires clean views and identified engineering fixed timing")
     if any(
         not r["complete"] or r.get("failure") or r["quality"] != "Epic" for r in reports
     ):
@@ -86,7 +88,7 @@ def render(model_run, fixed_run, output):
     journey = [r["metrics"]["mean_journey_s"] for r in reports]
     full_episode = (
         f"Full-episode mean journey: DeepSignal-S1 {journey[0]:.2f}s"
-        f"   |   Tuned fixed {journey[1]:.2f}s"
+        f"   |   Engineering fixed {journey[1]:.2f}s"
     )
     if journey[0] < journey[1]:
         full_episode += f"   |   {100 * (1 - journey[0] / journey[1]):.1f}% shorter"
@@ -121,7 +123,7 @@ def render(model_run, fixed_run, output):
                 state = timeline[min(index, len(timeline) - 1)]
                 x = 64 + side * 1920
                 color = (89, 218, 159) if side == 0 else (225, 226, 230)
-                title = "DeepSignal-S1" if side == 0 else "Tuned Fixed Timing"
+                title = "DeepSignal-S1" if side == 0 else "Engineering Fixed Timing"
                 draw.text((x, 240), title, font=fonts[56], fill=color)
                 frame = cv2.cvtColor(
                     cv2.resize(last[side], (1792, 1008)), cv2.COLOR_BGR2RGB

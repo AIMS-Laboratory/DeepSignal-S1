@@ -9,9 +9,9 @@ This round evaluates the released **DeepSignal-S1-1.0-candidate** with the packa
 | 南沙九路口 / Nansha, nine intersections | angle-12, angle-16 | 72 | S1, YOLO+MP | 288 |
 | Town10HD | clean, angle-8, defocus-2.5 | 40 | S1, YOLO+MP | 240 |
 
-南沙使用原矩阵的九路口、八类需求及种子 97001；Town 使用原矩阵的五类需求与种子 18036 至 18043。到达计划与路线均位于 `reproduction/`，索引为 `reproduction/matrix.json`。工程固定配时不依赖图像，复用已经完成的固定对照，不针对每种扰动重复运行。
+南沙使用原矩阵的九路口、八类需求及种子 97001；Town 使用原矩阵的五类需求与种子 18036 至 18043。到达计划与路线均位于 `reproduction/`，索引为 `reproduction/matrix.json`。唯一固定方案是冻结工程固定配时，仅在正常视觉中与S1、YOLO+MP三方比较并复用已完成记录；特殊视觉只有S1与YOLO+MP双方，不运行或汇总固定方案。
 
-Nansha retains nine intersections, eight demand regimes and seed 97001. Town retains five regimes and seeds 18036 through 18043. Plans and routes are indexed by `reproduction/matrix.json`. Completed engineering fixed-timing runs remain the image-independent reference.
+Nansha retains nine intersections, eight demand regimes and seed 97001. Town retains five regimes and seeds 18036 through 18043. Plans and routes are indexed by `reproduction/matrix.json`. Frozen engineering fixed timing is the sole fixed baseline, reused only for clean three-controller comparisons. Perturbed conditions compare S1 with YOLO+MP only.
 
 南沙清晰、±8° 与失焦属于此前已完成的矩阵，不在新增 528 回合中重复。南沙失焦为 65/72 对双方均成功、相对 YOLO+MP 改善 25.69%，同时保留模型 6 个失败和 YOLO+MP 1 个失败，见[已发布结果](released-results.md)。
 
