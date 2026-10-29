@@ -14,11 +14,11 @@ DeepSignal-S1 根据连续三帧路口画面和当前信号上下文，直接输
 - **三帧BF16决策：** RTX 5090共6823次模型请求，平均 **485毫秒**，中位数479毫秒。
 <!-- FUSION_HIGHLIGHTS:END -->
 
-![南沙31像素运动模糊](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-mb31.gif)
+![南沙31像素运动模糊](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-mb31.gif)
 
 *南沙 · 31像素运动模糊。S1与YOLO+MP使用同一交通计划并按相同仿真时刻对齐；60秒模拟窗口以5倍速播放。*
 
-![Town10HD固定机位偏移](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-angle15.gif)
+![Town10HD固定机位偏移](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-angle15.gif)
 
 *Town10HD · 固定偏航±15° / 俯仰±8°。两臂使用同一交通计划并按相同仿真时刻对齐；60秒模拟窗口以5倍速播放。*
 
@@ -68,19 +68,19 @@ DeepSignal-S1 根据连续三帧路口画面和当前信号上下文，直接输
 
 | 场景 | 失焦σ=9 | 31像素运动模糊 |
 |---|---|---|
-| 南沙 | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-mb31.gif) |
-| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-mb31.gif) |
+| 南沙 | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-mb31.gif) |
+| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-mb31.gif) |
 
 | 场景 | 固定偏航±15° / 俯仰±8° | 动态抖动5° / 横滚2.5° |
 |---|---|---|
-| 南沙 | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-shake5.gif) |
-| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-shake5.gif) |
+| 南沙 | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-shake5.gif) |
+| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-shake5.gif) |
 
 </details>
 
 YOLO车道画线先在正常机位完成并冻结。`angle15`在画线后改变机位，整回合保持固定，不重新标定；`shake5`的偏航和俯仰峰值为5°，横滚峰值为2.5°。
 
-正常视频：[南沙](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-clean.mp4) · [Town10HD](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-clean.mp4)
+正常视频：[南沙](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-clean.mp4) · [Town10HD](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-clean.mp4)
 
 ## 推理性能
 

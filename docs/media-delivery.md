@@ -4,6 +4,8 @@
 
 ## HF数据集媒体
 
+公开媒体仓库：[`AIMS2025/DeepSignal-S1-Media`](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media)。该仓库不设审批；模型与`DeepSignal-S1-Scenes`仿真资产仍保留原审批设置。主页不得嵌入需审批的场景仓库文件，否则匿名访客无法看到GIF。
+
 目录：`media/fusion-1.0/`
 
 - 代表GIF：`nansha-mb31.gif`、`town-angle15.gif`
@@ -13,7 +15,7 @@
 公开URL前缀：
 
 ```text
-https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/
+https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/
 ```
 
 GIF用于README和模型卡内嵌。每个GIF画布为960×540，内部已经左右排列S1与YOLO+MP，并同时展示交通总览、模型实际输入和指标，因此代表GIF必须逐个全宽显示，不能再将两个GIF横向并排压缩。
@@ -47,4 +49,4 @@ GitHub README使用相对路径；HF模型卡使用GitHub raw绝对地址。图�
 python scripts/render_fusion_pages.py --model-card .local/HF_MODEL_CARD.md
 ```
 
-场景资产继续沿用 `DeepSignal-S1-Scenes-v3.tar.gz`，只上传新增 `media/fusion-1.0/` 与元数据，不重新传输27.60 GiB大包。
+场景资产继续沿用原场景仓库的 `DeepSignal-S1-Scenes-v3.tar.gz`，公开媒体独立发布到`DeepSignal-S1-Media`，不重新传输27.60 GiB大包，也不改变模型或场景资产的访问权限。

@@ -14,11 +14,11 @@ DeepSignal-S1 directly maps three chronological intersection views and signal co
 - **Three-frame BF16 decisions:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
 <!-- FUSION_HIGHLIGHTS:END -->
 
-![Nansha under 31-pixel motion blur](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-mb31.gif)
+![Nansha under 31-pixel motion blur](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-mb31.gif)
 
 *Nansha · 31 px motion blur. S1 and YOLO+MP use the same traffic plan and aligned simulation timestamps; the 60-second simulation window plays at 5× speed.*
 
-![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-angle15.gif)
+![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-angle15.gif)
 
 *Town10HD · fixed yaw ±15° / pitch ±8°. Both arms use the same traffic plan and aligned simulation timestamps; the 60-second simulation window plays at 5× speed.*
 
@@ -69,19 +69,19 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 | Scene | Defocus σ=9 | Motion blur 31 px |
 |---|---|---|
-| Nansha | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-mb31.gif) |
-| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-mb31.gif) |
+| Nansha | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-mb31.gif) |
+| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-mb31.gif) |
 
 | Scene | Fixed yaw ±15° / pitch ±8° | Dynamic shake 5° / roll 2.5° |
 |---|---|---|
-| Nansha | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-shake5.gif) |
-| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-shake5.gif) |
+| Nansha | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-shake5.gif) |
+| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-shake5.gif) |
 
 </details>
 
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 
-Clean videos: [Nansha](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-clean.mp4) · [Town10HD](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-clean.mp4)
+Clean videos: [Nansha](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-clean.mp4) · [Town10HD](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-clean.mp4)
 
 ## Inference Performance
 
