@@ -37,10 +37,12 @@ from intersection_state import build_ns_state
 from deepsignal.demand_plan import PlannedArrivals
 from deepsignal.observation import carla_image_to_bgr, compose_tiled_frame
 from intersection_metrics import IntersectionMetrics
+from visual_perturbation import VisualPerturbation
 STEP = 0.1
 H_OFFICIAL = 1298.0
 
-def raw_capture(scene):
+def raw_capture(scene, visual, sim_time):
+    visual.move(sim_time)
     frame_id = scene.world.tick(20)
     frames = {}
     for (name, pending) in scene.queues.items():
@@ -51,7 +53,8 @@ def raw_capture(scene):
                 break
             if frame.frame > frame_id:
                 raise RuntimeError('相机帧号超过当前同步帧')
-    return (frame_id, _deg(compose_tiled_frame(frames, scene.rig, draw_labels=False)))
+    image = compose_tiled_frame(frames, scene.rig, draw_labels=False)
+    return (frame_id, visual.image(_deg(image)))
 
 def clean_world(client):
     world = client.get_world()
@@ -88,6 +91,7 @@ def main():
     _plans = os.environ.get('NS_PLANS_DIR', 'out/nansha/plans-sft-final')
     plan_dir = next((ROOT / _plans / TAG for _ in [0]))
     plan = PlannedArrivals.load(plan_dir / 'plan.json')
+    visual = VisualPerturbation.from_env(plan.seed)
     planned = {v.vehicle_id: v.planned_depart for v in plan.vehicles if v.cohort == 'formal'}
     formal = set(planned)
     N = len(formal)
@@ -195,6 +199,7 @@ def main():
                     _cam.set_transform(_tr)
                     print(f'[j8] {_name}: yaw{_dy:+.1f} pitch{_dp:+.1f} roll{_dr:+.1f}', flush=True)
                 scene.world.tick(20)
+            visual.bind(scene.cameras)
             cur_state = 'r' * n_links
             conn.trafficlight.setRedYellowGreenState(cfg['tls'], cur_state)
             while True:
@@ -248,7 +253,7 @@ def main():
                     cap = cap_sched.pop(0)
                     scene.write_signal(cur_state)
                     scene.sync_vehicles(conn, conn.vehicle.getIDList(), appearances, turn_by_vehicle)
-                    (_, comp) = raw_capture(scene)
+                    (_, comp) = raw_capture(scene, visual, now)
                     if comp.shape[:2] != (720, 1280):
                         comp = cv2.resize(comp, (1280, 720), interpolation=cv2.INTER_AREA)
                     jpg = cv2.imencode('.jpg', comp, [cv2.IMWRITE_JPEG_QUALITY, 92])[1].tobytes()
@@ -301,7 +306,7 @@ def main():
         J_H = round(sum((min(arr.get(v, H_OFFICIAL), H_OFFICIAL) - planned[v] for v in formal)) / N, 2)
     mss = [m for (_, _, m, _) in dec_log if m]
     evaluation.write(out_json.parent / f'{TAG}-metrics.json', tripinfo, planned, fail)
-    out_json.write_text(json.dumps({'tag': TAG, 'J_H': J_H, 'fail': fail, 'n_dec': len(dec_log), 'n_interlock': n_interlock, 'infer_fail': n_fail_infer, 'infer_ms_mean': round(sum(mss) / len(mss)) if mss else None, 'arrived': len(arr), 'N': N, 'frames': n_saved, 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
+    out_json.write_text(json.dumps({'tag': TAG, 'J_H': J_H, 'fail': fail, 'n_dec': len(dec_log), 'n_interlock': n_interlock, 'infer_fail': n_fail_infer, 'infer_ms_mean': round(sum(mss) / len(mss)) if mss else None, 'arrived': len(arr), 'N': N, 'frames': n_saved, 'visual': visual.metadata(), 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
     print(out_json.read_text(), flush=True)
     os._exit(0)
 if __name__ == '__main__':

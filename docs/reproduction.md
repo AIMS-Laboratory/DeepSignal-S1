@@ -1,84 +1,156 @@
-# 原矩阵复现 / Paired-Matrix Reproduction
+# DeepSignal-S1-1.0 复现指南 / Reproduction
 
-**主页已完成成绩请优先使用[发行版本复现说明](released-results.md)及 `scripts/run_released_matrix.py`。** 本页的 UE5 Town 入口用于迁移后的测试，不是 CARLA 0.9.16 Town 存档成绩的复现入口。
+本页是融合权重 **DeepSignal-S1-1.0** 的唯一当前复现入口。正常视觉比较S1、冻结工程固定配时和YOLO+MP；特殊视觉只比较S1与YOLO+MP。机器可读案例定义为 `reproduction/fusion-release-matrix.json`，公开结果为 `results/fusion-2026-10-30.json`。
 
-**For published homepage results, use the [release-specific instructions](released-results.md) and `scripts/run_released_matrix.py`.** The UE5 Town entrypoints below do not reproduce the CARLA 0.9.16 archive scores.
+CPU测试和6/6固定动作样例已经通过；从公开下载开始的完整视觉闭环复跑尚未认证。以下命令提供可执行入口，不表示这些下载命令已经在全新机器上完成全部GPU矩阵。
 
-## 材料 / Materials
+## 1. 下载代码、模型与v3场景
 
-- GitHub 提供测试代码、112 份固定交通计划、相机和路口配置，不含训练代码。
-- 当前 [HF 仓库](https://huggingface.co/AIMS2025/DeepSignal-S1)只提供当前发布权重与完整推理运行时，不包含 Town 存档权重。请下载完整目录，不只下载小体积文件；不要将历史 Town 成绩归给当前 HF 模型。
-- [HF 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)公开托管 `DeepSignal-S1-Scenes-v3.tar.gz`（27.60 GiB），包含南沙九路口和 Town10HD 的 UE5 运行文件、Town 存档 Docker 镜像、匹配 CARLA wheel、YOLO+MP 使用的原版检测器及相应许可。无需 Google Drive，上传就绪状态见数据集卡片。安装方法见 [testing.md](testing.md)。
-
-The GitHub repository contains test construction and evaluation code only. The complete current model is distributed through approved HF downloads. The public HF scene dataset hosts one v2 archive for both Nansha and Town10HD, including the archived runtime but not its separate model weights.
-
-## 环境 / Environments
-
-仿真客户端使用 Python 3.10，安装 SUMO 后执行：
+模型采用审批下载。场景公开，继续使用v3资产；只下载融合版媒体时无需重复下载场景包。
 
 ```bash
-pip install -e '.[test,reproduction]'
-pip install assets/runtime/python/carla-0.10.0-cp310-cp310-linux_x86_64.whl
+pip install -U huggingface_hub
+hf auth login
+hf download AIMS2025/DeepSignal-S1 --local-dir ./DeepSignal-S1-model
+hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v3.tar.gz \
+  --repo-type dataset --local-dir ./downloads
+git clone https://github.com/AIMS-Laboratory/DeepSignal-S1.git DeepSignal-S1
+cd DeepSignal-S1
 ```
 
-模型推理单独使用 Python 3.12 环境，按 HF 模型卡安装依赖：
+必须使用GitHub最新代码。v3压缩包内的旧代码快照早于融合版最终入口，不能单独用于当前复现。
+
+## 2. 分离三个Python环境
+
+模型服务使用Python 3.12。南沙UE5/CARLA 0.10.0与Town CARLA 0.9.16客户端使用两个独立Python 3.10环境，两个CARLA wheel不能装进同一环境。
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 /path/to/inference/python scripts/serve_model.py \
-  --model /path/to/DeepSignal-S1 --port 18404
+# Model inference
+python3.12 -m venv .venv-inference
+.venv-inference/bin/pip install -r ../DeepSignal-S1-model/requirements.txt
+
+# Install shared v3 assets once
+python3.10 -m venv .venv-bootstrap
+.venv-bootstrap/bin/pip install -e '.[download]'
+.venv-bootstrap/bin/deepsignal-s1 install-assets \
+  --archive ../downloads/DeepSignal-S1-Scenes-v3.tar.gz
+
+# Nansha: UE5 / CARLA 0.10.0
+python3.10 -m venv .venv-nansha
+.venv-nansha/bin/pip install -e '.[test,reproduction]'
+.venv-nansha/bin/pip install \
+  assets/runtime/python/carla-0.10.0-cp310-cp310-linux_x86_64.whl
+
+# Town10HD: CARLA 0.9.16 archive runtime
+python3.10 -m venv .venv-town
+.venv-town/bin/pip install -r reproduction/legacy-town/requirements.txt
+.venv-town/bin/pip install \
+  assets/runtime/python/carla-0.9.16-cp310-cp310-manylinux_2_31_x86_64.whl
 ```
 
-The simulator and model use separate Python environments. The local inference service does not require a remote hosted endpoint.
+路径以v3实际解压目录为准。需要Linux、SUMO 1.18.0、NVIDIA GPU和Town归档运行环境所需的Docker/NVIDIA CDI。
 
-## 固定对照 / Fixed Baseline
-
-**唯一固定基线为下述冻结工程方案。正常视觉比较S1、工程固定配时与YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。固定运行器只接受正常视觉，不再提供其他调优固定参考。**
-
-南沙采用各路口既有 `v2` 工程表，J02 为 35/14/10/17 秒；Town 采用 31/6/31/6 秒。均不针对正式测试搜索。Town 沿用原协议的首段绿灯及其首次倒计时接管点，不将正式车辆窗口起点 98 秒误作接管点；首段结束后按工程表轮转。南沙原协议为共同全红冷启动，不额外添加 Town 预热。
+## 3. 启动融合模型服务
 
 ```bash
-python scripts/reproduce.py --scene nansha --controller fixed \
-  --tag J02-asym-mid-EW-flat-base-97001 --output runs/fixed-example
-
-python scripts/run_fixed_matrix.py --jobs 4 --output runs/engineering-fixed
+CUDA_VISIBLE_DEVICES=0 .venv-inference/bin/python scripts/serve_model.py \
+  --model ../DeepSignal-S1-model --port 18404 --device cuda:0
 ```
 
-批处理保持四任务并行，在整机 CPU 达到 65% 时暂停本批、回落至 60% 以下恢复，给 70% 目标留余量。不能限制其他外部进程自身的负载。失败回合不会作为成功结果跳过。
+服务版本必须报告 `DeepSignal-S1-1.0`。模型输入为4秒观察窗内按2秒间隔取得的三帧画面、静态路口信息、当前信号状态与合法动作，不接收仿真车数或未来到达计划。
 
-Fixed control runs in SUMO without a GPU. The engineering tables are frozen before evaluation, not selected for their performance against the released model. The original warmup/cold-start protocol is preserved.
+## 4. 启动场景
 
-## 视觉闭环 / Visual Closed Loop
-
-先单独启动对应的场景服务器，再运行：
+### 南沙：UE5 / CARLA 0.10.0
 
 ```bash
-python scripts/reproduce.py --scene town10hd --controller s1 \
-  --tag balanced-18036 --condition clean --port 25020 \
-  --endpoint http://127.0.0.1:18404 --output runs/town-clean
-
-python scripts/reproduce.py --scene nansha --controller s1 \
-  --tag J02-asym-mid-EW-flat-base-97001 --condition defocus-2.5 \
-  --port 25020 --output runs/nansha-defocus
+.venv-nansha/bin/deepsignal-s1 launch-scene \
+  --scene scenarios/nansha-j02/scene.json \
+  --assets assets/runtime --port 25020 --adapter 0
 ```
 
-条件包括 `clean`、`motion-blur-9`、`defocus-2.5`、`angle-8`、`angle-12`、`angle-16`。角度条件指整回合固定的相机外参偏移，不是逐帧随机抖动。不同条件使用不同输出目录。新增角度条件属于独立补测，不混入已发布成绩。
+九个南沙路口按矩阵配置切换对应场景。渲染使用发布配置；每个仿真会话独占一个场景端口。
 
-原矩阵 YOLO+MP 使用对应检测服务；不要与精选展示客户端的不同服务接口混用：
+### Town10HD：CARLA 0.9.16 Docker
+
+使用v3内的Town归档Docker运行环境和匹配0.9.16客户端。融合入口采用修正后的时序：决定切换后保留5秒绿灯，再执行3秒黄灯和2秒全红。pilot的YOLO+MP warm handoff `hist0` 为零占位。不要用UE5/CARLA 0.10.0 Town showcase替代主页评测环境。
+
+```bash
+docker load -i assets/runtime/runtime/town10hd-archive/carla-0.9.16.docker.tar
+python3 scripts/launch_town_archive.py --gpu GPU-YOUR-UUID --port 25020
+```
+
+将 `GPU-YOUR-UUID` 替换为 `nvidia-smi -L` 显示的GPU UUID。启动后将同一CARLA RPC端口传给矩阵入口的 `--port`。
+
+## 5. 启动YOLO+MP检测服务
 
 ```bash
 CUDA_VISIBLE_DEVICES=1 /path/to/detector/python scripts/archived_detector_service.py \
   --model assets/runtime/reproduction/baselines/yolo11m.pt --port 8031
-
-python scripts/reproduce.py --scene nansha --controller visual-pressure \
-  --tag J02-asym-mid-EW-flat-base-97001 --condition defocus-2.5 \
-  --detector-endpoint http://127.0.0.1:8031/v1/detect2 \
-  --port 25020 --output runs/nansha-defocus-yolo
 ```
 
-## 指标与版本 / Metrics and Versions
+使用发行材料中的YOLO11m、置信度0.25和冻结车道区域。固定角度测试在正常机位画线后改变相机，整回合保持偏移且不重新标定。检测失败不得用仿真真值替代。
 
-`reproduction/matrix.json` 列出全部原始车流。南沙 `J_H` 是 1298 秒时域内的截断平均行程；Town `J` 是 518 秒时域内的截断总行程。均从计划到达时刻计时，未完成车辆按时域末端计入，不删车；两种指标不能混合。
+## 6. 正常视觉主表
 
-原始 Town 视觉程序使用 CARLA 0.9.16；本页迁移入口使用 v2 包中的 UE5/CARLA 0.10.0 及其实际提供的车辆素材。因此保留原车流与控制时序，但迁移后的视觉成绩必须重新验证，不能直接继承旧运行环境的数字。v2 另含原 0.9.16 Docker 环境，其入口见[发行版本说明](released-results.md)；当前 HF 模型不包含所需 Town 存档权重。最终南沙权重也不能继承早期 Town 专用权重的成绩。
+南沙72案例使用 `nansha-fusion-clean`，只接受`clean`。三方分别运行：
 
-Nansha reports capped mean journey time at 1298 s; Town reports capped total journey time at 518 s. The UE5 port preserves fixed traffic plans and signal rules, but historical Town visual results from a different runtime/checkpoint are not scores of this release. This matrix is distinct from the complete-journey showcase protocol and does not by itself certify real-time operation.
+```bash
+.venv-nansha/bin/python scripts/run_fusion_matrix.py \
+  --suite nansha-fusion-clean --controller fixed --condition clean \
+  --output out/reproduction/nansha-fixed-clean
+
+.venv-nansha/bin/python scripts/run_fusion_matrix.py \
+  --suite nansha-fusion-clean --controller s1 --condition clean \
+  --endpoint http://127.0.0.1:18404 --port 25020 \
+  --output out/reproduction/nansha-s1-clean
+
+.venv-nansha/bin/python scripts/run_fusion_matrix.py \
+  --suite nansha-fusion-clean --controller visual-pressure --condition clean \
+  --detector-endpoint http://127.0.0.1:8031/v1/detect2 --port 25020 \
+  --output out/reproduction/nansha-mp-clean
+```
+
+Town正常视觉使用 `town10hd-fusion-pilot`，同样分别运行`fixed`、`s1`和`visual-pressure`。Town固定方案为31/6/31/6秒。
+
+## 7. 特殊视觉小批
+
+南沙特殊视觉使用 `nansha-fusion-pilot`，每条件九个高流量均衡案例、种子97001。Town使用 `town10hd-fusion-pilot`，每条件五类车流、种子18040。条件为 `df9`、`mb31`、`angle15`、`shake5`，只运行`s1`和`visual-pressure`。
+
+```bash
+.venv-nansha/bin/python scripts/run_fusion_matrix.py \
+  --suite nansha-fusion-pilot --controller s1 --condition mb31 \
+  --endpoint http://127.0.0.1:18404 --port 25020 \
+  --output out/reproduction/nansha-s1-mb31
+
+.venv-town/bin/python scripts/run_fusion_matrix.py \
+  --suite town10hd-fusion-pilot --controller visual-pressure --condition angle15 \
+  --detector-endpoint http://127.0.0.1:8031/v1/detect2 --port 25020 \
+  --output out/reproduction/town-mp-angle15
+```
+
+`fixed`与非`clean`组合会被拒绝。失败记录保留，不因结果不利重复运行或筛选案例。
+
+## 8. 指标与汇总
+
+南沙使用1298秒时域内的截断平均行程时间 `J_H`；Town使用518秒时域内的截断行程总量 `J`。未完成车辆按时域末端计入。两个场景分别汇总，绝对值不能合并，也不能称为完整行程平均值。
+
+改善率为：
+
+```text
+100 * (1 - sum(S1) / sum(baseline))
+```
+
+正常视觉可对冻结工程固定配时和YOLO+MP分别计算；特殊视觉只对YOLO+MP计算。完整公开口径、逐案例来源与已知南沙红龄限制见[融合评测](fusion-pilot-evaluation.md)。
+
+## 9. 重新生成表格与图
+
+```bash
+python scripts/export_fusion_results.py --help
+.venv-nansha/bin/pip install -e '.[plots]'
+.venv-nansha/bin/python scripts/plot_fusion_results.py --language zh --pdf
+.venv-nansha/bin/python scripts/plot_fusion_results.py --language en --pdf
+python scripts/render_fusion_pages.py
+```
+
+表格和中英文图都只读取 `results/fusion-2026-10-30.json`。`plots` extra安装Matplotlib 3.9或更高版本。中文图需要系统字体Noto Sans CJK SC；英文图不依赖中文字体。英文图使用`-en`后缀，中文图使用无后缀文件。历史candidate与历史Town专用权重的旧入口见[历史复现说明](historical-reproduction.md)，不得与融合1.0混算。

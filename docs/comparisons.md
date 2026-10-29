@@ -1,5 +1,7 @@
 # 对比口径 / Comparisons
 
+当前融合版机器可读结果为 `results/fusion-2026-10-30.json`，说明见[融合评测](fusion-pilot-evaluation.md)。正常视觉三方、特殊视觉双方的规则继续适用；历史权重与融合权重分别标注。
+
 ## 唯一固定基线
 
 只采用**已冻结的工程固定配时**：南沙使用各路口既有工程表，J02为35/14/10/17秒；Town为31/6/31/6秒。配置在 `reproduction/configs/junctions/` 与对应 `scenarios/*/scene.json` 中，已完成固定记录为 `results/engineering-fixed-2026-10-26.json`。

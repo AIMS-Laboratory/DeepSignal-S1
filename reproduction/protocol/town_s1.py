@@ -23,6 +23,8 @@ from deepsignal.observation import carla_image_to_bgr, compose_tiled_frame
 from episode_settings import make_raw, NET, TABLE_GREEN
 from signal_states import PHASES, warm_states, harvest
 from town_rules import T_END, legal_b
+from visual_perturbation import VisualPerturbation
+from evaluation_trace import SignalTrace
 
 def build_state(cur, G, e, red_age):
     legal = (['extend_5s'] if legal_b(cur, G, red_age)[1] else []) + [f'switch_to_{p}' for p in PHASES if p in legal_b(cur, G, red_age)[0]]
@@ -62,6 +64,7 @@ def main():
     if out_json.exists():
         raise SystemExit(f'{out_json} 已存在')
     (cond, seed_s) = base.rsplit('-', 1)
+    visual = VisualPerturbation.from_env(int(seed_s))
     raw = make_raw(cond, int(seed_s))
     routes = Path(f'out/s1-e0/plans/nc-{base}/routes.rou.xml')
     planned = {v['vehicle_id']: v['planned_depart'] for v in json.loads(Path(f'out/s1-e0/plans/nc-{base}/plan.json').read_text())['vehicles'] if v['cohort'] == 'formal'}
@@ -70,8 +73,8 @@ def main():
     client = carla.Client('127.0.0.1', int(os.environ.get('CARLA_RPC_PORT', '2000')))
     client.set_timeout(30)
     world = client.get_world()
-    if (client.get_client_version(), client.get_server_version()) != ('0.10.0', '0.10.0'):
-        raise RuntimeError('本运行仅验收 CARLA 0.10.0')
+    if (client.get_client_version(), client.get_server_version()) != ('0.9.16', '0.9.16'):
+        raise RuntimeError('本运行仅验收 CARLA 0.9.16')
     if world.get_actors().filter('vehicle.*') or world.get_actors().filter('sensor.*'):
         world.tick()
         for actor in list(world.get_actors().filter('vehicle.*')) + list(world.get_actors().filter('sensor.*')):
@@ -97,6 +100,7 @@ def main():
     n_fail_infer = [0]
     fail = [None]
     J = [None]
+    signal_trace = SignalTrace()
 
     def infer_decide(tt, cur, G, e, red_age):
         (state, legal) = build_state(cur, G, e, red_age)
@@ -147,6 +151,7 @@ def main():
             from deepsignal.junction_sim import resolve_channels
             (channels, _) = resolve_channels(world, NET)
             signal_mirror = JunctionSignalMirror(channels)
+            mount_junction_markings(world, client, session, NET)
             camera_config = load_camera_rig_config(ROOT / 'configs/cameras.town10hd.json')
 
             def register_camera(camera):
@@ -167,15 +172,20 @@ def main():
                     t.rotation.roll += dr
                     camera.set_transform(t)
                     print(f'[jitter] {name}: yaw{dy:+.1f} pitch{dp:+.1f} roll{dr:+.1f}', flush=True)
+            if 'visual' in locals():
+                if visual.condition in ('angle15', 'shake5') and args.jitter <= 0:
+                    world.tick()
+                visual.bind(cameras)
             queues = {name: queue_mod.Queue() for name in cameras}
             for (name, camera) in cameras.items():
                 camera.listen(queues[name].put)
 
             def snap(frames):
                 img = compose_tiled_frame(frames, camera_config, draw_labels=False)
-                return cv2.imencode('.jpg', _deg(img), [cv2.IMWRITE_JPEG_QUALITY, 92])[1].tobytes()
+                return cv2.imencode('.jpg', visual.image(_deg(img)), [cv2.IMWRITE_JPEG_QUALITY, 92])[1].tobytes()
 
             def capture():
+                visual.move(conn.simulation.getTime() if conn is not None else 0.0)
                 frame_id = world.tick()
                 frames = {}
                 for (name, q) in queues.items():
@@ -192,7 +202,9 @@ def main():
             c = adaptive_controller(raw, NET, TABLE_GREEN)
             update = c.current_update(0.0)
             from signal_states import STATES
-            set_st = lambda key: conn.trafficlight.setRedYellowGreenState(str(sfp.TARGET_TLS_ID), STATES[key])
+            def set_st(key):
+                conn.trafficlight.setRedYellowGreenState(str(sfp.TARGET_TLS_ID), STATES[key])
+                signal_trace.stage(conn.simulation.getTime(), *key)
             (green_start, green_end, stage_of) = ({}, {}, {})
             stage = 'pre'
             trans = None
@@ -206,7 +218,7 @@ def main():
                 active = set(conn.vehicle.getIDList())
                 for vid in sorted(active):
                     if vid not in vehicle_actors:
-                        bp = world.get_blueprint_library().find('vehicle.ue4.audi.tt')
+                        bp = world.get_blueprint_library().find('vehicle.tesla.model3')
                         bp.set_attribute('role_name', 's1_rec')
                         bp.set_attribute('color', {'s': '30,110,210', 'r': '220,180,30', 'l': '180,40,40'}[vid.split('-')[1]])
                         actor = world.try_spawn_actor(bp, sumo_to_carla_transform(conn.vehicle.getPosition3D(vid), conn.vehicle.getAngle(vid), net_offset, half_length=2.25))
@@ -265,6 +277,8 @@ def main():
                             last_ge[cur0] = gs0 + G1
                             trans = (gs0 + G1 - 5.0, 'decide', cur0)
                         else:
+                            if 'signal_trace' in locals():
+                                signal_trace.switch(now, cur0, dec[1])
                             last_ge[cur0] = now + 5.0
                             seg = None
                             trans = (now + 5.0, 'y', cur0)
@@ -296,6 +310,8 @@ def main():
                             trans = (seg['s'] + seg['G'] - 5.0, 'decide', seg['ph'])
                         else:
                             green_until = seg['s'] + seg['G']
+                            if 'signal_trace' in locals():
+                                signal_trace.switch(tt, seg['ph'], dec[1])
                             last_ge[seg['ph']] = green_until
                             pend = (green_until + 5.0, dec[1])
                             trans = (green_until, 'y', seg['ph'])
@@ -354,7 +370,7 @@ def main():
         J[0] = round(sum((min(arr.get(v, T_END), T_END) - d for (v, d) in planned.items() if d < T_END)), 1)
     mss = [m for (_, _, m) in dec_log if m]
     evaluation.write(out_json.parent / f'{tag}-metrics.json', out_json.parent / f'tripinfo-{tag}.xml', planned, fail[0])
-    out_json.write_text(json.dumps({'tag': tag, 'J': J[0], 'fail': fail[0], 'n_dec': len(dec_log), 'infer_fail': n_fail_infer[0], 'infer_ms_mean': round(sum(mss) / len(mss), 0) if mss else None, 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
+    out_json.write_text(json.dumps({'tag': tag, 'J': J[0], 'fail': fail[0], 'n_dec': len(dec_log), 'infer_fail': n_fail_infer[0], 'infer_ms_mean': round(sum(mss) / len(mss), 0) if mss else None, 'visual': visual.metadata(), 'signal_trace': signal_trace.metadata(T_END), 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
     print(out_json.read_text(), flush=True)
 if __name__ == '__main__':
     main()

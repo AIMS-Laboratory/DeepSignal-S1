@@ -1,0 +1,75 @@
+{
+  "release": "DeepSignal-S1-1.0",
+  "status": "fusion-pilot-reproduction-entry",
+  "protocol": {
+    "phase_mode": "skip",
+    "observation_window_s": 4,
+    "frame_offsets_s": [-4, -2, 0],
+    "green_tail_s": 5,
+    "yellow_s": 3,
+    "all_red_s": 2,
+    "green_total_bounds_s": [6, 60]
+  },
+  "comparison_policy": {
+    "clean": ["s1", "fixed", "visual-pressure"],
+    "special": ["s1", "visual-pressure"],
+    "fixed_baseline": "engineering-fixed"
+  },
+  "conditions": {
+    "clean": {},
+    "df9": {"defocus_sigma": 9.0},
+    "mb31": {"motion_kernel_px": 31},
+    "angle15": {"fixed_magnitudes_deg": [15, 8, 0]},
+    "shake5": {"shake_amplitudes_deg": [5, 5, 2.5]}
+  },
+  "suites": {
+    "nansha-fusion-clean": {
+      "scene": "nansha",
+      "model_version": "DeepSignal-S1-1.0",
+      "model_folder": "DeepSignal-S1-1.0",
+      "runtime": "CARLA-0.10.0",
+      "quality": "High-or-higher",
+      "metric": "J_H",
+      "allowed_conditions": ["clean"],
+      "tags_from": {
+        "manifest": "release-matrix.json",
+        "suite": "nansha",
+        "condition": "clean"
+      }
+    },
+    "nansha-fusion-pilot": {
+      "scene": "nansha",
+      "model_version": "DeepSignal-S1-1.0",
+      "model_folder": "DeepSignal-S1-1.0",
+      "runtime": "CARLA-0.10.0",
+      "quality": "High-or-higher",
+      "metric": "J_H",
+      "tags": [
+        "J01-bal-high-eq-flat-base-97001",
+        "J02-bal-high-eq-flat-base-97001",
+        "J03-bal-high-eq-flat-base-97001",
+        "J04-bal-high-eq-flat-base-97001",
+        "J05-bal-high-eq-flat-base-97001",
+        "J06-bal-high-eq-flat-base-97001",
+        "J07-bal-high-eq-flat-base-97001",
+        "J08-bal-high-eq-flat-base-97001",
+        "J09-bal-high-eq-flat-base-97001"
+      ]
+    },
+    "town10hd-fusion-pilot": {
+      "scene": "town10hd",
+      "model_version": "DeepSignal-S1-1.0",
+      "model_folder": "DeepSignal-S1-1.0",
+      "runtime": "CARLA-0.9.16",
+      "quality": "High-or-higher",
+      "metric": "J",
+      "tags": [
+        "balanced-18040",
+        "sustained-uneven-18040",
+        "time-varying-18040",
+        "uneven125-18040",
+        "varyshuf-18040"
+      ]
+    }
+  }
+}

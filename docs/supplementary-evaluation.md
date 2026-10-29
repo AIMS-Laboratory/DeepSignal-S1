@@ -1,5 +1,7 @@
 # 补充视觉测试 / Supplementary Visual Evaluation
 
+> 本页记录旧candidate补测设计。当前融合1.0的四类强扰动结果见[融合评测](fusion-pilot-evaluation.md)，不要将两套权重或协议混算。
+
 本轮仅测试发布版本 **DeepSignal-S1-1.0-candidate**，使用发行包内的 UE5/CARLA 0.10.0 场景和 Epic 画质，不使用旧 Town 专用权重代替。计划在查看本轮成绩前确定。
 
 This round evaluates the released **DeepSignal-S1-1.0-candidate** with the packaged UE5/CARLA 0.10.0 runtimes at Epic quality. Historical Town-specific weights are not substituted. The matrix is fixed before examining these results.

@@ -12,7 +12,9 @@ def main():
     parser.add_argument('--scene', choices=['nansha', 'town10hd'], required=True)
     parser.add_argument('--controller', choices=['fixed', 's1', 'visual-pressure'], required=True)
     parser.add_argument('--tag', required=True)
-    parser.add_argument('--condition', choices=['clean', 'motion-blur-9', 'defocus-2.5', 'angle-8', 'angle-12', 'angle-16'], default='clean')
+    parser.add_argument('--condition', choices=['clean', 'motion-blur-9', 'defocus-2.5',
+                                               'angle-8', 'angle-12', 'angle-16',
+                                               'df9', 'mb31', 'angle15', 'shake5'], default='clean')
     parser.add_argument('--endpoint', default='http://127.0.0.1:18404')
     parser.add_argument('--detector-endpoint', default='http://127.0.0.1:8031/v1/detect2')
     parser.add_argument('--port', type=int, default=25020)
@@ -31,11 +33,15 @@ def main():
                '--tag', args.tag, '--output', str(output)]
         env['CUDA_VISIBLE_DEVICES'] = ''
     else:
+        current_condition = args.condition in {'df9', 'mb31', 'angle15', 'shake5'}
         deg, param = {
             'clean': ('none', '0'), 'motion-blur-9': ('mb', '9'),
             'defocus-2.5': ('df', '2.5'), 'angle-8': ('j8', '8'),
             'angle-12': ('j8', '12'), 'angle-16': ('j8', '16'),
+            'df9': ('none', '0'), 'mb31': ('none', '0'),
+            'angle15': ('none', '0'), 'shake5': ('none', '0'),
         }[args.condition]
+        env['DS_VISUAL_CONDITION'] = args.condition if current_condition else 'clean'
         if args.scene == 'nansha':
             name = 'nansha_s1.py' if args.controller == 's1' else 'nansha_pressure.py'
             option = '--serve' if args.controller == 's1' else '--yolo'

@@ -1,4 +1,6 @@
-# 已发布结果的复现 / Reproducing Published Results
+# 历史已发布结果 / Historical Released Results
+
+**当前正式模型为融合权重DeepSignal-S1-1.0。** 当前成绩与入口见[融合评测](fusion-pilot-evaluation.md)和[融合复现](reproduction.md)。本页以下内容仅保留旧`DeepSignal-S1-1.0-candidate`南沙权重与历史Town专用权重的原始范围，不得归给融合1.0。
 
 **唯一固定对照：已经冻结的工程固定配时。正常视觉三方比较S1、工程固定配时和YOLO+MP；特殊视觉只比较S1与YOLO+MP。其他历史固定参考不再作为当前复现选项，原始材料内部归档。**
 

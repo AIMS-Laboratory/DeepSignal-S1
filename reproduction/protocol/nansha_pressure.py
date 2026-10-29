@@ -37,6 +37,7 @@ from deepsignal.demand_plan import PlannedArrivals
 from deepsignal.observation import carla_image_to_bgr, compose_tiled_frame
 from deepsignal.cameras import covers_of
 from intersection_metrics import IntersectionMetrics
+from visual_perturbation import VisualPerturbation
 STEP = 0.1
 H_OFFICIAL = 1298.0
 HYST_BIAS = 1.0
@@ -61,6 +62,7 @@ def main():
     work_dir.mkdir(parents=True, exist_ok=True)
     plan_dir = next((ROOT / f'out/nansha/plans-sft-final' / TAG for _ in [0]))
     plan = PlannedArrivals.load(plan_dir / 'plan.json')
+    visual = VisualPerturbation.from_env(plan.seed)
     planned = {v.vehicle_id: v.planned_depart for v in plan.vehicles if v.cohort == 'formal'}
     formal = set(planned)
     N = len(formal)
@@ -111,7 +113,8 @@ def main():
     preview_saved = False
     camera_cfg = ROOT / f'data/NanshaTrafficProject/outputs/nansha-twin/control/data/cameras/{JUN}.json'
 
-    def raw_capture(scene):
+    def raw_capture(scene, sim_time):
+        visual.move(sim_time)
         frame_id = scene.world.tick(20)
         frames = {}
         for (name, pending) in scene.queues.items():
@@ -120,7 +123,8 @@ def main():
                 if frame.frame == frame_id:
                     frames[name] = carla_image_to_bgr(frame)
                     break
-        return (frame_id, _deg(compose_tiled_frame(frames, scene.rig, draw_labels=False)))
+        image = compose_tiled_frame(frames, scene.rig, draw_labels=False)
+        return (frame_id, visual.image(_deg(image)))
 
     def mp_decide(tt, cur, G, red_age, tiles):
         snaps = {}
@@ -165,6 +169,7 @@ def main():
                     _cam.set_transform(_tr)
                     print(f'[j8] {_name}: yaw{_dy:+.1f} pitch{_dp:+.1f} roll{_dr:+.1f}', flush=True)
                 scene.world.tick(20)
+            visual.bind(scene.cameras)
             scene.sumo_connection = conn
             from deepsignal.cameras import slot_offsets
             (tw, th) = (scene.rig.tile_width, scene.rig.tile_height)
@@ -225,7 +230,7 @@ def main():
                     cap = cap_sched.pop(0)
                     scene.write_signal(cur_state)
                     scene.sync_vehicles(conn, conn.vehicle.getIDList(), appearances, turn_by_vehicle)
-                    (_, comp) = raw_capture(scene)
+                    (_, comp) = raw_capture(scene, now)
                     jpg = cv2.imencode('.jpg', comp, [cv2.IMWRITE_JPEG_QUALITY, 92])[1].tobytes()
                     if now >= 120 and not preview_saved:
                         (out_json.parent / f'{TAG}-camera.jpg').write_bytes(jpg)
@@ -272,7 +277,7 @@ def main():
         J_H = round(sum((min(arr.get(v, H_OFFICIAL), H_OFFICIAL) - planned[v] for v in formal)) / N, 2)
     mss = yolo_ms or [0]
     evaluation.write(out_json.parent / f'{TAG}-metrics.json', tripinfo, planned, fail)
-    out_json.write_text(json.dumps({'tag': TAG, 'J_H': J_H, 'fail': fail, 'n_dec': len(dec_log), 'yolo_ms_mean': round(sum(yolo_ms) / len(mss), 1), 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
+    out_json.write_text(json.dumps({'tag': TAG, 'J_H': J_H, 'fail': fail, 'n_dec': len(dec_log), 'yolo_ms_mean': round(sum(yolo_ms) / len(mss), 1), 'visual': visual.metadata(), 'wall_seconds': round(time.monotonic() - t_wall, 1)}, indent=1))
     print(f'{TAG}: J_H={J_H} fail={fail} 决策 {len(dec_log)} yolo均值 {sum(mss) / len(mss):.0f}ms {time.monotonic() - t_wall:.0f}s', flush=True)
     os._exit(0)
 if __name__ == '__main__':

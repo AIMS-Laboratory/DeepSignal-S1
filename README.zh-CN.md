@@ -1,119 +1,133 @@
-# DeepSignal-S1
+# DeepSignal-S1-1.0
 
-**One system：从视觉交通观察到信号决策的一体化系统。**
+**一个从视觉直接到信号决策的模型：正常画面能有效控制，摄像头受扰时仍保持稳健。**
 
 [English](README.md) | 简体中文
 
-**DeepSignal-S1 是面向实时交通信号控制、以视觉为主要交通观察输入的 System One 决策模型。S1 代表 one system**：将视觉交通理解与信号动作选择统一在一个多模态决策模型中。
+[模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [场景](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [结果数据](results/fusion-2026-10-30.json) · [复现说明](docs/reproduction.md)
 
-DeepSignal-S1 采用 **Jev-style（以直接决策为核心）的功能定位**：接收路口摄像头画面与当前信号状态，直接选择允许执行的信号动作，而不是生成聊天式回答。交通观察来自画面，S1 控制器不需要单独的 YOLO 感知阶段。**YOLO+MP 是对照基线，不是 DeepSignal-S1 的组成模块。**
+DeepSignal-S1 根据连续三帧路口画面和当前信号上下文，直接输出合法信号动作。正式发布的 **DeepSignal-S1-1.0** 是南沙与 Town10HD 共用的同一份融合权重，不需要额外的YOLO感知阶段。
 
-本仓库提供 DeepSignal-S1 的仿真测试场景、功能展示结果与模型调用客户端。完整模型文件与独立推理运行时通过 Hugging Face 单独提供。
+<!-- FUSION_HIGHLIGHTS:BEGIN -->
+- **正常控制有效：** 相对冻结工程固定配时，南沙72案例改善 **17.98%**，Town五类车流改善 **33.77%**。
+- **特殊视觉稳健：** 单独的固定机位偏移条件下，Town相对YOLO+MP改善 **82.93%**；31像素运动模糊条件下，南沙改善 **30.09%**。
+- **三帧BF16决策：** RTX 5090共6823次模型请求，平均 **485毫秒**，中位数479毫秒。
+<!-- FUSION_HIGHLIGHTS:END -->
 
-**唯一固定基线：已冻结的工程固定配时。正常视觉比较S1、工程固定配时和YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。历史其他固定参考及其视频不再作为当前复现入口。**
+![南沙31像素运动模糊](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-mb31.gif)
 
-## 与基线对比
+*南沙 · 31像素运动模糊。S1与YOLO+MP使用同一交通计划并按相同仿真时刻对齐；60秒模拟窗口以5倍速播放。*
 
-| 控制方法 | 交通观察方式 | 控制方式 | 测试入口 |
-| --- | --- | --- | --- |
-| **DeepSignal-S1** | 摄像头画面与当前信号状态 | 自适应决策 | `--controller s1` |
-| 工程固定配时 | 既有工程方案，不针对最终测试搜索 | 固定相位循环 | `--controller fixed` |
-| YOLO+MP | YOLO 摄像头车辆检测 | 按各转向交通压力决策 | `--controller visual-pressure` |
+![Town10HD固定机位偏移](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-angle15.gif)
 
-### 已完成结果
+*Town10HD · 固定偏航±15° / 俯仰±8°。两臂使用同一交通计划并按相同仿真时刻对齐；60秒模拟窗口以5倍速播放。*
 
-本次公开结果使用**两份明确标注的场景版本**，不声称同一权重跨场景取得这些成绩：南沙使用 `DeepSignal-S1-1.0-candidate`（UE5/CARLA 0.10.0），Town10HD 使用 `DeepSignal-S1-Town10HD-1.0-archive`（CARLA 0.9.16）。后台正在进行的补测**不计入**下表。
+## 评测结果
 
-**Town 执行修正：** 下表 Town 行保留旧执行器的历史测量；该执行器漏掉了承诺的 5 秒绿灯尾段，因此这些数值**不是修正后执行规则下已验证的成绩**，也不是当前 HF 权重的成绩。当前权重的 Town 完整矩阵正在重跑，见[范围与修正说明](docs/intersection-metrics.md)。南沙测量不受此次 Town 修正影响。
+有限时域行程指标越低越好。南沙与Town10HD的指标和时域不同，**不能合并绝对值**。正常视觉比较S1、冻结工程固定配时和YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。
 
-| 场景 | 画面条件 | 成功配对 / 计划 | 对照 | 行程指标改善 |
-| --- | --- | ---: | --- | ---: |
-| 南沙九路口 | 清晰 | 72 / 72 | 工程固定配时 | **15.99%** |
-| 南沙九路口 | 整回合固定的相机角度偏移，范围 ±8° | 72 / 72 | YOLO+MP | **1.12%** |
-| 南沙九路口 | 失焦，sigma=2.5 | 65 / 72 | YOLO+MP | **25.69%** |
-| Town10HD 存档版 | 清晰 | 20 / 20 | 工程固定配时 | **36.21%** |
-| Town10HD 存档版 | 清晰 | 20 / 20 | YOLO+MP | **3.13%** |
-| Town10HD 存档版 | 失焦，sigma=2.5 | 40 / 40 | YOLO+MP | **8.46%** |
+<!-- FUSION_RESULTS:BEGIN -->
+### 正常视觉：三方比较
 
-南沙清晰画面下与 YOLO+MP 整体接近：**9 个路口中有 5 个的汇总截断行程指标相差不到 5%**。九个路口的完整数值均见[公开结果](results/released-2026-10-26.json)。
+| 场景 | n | S1 | 工程固定 | YOLO+MP | S1比固定改善 | MP比固定改善 | S1比MP改善 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 南沙 | 72 | 7540.24 | 9193.32 | 7648.36 | **17.98%** | **16.81%** | **1.41%** |
+| Town10HD | 5 | 10623.80 | 16040.30 | 10625.20 | **33.77%** | **33.76%** | **0.01%** |
 
-上述指标按指定时域截断，未完成行程仍计入。南沙失焦改善率来自双方均成功的 65 对，模型 6 个失败和 YOLO+MP 1 个失败的记录均保留。Town 清晰测试使用同一存档权重的四个种子、全部五类需求，不把早期权重成绩混入 40 回合汇总。[版本、复测命令及范围](docs/released-results.md) · [重新计算表格](scripts/summarize_released.py)。
+### 特殊视觉：仅与YOLO+MP比较
 
+| 场景 | 条件 | n | S1 | YOLO+MP | S1改善 |
+|---|---|---:|---:|---:|---:|
+| 南沙 | 失焦σ=9 | 9 | 1257.39 | 1502.63 | **16.32%** |
+| 南沙 | 31像素运动模糊 | 9 | 1174.58 | 1680.04 | **30.09%** |
+| 南沙 | 固定偏航±15° / 俯仰±8° | 9 | 1153.65 | 1374.63 | **16.08%** |
+| 南沙 | 动态抖动峰值5° | 9 | 1145.70 | 1229.37 | **6.81%** |
+| Town10HD | 失焦σ=9 | 5 | 12351.90 | 30344.40 | **59.29%** |
+| Town10HD | 31像素运动模糊 | 5 | 10592.30 | 35502.50 | **70.16%** |
+| Town10HD | 固定偏航±15° / 俯仰±8° | 5 | 10315.80 | 60438.50 | **82.93%** |
+| Town10HD | 动态抖动峰值5° | 5 | 10342.50 | 11087.20 | **6.72%** |
 
-### 工程固定配时测试
+表内耗时是配对案例指标之和（秒），不是一辆车的平均耗时。南沙每案例使用1298秒时域的截断平均行程；Town每案例使用518秒时域的截断总行程。改善率按同场景、同条件的指标和计算。
+<!-- FUSION_RESULTS:END -->
 
-当前固定对照采用事先冻结的工程方案：南沙使用各路口既有配置（J02 为 **35/14/10/17 秒**），Town10HD 使用 **31/6/31/6 秒**，不针对最终测试车流搜索最优配时。**72 个南沙和 40 个 Town10HD 固定对照回合均已完成。** 在南沙 72 个清晰条件配对回合上，发布模型相对工程固定方案的逐回合截断平均行程汇总改善 **15.99%**。该有限时域指标与上方完整平均行程分别统计。[固定对照数据](results/engineering-fixed-2026-10-26.json) · [矩阵复现说明](docs/reproduction.md)。
+![正常视觉三方结果](assets/results-fusion/normal.png)
 
-其他历史固定参考和相应视频仅保留归档，不作为当前复现方案。发布模型与融合权重模型分别统计，不继承对方成绩。
+![特殊视觉双方结果](assets/results-fusion/extreme.png)
 
-## 仿真场景
+![相对正常视觉的变化](assets/results-fusion/degradation.png)
 
-![南沙路口四路摄像头画面](assets/nansha-scene.jpg)
+退化图中南沙与Town10HD两个面板使用独立纵轴范围。跨面板应比较数值标签，不能直接比较柱高。
 
-*南沙 J02，UE5 Epic 画质。本轮新闭环测试中的四路摄像头画面。*
+南沙正常主表覆盖九个路口、预先确定的全部 **72** 个案例。特殊视觉小批范围更窄：南沙为种子97001的九个高流量均衡案例，Town10HD为种子18040的五类车流。这些是受控仿真结果，不代表统计显著、全面领先或任意真实道路都能复现。
 
-## 运行测试
+录制案例展示真实视觉条件和控制行为，画面中的分数只属于该次录制；整体效果以以上配对表为准，不要求每个GIF案例都由S1获胜。
 
-需要 Linux、Python **3.10** 和 SUMO。三维画面还需要配套 CARLA 0.10.0 场景包及 NVIDIA GPU，录制需要 FFmpeg。
+## 八组特殊视觉
+
+<details><summary>展开南沙与Town10HD完整GIF画廊</summary>
+
+| 场景 | 失焦σ=9 | 31像素运动模糊 |
+|---|---|---|
+| 南沙 | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-mb31.gif) |
+| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-mb31.gif) |
+
+| 场景 | 固定偏航±15° / 俯仰±8° | 动态抖动5° / 横滚2.5° |
+|---|---|---|
+| 南沙 | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-shake5.gif) |
+| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-shake5.gif) |
+
+</details>
+
+YOLO车道画线先在正常机位完成并冻结。`angle15`在画线后改变机位，整回合保持固定，不重新标定；`shake5`的偏航和俯仰峰值为5°，横滚峰值为2.5°。
+
+正常视频：[南沙](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/nansha-clean.mp4) · [Town10HD](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes/resolve/main/media/fusion-1.0/town-clean.mp4)
+
+## 推理性能
+
+![三帧决策延迟](assets/results-fusion/latency.png)
+
+<!-- FUSION_LATENCY:BEGIN -->
+| 范围 | 数量 | 平均 | 中位数 | P95 | 最大值 | 小于1秒 |
+|---|---:|---:|---:|---:|---:|---:|
+| 全部请求 | 6823 | 485.4 ms | 479.0 ms | 494.0 ms | 2304.0 ms | 99.08% |
+| 每回合首请求 | 133 | 911.1 ms | 495.0 ms | 1460.2 ms | 2304.0 ms | 52.63% |
+| 后续请求 | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
+<!-- FUSION_LATENCY:END -->
+
+当前未量化BF16模型输入四秒观察窗内的三帧画面。统计覆盖133个S1模型案例：南沙正常72案例和融合小批S1的61案例，不包含相机采集、渲染和控制执行。首请求包含初始化影响，后续请求更接近稳态。非正式RTX 4090观测的条件未记录、未核对，因此不纳入正式统计。尚未验证量化版本性能，也不承诺所有请求都小于1秒。
+
+## 下载与快速开始
+
+模型采用申请审批制。当前版本沿用公开v3场景资产；只下载融合版媒体时，无需重复下载场景包。使用v3资产时，应配合GitHub最新代码。
 
 ```bash
+python3.12 -m venv .venv-inference
+source .venv-inference/bin/activate
+pip install -U huggingface_hub
+hf auth login
+hf download AIMS2025/DeepSignal-S1 --local-dir ./DeepSignal-S1-model
+
+deactivate
+
+git clone https://github.com/AIMS-Laboratory/DeepSignal-S1.git DeepSignal-S1
+cd DeepSignal-S1
 python3.10 -m venv .venv
-source .venv/bin/activate
-pip install -e '.[test,download]'
-
-deepsignal-s1 prepare --scene scenarios/nansha-j02/scene.json \
-  --regime east-west --seed 99001 --output runs/example/plan.json
-
-deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
-  --plan runs/example/plan.json --controller fixed --cpu \
-  --output runs/example/fixed
+.venv/bin/pip install -e '.[test,reproduction,download]'
 ```
 
-上述固定配时测试无需模型权限或三维素材。视觉闭环测试见[场景安装与模型访问](docs/testing.md)。
+模型服务与最终公开复现命令见[复现说明](docs/reproduction.md)。请下载完整模型目录；模型获批不代表提供远程托管API。从公开下载开始的完整闭环复跑尚未完成认证。
 
-## 模型与场景下载
+## 评测边界
 
-当前模型主页为 **[Hugging Face：AIMS2025/DeepSignal-S1](https://huggingface.co/AIMS2025/DeepSignal-S1)**，只提供 `DeepSignal-S1-1.0-candidate`，不包含历史 Town 权重。下载前请查看模型卡中的上传就绪状态并申请访问权限。历史 Town 成绩仍明确对应独立存档版本，不能归给这份 HF 权重。
+- **唯一固定基线：** 冻结工程固定配时，南沙使用各路口工程表，Town10HD使用`31/6/31/6秒`。
+- **信号转换：** 适用时保留5秒绿灯尾段，再执行3秒黄灯和2秒全红。
+- **有限时域：** 未完成车辆仍计入，不能称为完整行程平均值。
+- **南沙已知限制：** 首次立即切相后，旧红龄记账可能多算一个最小绿灯时段。双方沿用相同协议，但本小批不能视为控制协议已全面验收。
 
-统一的 **[南沙 + Town10HD 场景数据集](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)** 托管 `DeepSignal-S1-Scenes-v3.tar.gz`（**27.60 GiB**），上传就绪状态以数据集卡片为准。无需 Google Drive；场景公开下载，模型另行申请权限。从公开下载开始的完整复跑尚未验收。
+详见[融合评测说明](docs/fusion-pilot-evaluation.md)、[指标定义](docs/comparisons.md)和[素材交付说明](docs/media-delivery.md)。
 
-```bash
-hf download AIMS2025/DeepSignal-S1-Scenes DeepSignal-S1-Scenes-v3.tar.gz \
-  --repo-type dataset --local-dir downloads
-deepsignal-s1 install-assets --archive downloads/DeepSignal-S1-Scenes-v3.tar.gz
-```
+## 历史版本
 
-v2 包包含两套 UE5 场景与历史 Town 的 CARLA 0.9.16 运行环境，不包含独立的历史模型权重。请按[安装及版本对应说明](docs/released-results.md)运行。访问本 GitHub 仓库不代表已获得模型权限，也不等于开通了远程托管 API。
-
-获批下载完整模型后，也可以通过 `scripts/serve_model.py` 启动本地推理，不依赖远程 API。详见[本地推理与复现说明](docs/reproduction.md)。
-
-获批后配置：
-
-```bash
-export HF_TOKEN="已获批账号的访问令牌"
-export DEEPSIGNAL_ENDPOINT="分配给你的模型服务地址"
-deepsignal-s1 run --scene scenarios/nansha-j02/scene.json \
-  --plan runs/example/plan.json --controller s1 --port 25020 \
-  --output runs/example/s1
-```
-
-运行前需启动场景服务器。测试不会用固定配时或历史答案替代模型返回结果。
-
-## 测试产物
-
-每个回合输出到达计划、逐车记录、信号时间线和结果报告。主要指标为完整平均行程时间，包含车辆进入仿真路网前的等待；不会删除未完成行程来获得更好的平均值。
-
-对比双方使用同一到达计划。只有 `--realtime` 实测满足决策时限的回合才记录为实时运行，在线仿真录制不自动等于实时演示。
-
-## 相关资源
-
-- [测试场景与 API 使用](docs/testing.md)
-- [统一场景包与原矩阵复现](docs/reproduction.md)
-- [公开成绩与对应模型、场景版本](docs/released-results.md)
-- [补充视觉条件测试方案](docs/supplementary-evaluation.md)
-- [指标与对比口径](docs/comparisons.md)
-- [交叉口排队、停车等待与通过量指标](docs/intersection-metrics.md)
-- [此前 DeepSignal 项目](https://github.com/AIMS-Laboratory/DeepSignal)
-- [场景素材及第三方说明](NOTICE.md)
+此前 `DeepSignal-S1-1.0-candidate` 的南沙结果和历史Town专用权重继续按原协议归档，不属于融合1.0权重及其成绩。见[历史发布结果](docs/released-results.md)。
 
 联系：[dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)

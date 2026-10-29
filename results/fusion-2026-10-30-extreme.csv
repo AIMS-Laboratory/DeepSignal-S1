@@ -1,0 +1,9 @@
+scene,condition,cases,metric,s1_sum,mp_sum,improvement_percent,wins,target_percent
+nansha,df9,9,truncated_mean_journey_time_s,1257.39,1502.63,16.32071767500981,8,10.0
+nansha,mb31,9,truncated_mean_journey_time_s,1174.58,1680.04,30.086188424085147,9,10.0
+nansha,angle15,9,truncated_mean_journey_time_s,1153.65,1374.6299999999999,16.075598524693902,7,10.0
+nansha,shake5,9,truncated_mean_journey_time_s,1145.7,1229.37,6.8059249859684146,6,10.0
+town,df9,5,truncated_total_journey_time_s,12351.900000000001,30344.4,59.294301419701824,5,10.0
+town,mb31,5,truncated_total_journey_time_s,10592.3,35502.5,70.16463629321879,5,10.0
+town,angle15,5,truncated_total_journey_time_s,10315.8,60438.5,82.9317405296293,5,10.0
+town,shake5,5,truncated_total_journey_time_s,10342.5,11087.2,6.716754455588436,4,10.0

@@ -1,5 +1,7 @@
 # 交叉口指标 / Intersection Metrics
 
+当前融合1.0结果与Town修正时序见[融合评测](fusion-pilot-evaluation.md)。本页保留指标定义与历史修正过程；旧Town成绩不进入当前融合主页。
+
 单交叉口信控不只看行程时间。新运行的原矩阵入口会额外写出 `<tag>-metrics.json`，覆盖 S1、YOLO+MP 与工程固定配时。原有行程指标和原始结果不覆盖、不改写。
 
 New matrix runs additionally write `<tag>-metrics.json` for all three controllers. These evaluation-only measurements do not change the original journey metrics or controller inputs.
