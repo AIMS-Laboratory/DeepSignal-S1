@@ -6,7 +6,7 @@ CPU测试和6/6固定动作样例已经通过；从公开下载开始的完整�
 
 ## 1. 下载代码、模型与v3场景
 
-模型采用审批下载。场景公开，继续使用v3资产；只下载融合版媒体时无需重复下载场景包。
+模型与仿真资产分别采用审批下载，继续使用v3资产。[融合版媒体和结果数据](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media)无需审批，观看媒体不需要下载场景包。
 
 ```bash
 pip install -U huggingface_hub

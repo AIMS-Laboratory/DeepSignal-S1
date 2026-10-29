@@ -100,7 +100,7 @@ YOLO车道画线先在正常机位完成并冻结。`angle15`在画线后改变�
 
 ## 下载与快速开始
 
-模型采用申请审批制。当前版本沿用公开v3场景资产；只下载融合版媒体时，无需重复下载场景包。使用v3资产时，应配合GitHub最新代码。
+模型与仿真资产下载分别需要申请审批。GIF、视频和结果数据在[DeepSignal-S1-Media](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media)免费公开，无需审批。当前版本沿用v3场景资产并配合GitHub最新代码；观看媒体无需下载场景包。
 
 ```bash
 python3.12 -m venv .venv-inference

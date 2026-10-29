@@ -101,7 +101,7 @@ The unquantized BF16 checkpoint takes three frames over a four-second observatio
 
 ## Download and Quickstart
 
-Model access is approval-based. The release uses the public v3 scene assets; downloading fusion media does not require downloading the scene package again. Use the latest GitHub code with the v3 assets.
+Model and simulation-asset downloads require separate access approvals. Demo GIFs, videos and result data are openly available from [DeepSignal-S1-Media](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media). The release retains the v3 scene assets; use them with the latest GitHub code. Viewing media does not require downloading the scene package.
 
 ```bash
 python3.12 -m venv .venv-inference
