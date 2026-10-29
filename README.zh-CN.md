@@ -115,7 +115,7 @@ python3.10 -m venv .venv
 .venv/bin/pip install -e '.[test,reproduction,download]'
 ```
 
-模型服务与最终公开复现命令见[复现说明](docs/reproduction.md)。请下载完整模型目录；模型获批不代表提供远程托管API。从公开下载开始的完整闭环复跑尚未完成认证。
+模型服务、无需启动仿真器的真实三帧请求示例，以及闭环命令见[复现说明](docs/reproduction.md)。请下载完整模型目录；模型获批不代表提供远程托管API。从公开下载开始的完整闭环复跑尚未完成认证。
 
 ## 评测边界
 

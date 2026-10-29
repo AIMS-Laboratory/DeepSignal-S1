@@ -116,7 +116,7 @@ python3.10 -m venv .venv
 .venv/bin/pip install -e '.[test,reproduction,download]'
 ```
 
-The model server and final public reproduction commands are documented in [Reproduction](docs/reproduction.md). Download the complete model folder; approved access does not create a hosted API. A full fresh-download closed-loop replay has not yet been certified.
+The model server, a real three-frame request that needs no simulator, and closed-loop commands are documented in [Reproduction](docs/reproduction.md). Download the complete model folder; approved access does not create a hosted API. A full fresh-download closed-loop replay has not yet been certified.
 
 ## Evaluation Scope
 

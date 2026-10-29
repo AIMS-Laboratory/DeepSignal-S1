@@ -59,6 +59,16 @@ CUDA_VISIBLE_DEVICES=0 .venv-inference/bin/python scripts/serve_model.py \
 
 服务版本必须报告 `DeepSignal-S1-1.0`。模型输入为4秒观察窗内按2秒间隔取得的三帧画面、静态路口信息、当前信号状态与合法动作，不接收仿真车数或未来到达计划。
 
+可先用仓库内的真实三帧失焦请求检查模型服务，无需下载或启动三维场景：
+
+```bash
+curl --fail http://127.0.0.1:18404/v1/decide \
+  -H 'Content-Type: application/json' \
+  --data-binary @examples/nansha-defocus-request.json
+```
+
+这个请求来自南沙J08、失焦σ=9的短时一致性检查，已验证研究环境与发布包的动作和全部概率相同。这里只验证模型推理接口，不将单次请求当作闭环交通效果测试，也不回放答案替代模型。
+
 ## 4. 启动场景
 
 ### 南沙：UE5 / CARLA 0.10.0
