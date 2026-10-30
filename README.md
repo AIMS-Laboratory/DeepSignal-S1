@@ -33,14 +33,14 @@ All five regimes use **the same four-way junction**, varying directional demand,
 
 <table>
 <thead>
-<tr><th scope="col" nowrap="nowrap">Traffic-demand scenario</th><th scope="col" nowrap="nowrap">Flow per approach<br/>(vehicles/hour)</th><th scope="col" nowrap="nowrap">Temporal pattern</th><th scope="col" nowrap="nowrap">Control challenge</th></tr>
+<tr><th scope="col" nowrap="nowrap">Demand scenario</th><th scope="col" nowrap="nowrap">Flow per approach<br/>(vehicles/hour)</th><th scope="col" nowrap="nowrap">Temporal pattern</th><th scope="col" nowrap="nowrap">Control challenge</th></tr>
 </thead>
 <tbody>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">Balanced flow</a></td><td nowrap="nowrap">E, W, N and S: 360 each</td><td nowrap="nowrap">Constant throughout</td><td nowrap="nowrap">Basic control with similar<br/>demand in all directions</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">Sustained<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 600 each<br/>N and S: 120 each</td><td nowrap="nowrap">Constant<br/>major-to-minor ratio 5:1</td><td nowrap="nowrap">Allocate green time to<br/>persistently busier directions</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">Balanced flow</a></td><td nowrap="nowrap">All four: 360 each</td><td nowrap="nowrap">Constant throughout</td><td nowrap="nowrap">Basic control with similar<br/>demand in all directions</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">Sustained<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 600 each<br/>N and S: 120 each</td><td nowrap="nowrap">Constant<br/>major/minor ratio 5:1</td><td nowrap="nowrap">Prioritize persistently<br/>busier approaches</td></tr>
 <tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json">Higher-load<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 750 each<br/>N and S: 150 each</td><td nowrap="nowrap">Constant<br/>still 5:1</td><td nowrap="nowrap">25% more total demand<br/>than the preceding regime</td></tr>
 <tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json">Time-varying peak</a></td><td nowrap="nowrap">All approaches:<br/>200 → 700 → 200</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to rising demand<br/>and peak recovery</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">Shifted peak timing</a></td><td nowrap="nowrap">All approaches:<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt when the peak occurs<br/>at a different time</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">Shifted peak timing</a></td><td nowrap="nowrap">All approaches:<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to changes<br/>in peak timing</td></tr>
 </tbody>
 </table>
 

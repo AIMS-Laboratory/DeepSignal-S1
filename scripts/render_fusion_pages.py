@@ -110,13 +110,13 @@ def render_town_demand(chinese: bool) -> str:
                  '时间从仿真启动计，末档流量保持至需求生成结束。“高峰时序变化”按种子重排时变流量，上表为当前结果对应的配置。各控制器使用相同的车辆计划。')
     else:
         lines = ['All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.', '']
-        headers = ('Traffic-demand scenario', 'Flow per approach\n(vehicles/hour)', 'Temporal pattern', 'Control challenge')
+        headers = ('Demand scenario', 'Flow per approach\n(vehicles/hour)', 'Temporal pattern', 'Control challenge')
         rows = [
-            ('Balanced flow', f"E, W, N and S: {balanced['balanced_rate_vph']:g} each", 'Constant throughout', 'Basic control with similar\ndemand in all directions'),
-            ('Sustained\ndirectional imbalance', f"E and W: {uneven['asymmetric_heavy_vph']:g} each\nN and S: {uneven['asymmetric_light_vph']:g} each", 'Constant\nmajor-to-minor ratio 5:1', 'Allocate green time to\npersistently busier directions'),
+            ('Balanced flow', f"All four: {balanced['balanced_rate_vph']:g} each", 'Constant throughout', 'Basic control with similar\ndemand in all directions'),
+            ('Sustained\ndirectional imbalance', f"E and W: {uneven['asymmetric_heavy_vph']:g} each\nN and S: {uneven['asymmetric_light_vph']:g} each", 'Constant\nmajor/minor ratio 5:1', 'Prioritize persistently\nbusier approaches'),
             ('Higher-load\ndirectional imbalance', f"E and W: {heavier['asymmetric_heavy_vph']:g} each\nN and S: {heavier['asymmetric_light_vph']:g} each", 'Constant\nstill 5:1', f'{increase:g}% more total demand\nthan the preceding regime'),
             ('Time-varying peak', f'All approaches:\n{flows(varying)}', periods(varying), 'Adapt to rising demand\nand peak recovery'),
-            ('Shifted peak timing', f'All approaches:\n{flows(shifted)}', periods(shifted), 'Adapt when the peak occurs\nat a different time'),
+            ('Shifted peak timing', f'All approaches:\n{flows(shifted)}', periods(shifted), 'Adapt to changes\nin peak timing'),
         ]
         split = balanced['turn_split']
         notes = (f"Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use {100*split['s']:g}% straight, {100*split['l']:g}% left and {100*split['r']:g}% right turns. "
