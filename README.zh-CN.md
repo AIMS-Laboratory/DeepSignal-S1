@@ -88,27 +88,19 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-angle15.gif" alt="Town10HD · 固定偏航±15° / 俯仰±8°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71"></video>
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-angle15.mp4)
+https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71
 
 #### Town10HD · 失焦σ=9
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-df9.gif" alt="Town10HD · 失焦σ=9">
 
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-df9.mp4)
-
 #### Town10HD · 31像素运动模糊
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-mb31.gif" alt="Town10HD · 31像素运动模糊">
 
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-mb31.mp4)
-
 #### Town10HD · 动态抖动峰值5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-shake5.gif" alt="Town10HD · 动态抖动峰值5°">
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-shake5.mp4)
 
 ### 南沙
 
@@ -116,27 +108,19 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-angle15.gif" alt="南沙 · 固定偏航±15° / 俯仰±8°">
 
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-angle15.mp4)
-
 #### 南沙 · 失焦σ=9
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-df9.gif" alt="南沙 · 失焦σ=9">
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-df9.mp4)
 
 #### 南沙 · 31像素运动模糊
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-mb31.gif" alt="南沙 · 31像素运动模糊">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73"></video>
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-mb31.mp4)
+https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73
 
 #### 南沙 · 动态抖动峰值5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-shake5.gif" alt="南沙 · 动态抖动峰值5°">
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-shake5.mp4)
 <!-- FUSION_GALLERY:END -->
 
 动图只展示模型实际看到的画面、实时交通指标与最近一次真实决策。**平均等待时间**是截至画面时刻，已进入车辆累计停车等待时间除以已进入车辆数，包含已经驶离的车辆。**排队车辆**是当前停车车辆数。两项动态统计包含共有预热车辆，来自已记录灯态的SUMO轨迹重放，并与录像逐帧核对；与主表正式车辆、含入网等待的汇总口径不同。底部平均行程只属于该录制回合，不替代整批结果。
@@ -148,15 +132,11 @@ YOLO车道画线先在正常机位完成并冻结。`angle15`在画线后改变�
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 ### 正常视觉：南沙三方对比
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/de7933ba-fcd9-42a6-befd-48b0e0c51cf8"></video>
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-clean.mp4)
+https://github.com/user-attachments/assets/de7933ba-fcd9-42a6-befd-48b0e0c51cf8
 
 ### 正常视觉：Town10HD三方对比
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a"></video>
-
-[大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-clean.mp4)
+https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a
 <!-- FUSION_CLEAN_VIDEOS:END -->
 
 ## 推理性能

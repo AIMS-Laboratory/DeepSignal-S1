@@ -190,12 +190,10 @@ def video_tag(scene: str, condition: str, chinese: bool, github: bool = True) ->
     language = 'zh' if chinese else 'en'
     key = f'{language}/{scene}-{condition}.mp4'
     if github:
-        source = json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
-    else:
-        source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{key}'
-    mirror = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/{key}'
-    label = '大屏 / 备用播放' if chinese else 'Large-screen / alternate player'
-    return f'<video controls="controls" width="1280" playsinline="playsinline" src="{source}"></video>\n\n[{label}]({mirror})'
+        # Bare attachment URLs activate GitHub's signed-in media URL rewriting.
+        return json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
+    source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{key}'
+    return f'<video controls="controls" width="1280" playsinline="playsinline" src="{source}"></video>'
 
 
 def render_gallery(chinese: bool, github: bool = True) -> str:
@@ -207,13 +205,9 @@ def render_gallery(chinese: bool, github: bool = True) -> str:
         for condition in ('angle15', 'df9', 'mb31', 'shake5'):
             title = f'{label} · {condition_label(condition, chinese)}'
             preview = f'{base}/{scene}-{condition}.gif'
+            lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '']
             if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
-                movie = video_tag(scene, condition, chinese, github)
-            else:
-                mirror = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/{language}/{scene}-{condition}.mp4'
-                movie = f"[{'大屏 / 备用播放' if chinese else 'Large-screen / alternate player'}]({mirror})"
-            lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '',
-                      movie, '']
+                lines += [video_tag(scene, condition, chinese, github), '']
     return '\n'.join(lines).rstrip()
 
 

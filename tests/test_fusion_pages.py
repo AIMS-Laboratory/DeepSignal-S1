@@ -24,10 +24,10 @@ def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     body = PAGES.render_gallery(chinese)
     assert '<details' not in body
     assert body.count('.gif') == 8
-    assert body.count('/town-') == 8
-    assert body.count('/nansha-') == 8
+    assert body.count('/town-') == 4
+    assert body.count('/nansha-') == 4
     assert f'/fusion-1.0/v4/{language}/town-angle15.gif' in body
-    assert '<video controls=' in body
+    assert '<video' not in body
     assert body.count('https://github.com/user-attachments/assets/') == 2
 
 
@@ -62,9 +62,20 @@ def test_wait_includes_measured_insertion_wait_not_only_inserted_vehicles():
 def test_large_gallery_does_not_reduce_shake_to_a_narrow_preview():
     body = PAGES.render_gallery(True)
     assert body.count('<img width="1280"') == 8
-    assert body.count('<video controls="controls" width="1280"') == 2
+    assert body.count('https://github.com/user-attachments/assets/') == 2
     assert '/fusion-1.0/v4/zh/town-shake5.gif' in body
-    assert '备用播放' in body
+    assert '备用播放' not in body
+    assert 'Large-screen / alternate player' not in body
+
+
+@pytest.mark.parametrize('chinese', [False, True])
+def test_github_video_uses_native_autoembed_not_html_or_navigation(chinese):
+    body = PAGES.video_tag('nansha', 'clean', chinese)
+    assert body.startswith('https://github.com/user-attachments/assets/')
+    assert len(body.splitlines()) == 1
+    assert '<video' not in body
+    assert '[' not in body
+    assert '/blob/' not in body
 
 
 def test_fresh_mp_row_uses_all_three_metrics_from_the_same_supplement():

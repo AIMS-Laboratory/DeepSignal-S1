@@ -88,27 +88,19 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91"></video>
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-angle15.mp4)
+https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91
 
 #### Town10HD · Defocus σ=9
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-df9.mp4)
-
 #### Town10HD · 31 px motion blur
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-mb31.mp4)
-
 #### Town10HD · Dynamic shake 5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-shake5.mp4)
 
 ### Nansha
 
@@ -116,27 +108,19 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-angle15.mp4)
-
 #### Nansha · Defocus σ=9
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-df9.mp4)
 
 #### Nansha · 31 px motion blur
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a"></video>
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-mb31.mp4)
+https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a
 
 #### Nansha · Dynamic shake 5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-shake5.mp4)
 <!-- FUSION_GALLERY:END -->
 
 Media show only the actual model camera input, live traffic metrics and the most recent recorded decision. **Mean wait** is cumulative stopped waiting divided by all vehicles entered so far, including those already arrived. **Queue** is the current stopped-vehicle count. Both include shared warmup traffic and come from recorded-signal SUMO replay checked against every video frame, unlike the formal-cohort batch means that also include insertion waiting. Episode mean journeys belong to that recording, not the evaluation batch.
@@ -148,15 +132,11 @@ Lane regions are calibrated on the clean camera pose and then frozen. For `angle
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 ### Clean Nansha: Three Controllers
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/c4347efa-b450-4b79-a554-1157ddccb1bf"></video>
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-clean.mp4)
+https://github.com/user-attachments/assets/c4347efa-b450-4b79-a554-1157ddccb1bf
 
 ### Clean Town10HD: Three Controllers
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f"></video>
-
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-clean.mp4)
+https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
 <!-- FUSION_CLEAN_VIDEOS:END -->
 
 ## Inference Performance
