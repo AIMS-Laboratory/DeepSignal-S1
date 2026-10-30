@@ -191,7 +191,7 @@ A verified minimum-VRAM configuration has not been published; the tested hardwar
 
 ## Future Potential and Research Directions
 
-The current results demonstrate direct visual decisions in controlled simulations. The following are directions for further research; **complex traffic-event handling and multi-junction coordination have not yet been validated**.
+The current results demonstrate direct visual decisions in controlled simulations. Building on these results, **our team is actively pursuing the following next-stage research directions**; complex traffic-event handling and multi-junction coordination have not yet been validated.
 
 - **Understand and respond to more complex traffic events.** With additional scenario data, traffic rules and safety constraints, explore reasoning about roadworks, incident blockages, emergency vehicles, and concentrated pedestrian or cyclist flows, so signal decisions can account for events and their effects on traffic.
 - **Extend single-junction decisions to coordinated control.** Explore sharing queues, signal states and incoming-flow information between adjacent junctions to coordinate release timing, support arterial green waves, limit downstream queue spillback and improve network traffic flow. This requires new communication mechanisms and network-level evaluation.
