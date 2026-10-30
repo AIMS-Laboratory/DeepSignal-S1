@@ -78,6 +78,7 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media():
     assert f'[English]({homepage})' in body and '[简体中文](#简体中文)' in body
     assert '/blob/main/README.zh-CN.md' not in body
     assert '### 结果解读' in body and '### What the Results Show' in body
+    assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/visual-robustness.md' in body
 
 
 @pytest.mark.parametrize('chinese', [False, True])
@@ -91,6 +92,19 @@ def test_discussion_uses_current_comparisons_and_keeps_clean_town_tied(chinese):
     assert ('基本持平' if chinese else 'essentially tied') in body
     assert ('真实恶劣天气验证' if chinese else 'real-world adverse-weather validation') in body
     assert '**485' in body and '**477' in body and '**99.08%**' in body
+    if chinese:
+        for condition in ('失焦', '运动模糊', '固定角度偏移', '动态抖动'):
+            assert f'- **{condition}：' in body
+        for cause in ('自动对焦', '更长曝光', '检修', '阵风', '重型车辆'):
+            assert cause in body
+        assert '调整后保持不动的固定偏角不同' in body
+    else:
+        for condition in ('Defocus', 'Motion blur', 'Fixed camera-angle shifts', 'Dynamic shake'):
+            assert f'- **{condition}:' in body
+        for cause in ('autofocus', 'longer exposures', 'maintenance', 'Wind gusts', 'heavy vehicles'):
+            assert cause in body
+        assert 'Unlike a fixed angle shift' in body
+    assert '(docs/visual-robustness.md)' in body
     highlights = PAGES.render_highlights(data, chinese, records)
     assert '**1.36%**' in highlights
     for group in data['extreme']:

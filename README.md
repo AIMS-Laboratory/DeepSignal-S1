@@ -91,13 +91,16 @@ Against YOLO+MP, S1 further reduces Nansha mean journey time by **1.36%** and me
 
 #### Visual Disruption: A More Distinctive Deployment Advantage
 
-Outdoor cameras can experience vibration, mounting disturbances or maintenance-related changes that affect image stability, viewing angle or image quality. Controlled blur, defocus, fixed camera shifts and dynamic shake test traffic control beyond ideal, clear camera feeds.
+Traffic demand may stay the same while camera input changes because of lighting, maintenance or vibration. The four tests target distinct imaging problems: can S1 continue making effective signal decisions when images lose sharpness or stability, or no longer match the original viewpoint?
 
-- **Blur and defocus:** under defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in Nansha and **59.29%** lower in Town; under motion blur, the reductions are **30.14%** and **70.16%**, respectively.
-- **Camera-angle changes:** when the camera shifts after YOLO lane-region calibration, S1 mean journey time is **16.40%** lower in Nansha and **82.93%** lower in Town. Town mean waiting also falls by **90.63%**.
-- **Dynamic shake:** S1 retains a mean-journey advantage of **6.80%** in Nansha and **6.72%** in Town. Shake gains are smaller; blur and camera shifts show the more pronounced advantages.
+- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in Nansha and **59.29%** lower in Town.
+- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **30.14%** lower in Nansha and **70.16%** lower in Town.
+- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **16.40%** lower in Nansha and **82.93%** lower in Town; Town mean waiting is **90.63%** lower.
+- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **6.80%** in Nansha and **6.72%** in Town. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.
 
-Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP. The practical value is competitive clean-view control combined with reduced traffic-performance loss when visual input degrades. These are simulated input changes, not completed real-world adverse-weather validation.
+These changes can affect vehicle detection and counting or misalign the image with calibrated lane regions, with downstream consequences for count-based signal control. S1 decides directly from temporal images and signal state, without that separate detection-and-counting pipeline. Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP: robustness translates into less waiting, shorter queues and shorter average journeys.
+
+The tests simulate visual changes that these real-world problems can produce; they are not completed night-time field or real-world adverse-weather validation. [Real-world context and technical sources](docs/visual-robustness.md).
 
 #### Sub-Second Decisions From a Visual Model
 
