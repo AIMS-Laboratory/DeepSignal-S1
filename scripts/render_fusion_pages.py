@@ -92,8 +92,9 @@ def traffic_stats(group: dict[str, Any], controller: str, records: list[dict[str
                and row['condition'] == group.get('condition', 'clean') and row['controller'] == controller]
     complete = len(matched) == group['cases'] and all(row['status'] == 'complete' for row in matched)
     vehicles = sum(row['vehicles'] for row in matched) if complete else 0
+    fresh_batch = complete and all(row.get('evaluation_batch') == 'nansha-mp-metrics-20261030' for row in matched)
     return {
-        'mean_journey_s_per_vehicle': traffic_means(group)[controller],
+        'mean_journey_s_per_vehicle': sum(row['mean_journey_s'] * row['vehicles'] for row in matched) / vehicles if fresh_batch else traffic_means(group)[controller],
         'mean_wait_s_per_vehicle': sum(row['sum_observed_stopped_time_s'] + row['mean_insertion_wait_s'] * row['vehicles'] for row in matched) / vehicles if complete else None,
         'mean_queue_vehicles': sum(row['mean_queue_vehicles'] for row in matched) / len(matched) if complete else None,
         'complete_cases': sum(row['status'] == 'complete' for row in matched),
@@ -121,18 +122,19 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
                          for name in ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
                 lines.append(f"| {scene_label(group,chinese)} | {condition} | {group['cases']} | {label} | {' | '.join(cells)} |")
         lines.append('')
+    supplemented = sum(row.get('evaluation_batch') == 'nansha-mp-metrics-20261030' and row['status'] == 'complete' for row in records) == 72
     if chinese:
         lines += ['**指标定义：** 平均等待包括正式评测车辆的停车等待和拥堵造成的入网等待；平均排队长度是共同发车窗口98—398秒内，受控进口车道停车车辆总数的时间平均，单位为辆，不是米；平均行程从计划出发计时。行程与等待按车辆数加权，排队按相同窗口的案例均值汇总。',
                   '',
                   '南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入，不能删除拥堵车辆后只报告已完成者。原始记录不变；等待和排队由原动作/灯态的SUMO重放补算，逐案例行程已核对。',
                   '',
-                  '南沙正常视觉YOLO+MP的72回合缺少原始动作/灯态历史，因此这两项显示“未记录”，不推测或拿录像单例替代整批统计。']
+                  ('南沙正常视觉YOLO+MP已独立补跑同一组72案例，等待、排队、行程整行采用该补跑批次；S1与工程固定记录不变。原先缺日志的历史YOLO+MP成绩保留，不与新统计混拼。' if supplemented else '南沙正常视觉YOLO+MP的72回合正在补跑完整日志；完成前这两项仍显示“未记录”，不推测或拿录像单例替代整批统计。')]
     else:
         lines += ['**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.',
                   '',
                   'Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff. Original records are unchanged; waiting and queue statistics come from recorded-action/signal SUMO replay checked against each original journey score.',
                   '',
-                  'The 72 clean Nansha YOLO+MP runs did not save their control history, so waiting and queue are marked "Not recorded", not inferred or replaced with selected recording cases.']
+                  ('Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and engineering-fixed records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.' if supplemented else 'The 72 clean Nansha YOLO+MP cases are being rerun with full logs. Until completion, waiting and queue remain "Not recorded", not inferred or replaced with selected recording cases.')]
     return '\n'.join(lines)
 
 
@@ -190,20 +192,22 @@ def video_tag(scene: str, condition: str, chinese: bool, github: bool = True) ->
     if github:
         source = json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
     else:
-        source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/{key}'
-    return f'<video controls="controls" width="960" src="{source}"></video>'
+        source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/{key}'
+    mirror = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/{key}'
+    label = '大屏 / 备用播放' if chinese else 'Large-screen / alternate player'
+    return f'<video controls="controls" width="1280" playsinline="playsinline" src="{source}"></video>\n\n[{label}]({mirror})'
 
 
 def render_gallery(chinese: bool, github: bool = True) -> str:
     language = 'zh' if chinese else 'en'
-    base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/{language}'
+    base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/{language}'
     lines = []
     for scene, label in (('town', 'Town10HD'), ('nansha', '南沙' if chinese else 'Nansha')):
         lines += [f'### {label}', '']
         for condition in ('angle15', 'df9', 'mb31', 'shake5'):
             title = f'{label} · {condition_label(condition, chinese)}'
-            preview = f'{base}/{scene}-{condition}.gif' + ('?v=2' if condition == 'shake5' else '')
-            lines += [f'#### {title}', '', f'![{title}]({preview})', '',
+            preview = f'{base}/{scene}-{condition}.gif'
+            lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '',
                       video_tag(scene, condition, chinese, github), '']
     return '\n'.join(lines).rstrip()
 

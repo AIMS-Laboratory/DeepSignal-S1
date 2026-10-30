@@ -24,10 +24,9 @@ def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     body = PAGES.render_gallery(chinese)
     assert '<details' not in body
     assert body.count('.gif') == 8
-    assert body.count('shake5.gif?v=2') == 2
-    assert body.count('/town-') == 4
-    assert body.count('/nansha-') == 4
-    assert f'/fusion-1.0/{language}/town-angle15.gif' in body
+    assert body.count('/town-') == 8
+    assert body.count('/nansha-') == 8
+    assert f'/fusion-1.0/v3/{language}/town-angle15.gif' in body
     assert '<video controls=' in body
     assert body.count('https://github.com/user-attachments/assets/') == 8
 
@@ -58,3 +57,24 @@ def test_wait_includes_measured_insertion_wait_not_only_inserted_vehicles():
     assert PAGES.traffic_stats(group, 's1', [record]) == {
         'mean_journey_s_per_vehicle': 30, 'mean_wait_s_per_vehicle': 15,
         'mean_queue_vehicles': 3, 'complete_cases': 1}
+
+
+def test_large_gallery_does_not_reduce_shake_to_a_narrow_preview():
+    body = PAGES.render_gallery(True)
+    assert body.count('<img width="1280"') == 8
+    assert body.count('<video controls="controls" width="1280"') == 8
+    assert '/fusion-1.0/v3/zh/town-shake5.gif' in body
+    assert '备用播放' in body
+
+
+def test_fresh_mp_row_uses_all_three_metrics_from_the_same_supplement():
+    group = {'scene': 'nansha', 'cases': 1, 'case_results': [
+        {'s1': 10, 'mp': 20, 'source_records': {'s1': {'vehicles': 2}}}]}
+    fresh = dict(scene='nansha', condition='clean', controller='mp', status='complete',
+                 vehicles=2, sum_observed_stopped_time_s=12, mean_insertion_wait_s=1,
+                 mean_queue_vehicles=3, mean_journey_s=25,
+                 evaluation_batch='nansha-mp-metrics-20261030')
+    stats = PAGES.traffic_stats(group, 'mp', [fresh])
+    assert stats['mean_journey_s_per_vehicle'] == 25
+    assert stats['mean_wait_s_per_vehicle'] == 7
+    assert stats['mean_queue_vehicles'] == 3
