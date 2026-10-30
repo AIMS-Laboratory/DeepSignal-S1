@@ -4,7 +4,9 @@
 
 English | [简体中文](README.zh-CN.md)
 
-[Model](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Scenes](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [Results](results/fusion-2026-10-30.json) · [Reproduction](docs/reproduction.md)
+[DeepSignal family](https://github.com/AIMS-Laboratory/DeepSignal) · [Model](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Scenes](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [Results](results/fusion-2026-10-30.json) · [Reproduction](docs/reproduction.md)
+
+**DeepSignal S1** is the visual decision series in the [DeepSignal traffic-signal control model family](https://github.com/AIMS-Laboratory/DeepSignal). It selects signal actions directly from intersection camera views and current signal context. This repository hosts the S1 release page, code, evaluation results and reproduction instructions.
 
 DeepSignal-S1 follows a **Jev-style structured probabilistic decision** approach. It reads temporal intersection views and signal context, scores candidate actions, and selects a legal control action directly. It does not generate a traffic-analysis essay for another program to parse, and does not require a separate YOLO detection stage.
 
