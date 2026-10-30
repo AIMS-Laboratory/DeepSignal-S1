@@ -125,19 +125,14 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
                                  for value in (scene_label(group, chinese), condition, group['cases'])) if index == 0 else ''
                 lines.append('<tr>' + shared + f'<td>{label}</td>' + ''.join(f'<td align="right">{value}</td>' for value in cells) + '</tr>')
         lines += ['</tbody>', '</table>', '']
-    supplemented = sum(row.get('evaluation_batch') == 'nansha-mp-metrics-20261030' and row['status'] == 'complete' for row in records) == 72
     if chinese:
         lines += ['**指标定义：** 平均等待包括正式评测车辆的停车等待和拥堵造成的入网等待；平均排队长度是共同发车窗口98—398秒内，受控进口车道停车车辆总数的时间平均，单位为辆，不是米；平均行程从计划出发计时。行程与等待按车辆数加权，排队按相同窗口的案例均值汇总。',
                   '',
-                  '南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入。',
-                  '',
-                  ('南沙正常视觉YOLO+MP已独立补跑同一组72案例，等待、排队、行程整行采用该补跑批次；S1与固定配时方案的记录不变。原先缺日志的历史YOLO+MP成绩保留，不与新统计混拼。' if supplemented else '南沙正常视觉YOLO+MP的72回合正在补跑完整日志；完成前这两项仍显示“未记录”，不推测或拿录像单例替代整批统计。')]
+                  '南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入。']
     else:
         lines += ['**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.',
                   '',
-                  'Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff.',
-                  '',
-                  ('Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and fixed-time plan records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.' if supplemented else 'The 72 clean Nansha YOLO+MP cases are being rerun with full logs. Until completion, waiting and queue remain "Not recorded", not inferred or replaced with selected recording cases.')]
+                  'Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff.']
     return '\n'.join(lines)
 
 
