@@ -135,8 +135,6 @@ https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a
 
 Media show only the actual model camera input, live traffic metrics and the most recent recorded decision. **Mean wait** is cumulative stopped waiting divided by all vehicles entered so far, including those already arrived. **Queue** is the current stopped-vehicle count. Both include shared warmup traffic and come from recorded-signal SUMO replay checked against every video frame, unlike the formal-cohort batch means that also include insertion waiting. Episode mean journeys belong to that recording, not the evaluation batch.
 
-All displayed cases are four-arm intersections. Video previews use a large 4:3 dashboard with one controller per row, adapted to GitHub's player-height limit. Each 12-second preview covers the same 60 simulation seconds at 5x speed, using original recorded frames at 25 fps and H.264 Constrained Baseline. Complete recordings remain in the media archive. Shake GIFs retain 960-pixel width and show a 24-second simulation excerpt rather than shrinking the entire interface.
-
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
