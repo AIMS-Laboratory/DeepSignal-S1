@@ -4,6 +4,8 @@
 
 DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0**
 
+**S1 代表 System One**，强调快速、直接的视觉决策：结合路口画面与信号状态，输出合法控制动作。
+
 [English](README.md) | 简体中文 · [品牌首页](https://github.com/AIMS-Laboratory/DeepSignal/blob/main/README_zh.md)
 
 [看演示](#代表演示) · [看结果](#评测结果) · [试一次决策](#下载与快速开始) · [申请模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [完整复现](docs/reproduction.md)

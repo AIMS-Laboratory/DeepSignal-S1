@@ -4,6 +4,8 @@
 
 The visual decision series in the DeepSignal model family · Current release **DeepSignal-S1-1.0**
 
+**S1 stands for System One**, emphasizing fast, direct visual decisions: combining intersection views and signal state to produce legal control actions.
+
 English | [简体中文](README.zh-CN.md) · [DeepSignal family](https://github.com/AIMS-Laboratory/DeepSignal)
 
 [Watch demos](#featured-demos) · [Explore results](#results) · [Try a decision](#download-and-quickstart) · [Request model access](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Full reproduction](docs/reproduction.md)
