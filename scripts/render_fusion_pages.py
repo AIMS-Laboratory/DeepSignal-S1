@@ -317,6 +317,16 @@ def video_tag(scene: str, condition: str, chinese: bool) -> str:
     return json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
 
 
+def render_video(scene: str, condition: str, chinese: bool) -> str:
+    label = 'Town10HD' if scene == 'town' else ('南沙' if chinese else 'Nansha')
+    if condition == 'clean':
+        title = f'正常视觉：{label}三方对比' if chinese else f'Clean {label}: Three Controllers'
+    else:
+        title = f'{label} · {condition_label(condition, chinese)}'
+    summary = ('视频：' if chinese else 'Video: ') + title
+    return f'<details>\n<summary>{escape(summary)}</summary>\n\n{video_tag(scene, condition, chinese)}\n\n</details>'
+
+
 def render_gallery(chinese: bool) -> str:
     language = 'zh' if chinese else 'en'
     base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{language}'
@@ -328,7 +338,7 @@ def render_gallery(chinese: bool) -> str:
             preview = f'{base}/{scene}-{condition}.gif'
             lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '']
             if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
-                lines += [video_tag(scene, condition, chinese), '']
+                lines += [render_video(scene, condition, chinese), '']
     return '\n'.join(lines).rstrip()
 
 
@@ -406,7 +416,7 @@ def main() -> None:
     for path, chinese in ((readme, False), (readme_zh, True)):
         replace_block(path, 'TOWN_DEMAND', render_town_demand(chinese))
         replace_block(path, 'FUSION_CLEAN_VIDEOS', '\n\n'.join(
-            f"### {('正常视觉：南沙三方对比' if scene == 'nansha' else '正常视觉：Town10HD三方对比') if chinese else ('Clean Nansha: Three Controllers' if scene == 'nansha' else 'Clean Town10HD: Three Controllers')}\n\n{video_tag(scene, 'clean', chinese)}"
+            render_video(scene, 'clean', chinese)
             for scene in ('nansha', 'town')))
     if args.model_card is not None:
         card = args.model_card.resolve()

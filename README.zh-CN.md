@@ -153,7 +153,12 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-angle15.gif" alt="Town10HD · 固定偏航±15° / 俯仰±8°">
 
+<details>
+<summary>视频：Town10HD · 固定偏航±15° / 俯仰±8°</summary>
+
 https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71
+
+</details>
 
 #### Town10HD · 失焦σ=9
 
@@ -181,7 +186,12 @@ https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-mb31.gif" alt="南沙 · 31像素运动模糊">
 
+<details>
+<summary>视频：南沙 · 31像素运动模糊</summary>
+
 https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73
+
+</details>
 
 #### 南沙 · 动态抖动峰值5°
 
@@ -193,13 +203,19 @@ https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73
 YOLO车道画线先在正常机位完成并冻结。`angle15`在画线后改变机位，整回合保持固定，不重新标定；`shake5`的偏航和俯仰峰值为5°，横滚峰值为2.5°。
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
-### 正常视觉：南沙三方对比
+<details>
+<summary>视频：正常视觉：南沙三方对比</summary>
 
 https://github.com/user-attachments/assets/de7933ba-fcd9-42a6-befd-48b0e0c51cf8
 
-### 正常视觉：Town10HD三方对比
+</details>
+
+<details>
+<summary>视频：正常视觉：Town10HD三方对比</summary>
 
 https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a
+
+</details>
 <!-- FUSION_CLEAN_VIDEOS:END -->
 
 ## 推理性能

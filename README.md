@@ -153,7 +153,12 @@ The Nansha camera-shift example uses J03; defocus, motion blur and shake example
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
 
+<details>
+<summary>Video: Town10HD · Fixed yaw ±15° / pitch ±8°</summary>
+
 https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91
+
+</details>
 
 #### Town10HD · Defocus σ=9
 
@@ -181,7 +186,12 @@ https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
 
+<details>
+<summary>Video: Nansha · 31 px motion blur</summary>
+
 https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a
+
+</details>
 
 #### Nansha · Dynamic shake 5°
 
@@ -193,13 +203,19 @@ Media show the actual model input, live traffic metrics and the latest recorded 
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
-### Clean Nansha: Three Controllers
+<details>
+<summary>Video: Clean Nansha: Three Controllers</summary>
 
 https://github.com/user-attachments/assets/c4347efa-b450-4b79-a554-1157ddccb1bf
 
-### Clean Town10HD: Three Controllers
+</details>
+
+<details>
+<summary>Video: Clean Town10HD: Three Controllers</summary>
 
 https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
+
+</details>
 <!-- FUSION_CLEAN_VIDEOS:END -->
 
 ## Inference Performance

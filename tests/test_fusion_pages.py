@@ -22,9 +22,9 @@ def test_mean_journey_is_vehicle_weighted_not_mean_of_case_means():
 
 
 @pytest.mark.parametrize('chinese,language', [(True, 'zh'), (False, 'en')])
-def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
+def test_gallery_shows_both_scenes_with_only_videos_collapsed(chinese, language):
     body = PAGES.render_gallery(chinese)
-    assert '<details' not in body
+    assert body.count('<details>') == body.count('</details>') == 2
     assert body.count('.gif') == 8
     assert body.count('/town-') == 4
     assert body.count('/nansha-') == 4
@@ -203,6 +203,28 @@ def test_github_video_uses_native_autoembed_not_html_or_navigation(chinese):
     assert '<video' not in body
     assert '[' not in body
     assert '/blob/' not in body
+
+
+@pytest.mark.parametrize('chinese', [False, True])
+@pytest.mark.parametrize('scene,condition', [
+    ('town', 'angle15'), ('nansha', 'mb31'), ('nansha', 'clean'), ('town', 'clean'),
+])
+def test_video_starts_collapsed_without_changing_the_native_player(chinese, scene, condition):
+    body = PAGES.render_video(scene, condition, chinese)
+    details = ET.fromstring(body)
+    assert details.tag == 'details' and 'open' not in details.attrib
+    summary = details.find('summary')
+    assert summary.text.startswith('视频：' if chinese else 'Video: ')
+    assert summary.tail.strip() == PAGES.video_tag(scene, condition, chinese)
+    assert '\n\n' + PAGES.video_tag(scene, condition, chinese) + '\n\n' in body
+    assert details.find('.//img') is None and details.find('.//video') is None
+
+
+@pytest.mark.parametrize('filename', ['README.md', 'README.zh-CN.md'])
+def test_readmes_default_all_four_videos_to_closed(filename):
+    body = (ROOT / filename).read_text()
+    assert body.count('<details>') == body.count('</details>') == 4
+    assert '<details open' not in body
 
 
 def test_fresh_mp_row_uses_all_three_metrics_from_the_same_supplement():
