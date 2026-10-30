@@ -31,13 +31,18 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 <!-- TOWN_DEMAND:BEGIN -->
 All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.
 
-| Traffic-demand scenario | Flow per approach (vehicles/hour) | Temporal pattern | Control challenge |
-|---|---|---|---|
-| [Balanced flow](reproduction/configs/vlm-realtime-control/episode-balanced.formal.json) | E, W, N and S: 360 each | Constant throughout | Basic control with similar demand in all directions |
-| [Sustained directional imbalance](reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json) | E and W: 600 each; N and S: 120 each | Constant; major-to-minor demand ratio 5:1 | Allocate green time to persistently busier directions |
-| [Higher-load directional imbalance](reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json) | E and W: 750 each; N and S: 150 each | Constant; still 5:1 | 25% more total demand than the preceding regime |
-| [Time-varying peak](reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json) | All approaches: 200 → 700 → 200 | 0-60 s / 60-120 s / from 120 s | Adapt to rising demand and peak recovery |
-| [Shifted peak timing](reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json) | All approaches: 200 → 200 → 700 | 0-60 s / 60-120 s / from 120 s | Adapt when the peak occurs at a different time |
+<table>
+<thead>
+<tr><th scope="col" nowrap="nowrap">Traffic-demand scenario</th><th scope="col" nowrap="nowrap">Flow per approach<br/>(vehicles/hour)</th><th scope="col" nowrap="nowrap">Temporal pattern</th><th scope="col" nowrap="nowrap">Control challenge</th></tr>
+</thead>
+<tbody>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">Balanced flow</a></td><td nowrap="nowrap">E, W, N and S: 360 each</td><td nowrap="nowrap">Constant throughout</td><td nowrap="nowrap">Basic control with similar<br/>demand in all directions</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">Sustained<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 600 each<br/>N and S: 120 each</td><td nowrap="nowrap">Constant<br/>major-to-minor ratio 5:1</td><td nowrap="nowrap">Allocate green time to<br/>persistently busier directions</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json">Higher-load<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 750 each<br/>N and S: 150 each</td><td nowrap="nowrap">Constant<br/>still 5:1</td><td nowrap="nowrap">25% more total demand<br/>than the preceding regime</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json">Time-varying peak</a></td><td nowrap="nowrap">All approaches:<br/>200 → 700 → 200</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to rising demand<br/>and peak recovery</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">Shifted peak timing</a></td><td nowrap="nowrap">All approaches:<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt when the peak occurs<br/>at a different time</td></tr>
+</tbody>
+</table>
 
 Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use 70% straight, 15% left and 15% right turns. Time starts at simulation startup, with the final rate held until demand generation ends. Shifted peak timing reorders the time-varying rates by seed; the table shows the configuration behind the current results. Controllers receive identical vehicle plans.
 <!-- TOWN_DEMAND:END -->

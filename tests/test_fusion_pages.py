@@ -1,7 +1,6 @@
 import importlib.util
 import json
 from pathlib import Path
-import re
 import xml.etree.ElementTree as ET
 
 import pytest
@@ -53,9 +52,13 @@ def test_real_junction_overviews_precede_the_gallery_in_both_languages(filename,
 @pytest.mark.parametrize('chinese,filename', [(True, 'README.zh-CN.md'), (False, 'README.md')])
 def test_town_demand_table_matches_configs_and_current_evaluation_seed(chinese, filename):
     body = PAGES.render_town_demand(chinese)
-    rows = [line.split('|')[1:-1] for line in body.splitlines() if line.startswith('| [')]
-    assert len(rows) == 5 and all(len(row) == 4 for row in rows)
-    paths = re.findall(r'\]\((reproduction/[^)]+)\)', body)
+    table = ET.fromstring('<root>' + body + '</root>').find('table')
+    cells = [row.findall('td') for row in table.findall('./tbody/tr')]
+    assert len(cells) == 5 and all(len(row) == 4 for row in cells)
+    assert all(cell.get('nowrap') is not None for row in cells for cell in row)
+    rows = [[' '.join(cell.itertext()) for cell in row] for row in cells]
+    prefix = 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/'
+    paths = [link.get('href').removeprefix(prefix) for link in table.findall('.//a')]
     assert len(paths) == 5
     configs = [json.loads((ROOT / path).read_text()) for path in paths]
     for row, config in zip(rows, configs):
@@ -116,7 +119,7 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media():
     assert 'FUSION_RESULTS:BEGIN' in body and 'FUSION_LATENCY:BEGIN' in body
     assert 'FUSION_GALLERY' not in body and 'FUSION_CLEAN_VIDEOS' not in body
     assert '## 评测结果' in body and '## Results' in body
-    assert body.count('<table>') == 4
+    assert body.count('<table>') == 6
     assert 'System One（端到端快思考）' in body and 'System One（系统一）' not in body
     assert 'Lane regions are calibrated' in body and 'YOLO车道画线' in body
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/reproduction.md' in body

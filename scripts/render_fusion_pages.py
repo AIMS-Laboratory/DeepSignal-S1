@@ -93,40 +93,45 @@ def render_town_demand(chinese: bool) -> str:
         segments = [f'{start:g}-{end:g}' + ('秒' if chinese else ' s')
                     for start, end in zip(offsets, offsets[1:])]
         segments.append(f'{offsets[-1]:g}秒起' if chinese else f'from {offsets[-1]:g} s')
-        return ' / '.join(segments)
+        return '\n'.join(segments)
 
     if chinese:
-        lines = ['五类车流均设置在**同一个十字路口**，区别在方向分配、流量大小和高峰出现时点，而不是五个不同路口。下表列出当前评测使用的设置。', '',
-                 '| 交通需求场景 | 每个进口方向的流量（辆/小时） | 时间变化 | 考察重点 |',
-                 '|---|---|---|---|']
+        lines = ['五类车流均设置在**同一个十字路口**，区别在方向分配、流量大小和高峰出现时点，而不是五个不同路口。下表列出当前评测使用的设置。', '']
+        headers = ('交通需求场景', '每个进口方向的流量\n（辆/小时）', '时间变化', '考察重点')
         rows = [
-            ('均衡车流', f"东、西、南、北各{balanced['balanced_rate_vph']:g}", '全程恒定', '四向需求相近时的基本控制能力'),
-            ('持续方向不均衡', f"东、西各{uneven['asymmetric_heavy_vph']:g}；南、北各{uneven['asymmetric_light_vph']:g}", '全程恒定，主次方向流量比5:1', '持续向高需求方向分配绿灯'),
-            ('更高流量的不均衡', f"东、西各{heavier['asymmetric_heavy_vph']:g}；南、北各{heavier['asymmetric_light_vph']:g}", '全程恒定，仍为5:1', f'比上一类总需求增加{increase:g}%，考察较高负荷'),
-            ('时变高峰', f'四向均为{flows(varying)}', periods(varying), '适应车流上升及高峰消退'),
-            ('高峰时序变化', f'四向均为{flows(shifted)}', periods(shifted), '改变高峰出现时点，考察时序适应能力'),
+            ('均衡车流', f"东、西、南、北各{balanced['balanced_rate_vph']:g}", '全程恒定', '四向需求相近时\n的基本控制能力'),
+            ('持续方向不均衡', f"东、西各{uneven['asymmetric_heavy_vph']:g}\n南、北各{uneven['asymmetric_light_vph']:g}", '全程恒定\n主次方向流量比5:1', '持续向高需求方向\n分配绿灯'),
+            ('更高流量的不均衡', f"东、西各{heavier['asymmetric_heavy_vph']:g}\n南、北各{heavier['asymmetric_light_vph']:g}", '全程恒定\n仍为5:1', f'比上一类总需求增加{increase:g}%\n考察较高负荷'),
+            ('时变高峰', f'四向均为\n{flows(varying)}', periods(varying), '适应车流上升\n及高峰消退'),
+            ('高峰时序变化', f'四向均为\n{flows(shifted)}', periods(shifted), '改变高峰出现时点\n考察时序适应能力'),
         ]
         split = balanced['turn_split']
         notes = (f"流量是**每个进口方向**的期望到达率，不是每车道流量，也不是每小时固定生成的车辆数；车辆按该流率随机到达。五类均采用直行{100*split['s']:g}%、左转{100*split['l']:g}%、右转{100*split['r']:g}%。"
                  '时间从仿真启动计，末档流量保持至需求生成结束。“高峰时序变化”按种子重排时变流量，上表为当前结果对应的配置。各控制器使用相同的车辆计划。')
     else:
-        lines = ['All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.', '',
-                 '| Traffic-demand scenario | Flow per approach (vehicles/hour) | Temporal pattern | Control challenge |',
-                 '|---|---|---|---|']
+        lines = ['All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.', '']
+        headers = ('Traffic-demand scenario', 'Flow per approach\n(vehicles/hour)', 'Temporal pattern', 'Control challenge')
         rows = [
-            ('Balanced flow', f"E, W, N and S: {balanced['balanced_rate_vph']:g} each", 'Constant throughout', 'Basic control with similar demand in all directions'),
-            ('Sustained directional imbalance', f"E and W: {uneven['asymmetric_heavy_vph']:g} each; N and S: {uneven['asymmetric_light_vph']:g} each", 'Constant; major-to-minor demand ratio 5:1', 'Allocate green time to persistently busier directions'),
-            ('Higher-load directional imbalance', f"E and W: {heavier['asymmetric_heavy_vph']:g} each; N and S: {heavier['asymmetric_light_vph']:g} each", 'Constant; still 5:1', f'{increase:g}% more total demand than the preceding regime'),
-            ('Time-varying peak', f'All approaches: {flows(varying)}', periods(varying), 'Adapt to rising demand and peak recovery'),
-            ('Shifted peak timing', f'All approaches: {flows(shifted)}', periods(shifted), 'Adapt when the peak occurs at a different time'),
+            ('Balanced flow', f"E, W, N and S: {balanced['balanced_rate_vph']:g} each", 'Constant throughout', 'Basic control with similar\ndemand in all directions'),
+            ('Sustained\ndirectional imbalance', f"E and W: {uneven['asymmetric_heavy_vph']:g} each\nN and S: {uneven['asymmetric_light_vph']:g} each", 'Constant\nmajor-to-minor ratio 5:1', 'Allocate green time to\npersistently busier directions'),
+            ('Higher-load\ndirectional imbalance', f"E and W: {heavier['asymmetric_heavy_vph']:g} each\nN and S: {heavier['asymmetric_light_vph']:g} each", 'Constant\nstill 5:1', f'{increase:g}% more total demand\nthan the preceding regime'),
+            ('Time-varying peak', f'All approaches:\n{flows(varying)}', periods(varying), 'Adapt to rising demand\nand peak recovery'),
+            ('Shifted peak timing', f'All approaches:\n{flows(shifted)}', periods(shifted), 'Adapt when the peak occurs\nat a different time'),
         ]
         split = balanced['turn_split']
         notes = (f"Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use {100*split['s']:g}% straight, {100*split['l']:g}% left and {100*split['r']:g}% right turns. "
                  'Time starts at simulation startup, with the final rate held until demand generation ends. Shifted peak timing reorders the time-varying rates by seed; the table shows the configuration behind the current results. Controllers receive identical vehicle plans.')
+    def content(text: str) -> str:
+        return escape(text).replace('\n', '<br/>')
+
+    lines += ['<table>', '<thead>', '<tr>' + ''.join(f'<th scope="col" nowrap="nowrap">{content(header)}</th>' for header in headers) + '</tr>',
+              '</thead>', '<tbody>']
     for row, filename in zip(rows, files):
         label, *cells = row
-        lines.append('| ' + ' | '.join([f'[{label}]({directory}/{filename})', *cells]) + ' |')
-    return '\n'.join([*lines, '', notes])
+        url = f'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/{directory}/{filename}'
+        lines.append(f'<tr><td nowrap="nowrap"><a href="{url}">{content(label)}</a></td>'
+                     + ''.join(f'<td nowrap="nowrap">{content(cell)}</td>' for cell in cells) + '</tr>')
+    return '\n'.join([*lines, '</tbody>', '</table>', '', notes])
 
 
 def traffic_means(group: dict[str, Any]) -> dict[str, float]:
@@ -346,7 +351,7 @@ def render_hf_card(english: str, chinese: str, homepage: str) -> str:
             lines.append(line)
     body = '\n'.join(lines).rstrip() + '\n'
     github = 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main'
-    for directory in ('docs', 'results', 'reproduction'):
+    for directory in ('docs', 'results'):
         body = body.replace(f']({directory}/', f']({github}/{directory}/')
     body = body.replace('](README.zh-CN.md)', f']({homepage}/blob/main/README.zh-CN.md)')
     body = body.replace('](README.md)', f']({homepage})')
