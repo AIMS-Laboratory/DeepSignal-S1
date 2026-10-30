@@ -8,7 +8,7 @@ English | [简体中文](README.zh-CN.md)
 
 DeepSignal-S1 follows a **Jev-style structured probabilistic decision** approach. It reads temporal intersection views and signal context, scores candidate actions, and selects a legal control action directly. It does not generate a traffic-analysis essay for another program to parse, and does not require a separate YOLO detection stage.
 
-The released **DeepSignal-S1-1.0** uses one fused checkpoint in Nansha and Town10HD. Its development addresses two practical questions: can visual control improve on frozen engineering timing in clean conditions, and can it remain more robust than detection plus Max Pressure when the camera feed degrades?
+**DeepSignal-S1-1.0** is trained on **simulation scenes from nine Nansha intersections**, including T-junctions and four-arm intersections, and **five traffic-demand scenarios at one four-arm intersection in CARLA's official Town10HD map**, covering balanced, uneven and time-varying flows. Its development addresses two practical questions: can visual control improve on frozen engineering timing in clean conditions, and can it remain more robust than detection plus Max Pressure when the camera feed degrades?
 
 ## Why System One
 
