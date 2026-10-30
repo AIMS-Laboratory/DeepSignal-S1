@@ -12,7 +12,7 @@ The released **DeepSignal-S1-1.0** uses one fused checkpoint in Nansha and Town1
 
 ## Why System One
 
-System One emphasizes fast, directly callable decisions, as illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and the open-source [OneJev](https://github.com/OmniJev/OneJev). DeepSignal-S1 applies this decision paradigm to traffic control: its inference interface returns an action and probabilities without generating a token-by-token reasoning narrative. It is not a wrapper around the commercial Jev service, and does not inherit another model's benchmark claims.
+System One emphasizes fast, directly callable decisions, as illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and the open-source [OneJev](https://github.com/OmniJev/OneJev). DeepSignal-S1 applies this decision paradigm to traffic control: its inference interface returns an action and probabilities without generating a token-by-token reasoning narrative. It is not a wrapper around the commercial Jev service.
 
 - **Vision to control:** temporal observations and signal context determine actions without operator-supplied live vehicle counts.
 - **Structured decisions:** the model chooses among legal actions; the signal executor implements the committed green tail, yellow and all-red transitions.
