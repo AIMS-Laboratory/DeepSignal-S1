@@ -26,7 +26,7 @@ def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     assert body.count('.gif') == 8
     assert body.count('/town-') == 8
     assert body.count('/nansha-') == 8
-    assert f'/fusion-1.0/v3/{language}/town-angle15.gif' in body
+    assert f'/fusion-1.0/v4/{language}/town-angle15.gif' in body
     assert '<video controls=' in body
     assert body.count('https://github.com/user-attachments/assets/') == 8
 
@@ -63,7 +63,7 @@ def test_large_gallery_does_not_reduce_shake_to_a_narrow_preview():
     body = PAGES.render_gallery(True)
     assert body.count('<img width="1280"') == 8
     assert body.count('<video controls="controls" width="1280"') == 8
-    assert '/fusion-1.0/v3/zh/town-shake5.gif' in body
+    assert '/fusion-1.0/v4/zh/town-shake5.gif' in body
     assert '备用播放' in body
 
 

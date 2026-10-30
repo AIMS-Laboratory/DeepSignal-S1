@@ -27,7 +27,7 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 
 ## Town10HD: Decisions After Camera Repositioning
 
-![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/town-angle15.gif)
+![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif)
 
 *Town10HD · fixed yaw ±15° / pitch ±8°. Both arms use the same traffic plan and aligned simulation timestamps; the 60-second simulation window plays at 5× speed.*
 
@@ -86,89 +86,89 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 #### Town10HD · Fixed yaw ±15° / pitch ±8°
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/709b6a54-4c6b-49d5-b3c2-b53e5b536904"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/town-angle15.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-angle15.mp4)
 
 #### Town10HD · Defocus σ=9
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/0c39d06d-369e-4d2b-ac33-8d15ecbcbc0c"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/84d65a84-5b20-4515-9fdd-f8ff73003a56"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/town-df9.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-df9.mp4)
 
 #### Town10HD · 31 px motion blur
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/80cd9189-5558-4b90-9aed-f2d800412eba"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/b3b3a927-a5a5-4e43-9710-b94102f15bc4"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/town-mb31.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-mb31.mp4)
 
 #### Town10HD · Dynamic shake 5°
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/0894ab4d-f4d3-4762-9c4e-6faf6dafa67d"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/9c9d2ac9-cc58-4959-8008-93ad5de7ca18"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/town-shake5.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-shake5.mp4)
 
 ### Nansha
 
 #### Nansha · Fixed yaw ±15° / pitch ±8°
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/c4f4225a-af9e-4932-ac68-20d5507acc2d"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/fbeec8fa-af75-47da-9196-966038e1ad18"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/nansha-angle15.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-angle15.mp4)
 
 #### Nansha · Defocus σ=9
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/0a76833e-9580-48a1-bddd-4a73fdfdccff"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/3230897e-9a4c-4493-9d12-263f16cf9647"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/nansha-df9.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-df9.mp4)
 
 #### Nansha · 31 px motion blur
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/9af2aa9c-6368-468d-bb93-6e64a1676c43"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/nansha-mb31.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-mb31.mp4)
 
 #### Nansha · Dynamic shake 5°
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
+<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/dfe44aa3-768b-4b29-8cec-3840960bde28"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/28dfbfd5-ae9c-478e-8272-9e9c840242bc"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/nansha-shake5.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-shake5.mp4)
 <!-- FUSION_GALLERY:END -->
 
 Media show only the actual model camera input, live traffic metrics and the most recent recorded decision. **Mean wait** is cumulative stopped waiting divided by all vehicles entered so far, including those already arrived. **Queue** is the current stopped-vehicle count. Both include shared warmup traffic and come from recorded-signal SUMO replay checked against every video frame, unlike the formal-cohort batch means that also include insertion waiting. Episode mean journeys belong to that recording, not the evaluation batch.
 
-All displayed cases are four-arm intersections. Videos stack controllers vertically at full width, making each input view and decision panel larger. MP4s use H.264 Constrained Baseline, 25 fps and labelled 5x simulation playback, without invented motion or decisions. Shake GIFs retain 960-pixel width and show a shorter 24-second simulation excerpt, rather than shrinking the entire interface. Each video also has an alternate large-screen player.
+All displayed cases are four-arm intersections. Video previews use a large 4:3 dashboard with one controller per row, adapted to GitHub's player-height limit. Each 12-second preview covers the same 60 simulation seconds at 5x speed, using original recorded frames at 25 fps and H.264 Constrained Baseline. Complete recordings remain in the media archive. Shake GIFs retain 960-pixel width and show a 24-second simulation excerpt rather than shrinking the entire interface. Each video also has an alternate large-screen player.
 
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 ### Clean Nansha: Three Controllers
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/5694e34a-4a8c-4654-a6e4-4f7f8958a399"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/c4347efa-b450-4b79-a554-1157ddccb1bf"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/nansha-clean.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-clean.mp4)
 
 ### Clean Town10HD: Three Controllers
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/c20ae929-1e42-42ab-9a50-c4d7a7975481"></video>
+<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f"></video>
 
-[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/en/town-clean.mp4)
+[Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-clean.mp4)
 <!-- FUSION_CLEAN_VIDEOS:END -->
 
 ## Inference Performance

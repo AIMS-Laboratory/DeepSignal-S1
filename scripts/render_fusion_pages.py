@@ -192,15 +192,15 @@ def video_tag(scene: str, condition: str, chinese: bool, github: bool = True) ->
     if github:
         source = json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
     else:
-        source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/{key}'
-    mirror = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v3/{key}'
+        source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{key}'
+    mirror = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/{key}'
     label = '大屏 / 备用播放' if chinese else 'Large-screen / alternate player'
     return f'<video controls="controls" width="1280" playsinline="playsinline" src="{source}"></video>\n\n[{label}]({mirror})'
 
 
 def render_gallery(chinese: bool, github: bool = True) -> str:
     language = 'zh' if chinese else 'en'
-    base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v3/{language}'
+    base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{language}'
     lines = []
     for scene, label in (('town', 'Town10HD'), ('nansha', '南沙' if chinese else 'Nansha')):
         lines += [f'### {label}', '']
