@@ -346,8 +346,7 @@ def render_hf_card(english: str, chinese: str, homepage: str) -> str:
     body = (english.replace('](README.zh-CN.md)', '](#简体中文)').rstrip()
             + '\n\n## 简体中文\n\n' + chinese.removeprefix('# DeepSignal-S1-1.0\n').lstrip())
     media_headings = {
-        '## Town10HD: Decisions After Camera Repositioning', '## Eight Perturbation Views',
-        '## Town10HD：机位改变后仍直接决策', '## 八组特殊视觉',
+        '## Eight Perturbation Views', '## 八组特殊视觉',
         '## Junctions at a Glance', '## 展示路口鸟瞰',
     }
     lines = []

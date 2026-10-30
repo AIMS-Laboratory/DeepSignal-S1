@@ -33,6 +33,16 @@ def test_gallery_shows_both_scenes_with_only_videos_collapsed(chinese, language)
     assert body.count('https://github.com/user-attachments/assets/') == 2
 
 
+@pytest.mark.parametrize('filename,language', [('README.md', 'en'), ('README.zh-CN.md', 'zh')])
+def test_camera_shift_demo_appears_only_in_the_gallery(filename, language):
+    body = (ROOT / filename).read_text()
+    gallery = body.split('<!-- FUSION_GALLERY:BEGIN -->')[1].split('<!-- FUSION_GALLERY:END -->')[0]
+    image = f'/fusion-1.0/v4/{language}/town-angle15.gif'
+    assert body.count(image) == gallery.count(image) == 1
+    assert '## Town10HD: Decisions After Camera Repositioning' not in body
+    assert '## Town10HD：机位改变后仍直接决策' not in body
+
+
 @pytest.mark.parametrize('filename,heading', [
     ('README.md', '## Eight Perturbation Views'),
     ('README.zh-CN.md', '## 八组特殊视觉'),
@@ -127,7 +137,7 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media():
     assert '/blob/main/README.zh-CN.md' not in body
     assert '### 结果解读' in body and '### What the Results Show' in body
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/visual-robustness.md' in body
-    assert '## Five Town10HD Traffic-Demand Scenarios' in body and '## Town10HD的5类交通需求' in body
+    assert '## Five traffic demand scenarios' in body and '## 5类交通需求场景' in body
     assert body.count('200 → 200 → 700') == 2
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json' in body
 

@@ -26,7 +26,7 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 - **Unquantized local inference:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
 <!-- FUSION_HIGHLIGHTS:END -->
 
-## Five Town10HD Traffic-Demand Scenarios
+## Five traffic demand scenarios
 
 <!-- TOWN_DEMAND:BEGIN -->
 All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.
@@ -46,12 +46,6 @@ All five regimes use **the same four-way junction**, varying directional demand,
 
 Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use 70% straight, 15% left and 15% right turns. Time starts at simulation startup, with the final rate held until demand generation ends. Shifted peak timing reorders the time-varying rates by seed; the table shows the configuration behind the current results. Controllers receive identical vehicle plans.
 <!-- TOWN_DEMAND:END -->
-
-## Town10HD: Decisions After Camera Repositioning
-
-![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif)
-
-*Town10HD · fixed yaw ±15° / pitch ±8°. Both arms use the same traffic plan and aligned simulation timestamps; the 60-second simulation window plays at 5× speed.*
 
 ## Results
 
