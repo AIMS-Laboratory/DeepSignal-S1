@@ -9,45 +9,60 @@ English | [简体中文](README.zh-CN.md) · [DeepSignal family](https://github.
 [Watch demos](#featured-demos) · [Explore results](#results) · [Try a decision](#download-and-quickstart) · [Request model access](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Full reproduction](docs/reproduction.md)
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **Direct decisions:** one model maps temporal intersection views and signal state to control actions, without a separate vehicle-detection and counting stage.
-- **Robust under visual disruption:** lower waiting, queues and journey times than YOLO+MP in both evaluated scenes under defocus, motion blur, camera shifts and shake.
-- **Fast response:** **485 ms** average over **6,823** unquantized RTX 5090 requests; **99.08%** finish in under one second.
+## Design and Strengths
+
+<img width="1200" src="assets/highlights/s1-features-en.svg" alt="Direct visual decisions, control gains under four perturbations, and 485 ms average RTX 5090 model-request latency"/>
+
+> [!IMPORTANT]
+> **Visual understanding and signal decisions in one model.**
+> Three temporal frames, intersection information and signal state produce a legal control action and candidate probabilities directly, without a separate vehicle-detection and counting stage.
+
+**Measured speed:** unquantized BF16, RTX 5090, 6,823 requests; **485 ms** on average and **99.08%** under one second. [How it works](#how-it-works) · [Full results](#results) · [Latency statistics](#inference-performance)
 <!-- FUSION_HIGHLIGHTS:END -->
 
 Results are from controlled simulations. Latency measures model requests only, excluding camera capture, rendering and signal execution.
 
 ## Featured Demos
 
-Watch the visual disturbance, signal actions and queue behavior. These are the existing Town camera-shift and Nansha motion-blur recordings, played at **5× speed**. On-screen scores describe that recording; aggregate claims use the paired evaluations. GIFs and static covers are served directly by GitHub without login.
+Watch the visual disturbance, signal actions and queue behavior. These are the existing standard-simulation camera-shift and multi-intersection motion-blur recordings, played at **5× speed**. On-screen scores describe that recording; aggregate claims use the paired evaluations. GIFs and static covers are served directly by GitHub without login.
 
 <!-- FUSION_FEATURED:BEGIN -->
-### Town10HD · Fixed yaw ±15° / pitch ±8°
+### Standard simulation · Fixed yaw ±15° / pitch ±8°
 
-<img width="800" src="assets/previews/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
+<img width="800" src="assets/previews/en/town-angle15.gif" alt="Standard simulation · Fixed yaw ±15° / pitch ±8°">
 
 [Watch video](https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91) · [Static cover](assets/previews/en/town-angle15.jpg)
 
-### Nansha · 31 px motion blur
+### Multi-intersection · 31 px motion blur
 
-<img width="800" src="assets/previews/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
+<img width="800" src="assets/previews/en/nansha-mb31.gif" alt="Multi-intersection · 31 px motion blur">
 
 [Watch video](https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a) · [Static cover](assets/previews/en/nansha-mb31.jpg)
 <!-- FUSION_FEATURED:END -->
 
 ## Results
 
+**Two evaluation settings, reported separately:**
+
+- **Multi-intersection:** nine simulated intersections, including T-junctions and four-arm intersections, covering different junction layouts.
+- **Standard simulation:** the **Town10HD virtual-city map in CARLA**, with five traffic regimes at one four-arm intersection. Town10HD names the map.
+
 <!-- FUSION_RESULTS:BEGIN -->
 ### Clean views: better than fixed timing, competitive with YOLO+MP
 
-Mean journey time falls by **18.17%** across 72 Nansha cases and **33.77%** across five Town10HD regimes versus frozen engineering fixed timing. Against YOLO+MP, Nansha improves by **1.36%**, while Town10HD is essentially tied.
+> [!TIP]
+> **Control gains in clean views**
+> Mean journey time falls by **18.17%** across 72 multi-intersection cases and **33.77%** across five standard simulation regimes versus frozen engineering fixed timing. Against YOLO+MP, the multi-intersection setting improves by **1.36%**, while standard simulation is essentially tied.
 
 ### Visual disruption: the more distinctive advantage
 
-S1 has lower mean waiting, queue length and journey time than YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions, rather than only the largest gain.
+> [!IMPORTANT]
+> **Robustness translates into less waiting, shorter queues and shorter journeys.**
+> S1 improves all three metrics over YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions.
 
 <img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
 
-Each perturbation covers nine Nansha cases and five Town10HD cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance.
+Each perturbation covers nine multi-intersection cases and five standard simulation cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance.
 
 <details>
 <summary>Clean views: three controllers — full values and three-metric chart</summary>
@@ -57,10 +72,10 @@ Each perturbation covers nine Nansha cases and five Town10HD cases, using one se
 <tr><th scope="col">Scene</th><th scope="col">Condition</th><th scope="col">Cases</th><th scope="col">Controller</th><th scope="col">Mean wait (s/veh)</th><th scope="col">Mean queue (veh)</th><th scope="col">Mean journey (s/veh)</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="3" align="center" valign="middle">Nansha</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
+<tr><td rowspan="3" align="center" valign="middle">Multi-intersection</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
 <tr><td>Fixed-time plan</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
 <tr><td>YOLO+MP</td><td align="right">46.89</td><td align="right">10.56</td><td align="right">108.79</td></tr>
-<tr><td rowspan="3" align="center" valign="middle">Town10HD</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
+<tr><td rowspan="3" align="center" valign="middle">Standard simulation</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
 <tr><td>Fixed-time plan</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
 <tr><td>YOLO+MP</td><td align="right">20.22</td><td align="right">3.59</td><td align="right">38.22</td></tr>
 </tbody>
@@ -78,21 +93,21 @@ Each perturbation covers nine Nansha cases and five Town10HD cases, using one se
 <tr><th scope="col">Scene</th><th scope="col">Condition</th><th scope="col">Cases</th><th scope="col">Controller</th><th scope="col">Mean wait (s/veh)</th><th scope="col">Mean queue (veh)</th><th scope="col">Mean journey (s/veh)</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
 <tr><td>YOLO+MP</td><td align="right">104.86</td><td align="right">31.04</td><td align="right">167.48</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
 <tr><td>YOLO+MP</td><td align="right">124.59</td><td align="right">30.18</td><td align="right">188.34</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
 <tr><td>YOLO+MP</td><td align="right">87.01</td><td align="right">21.18</td><td align="right">154.36</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
 <tr><td>YOLO+MP</td><td align="right">72.15</td><td align="right">17.91</td><td align="right">137.61</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">27.51</td><td align="right">4.10</td><td align="right">44.43</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Standard simulation</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">27.51</td><td align="right">4.10</td><td align="right">44.43</td></tr>
 <tr><td>YOLO+MP</td><td align="right">92.97</td><td align="right">9.75</td><td align="right">109.15</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.28</td><td align="right">3.58</td><td align="right">38.10</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Standard simulation</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.28</td><td align="right">3.58</td><td align="right">38.10</td></tr>
 <tr><td>YOLO+MP</td><td align="right">111.26</td><td align="right">10.24</td><td align="right">127.71</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.23</td><td align="right">3.45</td><td align="right">37.11</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Standard simulation</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.23</td><td align="right">3.45</td><td align="right">37.11</td></tr>
 <tr><td>YOLO+MP</td><td align="right">205.09</td><td align="right">13.67</td><td align="right">217.40</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.13</td><td align="right">3.32</td><td align="right">37.20</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Standard simulation</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.13</td><td align="right">3.32</td><td align="right">37.20</td></tr>
 <tr><td>YOLO+MP</td><td align="right">21.49</td><td align="right">3.53</td><td align="right">39.88</td></tr>
 </tbody>
 </table>
@@ -110,18 +125,18 @@ Each perturbation covers nine Nansha cases and five Town10HD cases, using one se
 
 #### Clean Views: Competitive Control Without a Separate Detector
 
-Against the fixed-time plan, S1 reduces mean journey time by **18.17%** in Nansha and **33.77%** in Town10HD, while mean waiting falls by **33.15%** and **49.45%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.
+Against the fixed-time plan, S1 reduces mean journey time by **18.17%** in the multi-intersection setting and **33.77%** in the standard simulation setting, while mean waiting falls by **33.15%** and **49.45%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.
 
-Against YOLO+MP, S1 further reduces Nansha mean journey time by **1.36%** and mean waiting by **2.28%**; Town10HD mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in Nansha.
+Against YOLO+MP, S1 further reduces multi-intersection mean journey time by **1.36%** and mean waiting by **2.28%**; standard-simulation mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in the multi-intersection setting.
 
 #### Visual Disruption: A More Distinctive Deployment Advantage
 
 Traffic demand may stay the same while camera input changes because of lighting, maintenance or vibration. The four tests target distinct imaging problems: can S1 continue making effective signal decisions when images lose sharpness or stability, or no longer match the original viewpoint?
 
-- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in Nansha and **59.29%** lower in Town.
-- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **30.14%** lower in Nansha and **70.16%** lower in Town.
-- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **16.40%** lower in Nansha and **82.93%** lower in Town; Town mean waiting is **90.63%** lower.
-- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **6.80%** in Nansha and **6.72%** in Town. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.
+- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in the multi-intersection setting and **59.29%** lower in the standard simulation setting.
+- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **30.14%** lower in the multi-intersection setting and **70.16%** lower in the standard simulation setting.
+- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **16.40%** lower in the multi-intersection setting and **82.93%** lower in the standard simulation setting; standard-simulation mean waiting is **90.63%** lower.
+- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **6.80%** in the multi-intersection setting and **6.72%** in the standard simulation setting. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.
 
 These changes can affect vehicle detection and counting or misalign the image with calibrated lane regions, with downstream consequences for count-based signal control. S1 decides directly from temporal images and signal state, without that separate detection-and-counting pipeline. Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP: robustness translates into less waiting, shorter queues and shorter average journeys.
 
@@ -146,7 +161,7 @@ flowchart LR
 
 System One emphasizes fast, structured decisions without generating a token-by-token reasoning narrative. S1 draws on the decision paradigm illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and [OneJev](https://github.com/OmniJev/OneJev). It runs locally and does not call the commercial Jev service.
 
-One 1.0 checkpoint covers simulations of nine Nansha intersections (T-junctions and four-arm intersections) and five traffic regimes at one Town10HD intersection. Training includes these scenes; using one checkpoint across them is not evidence of generalization to unseen intersections.
+One 1.0 checkpoint covers simulations of nine junctions in the multi-intersection setting (T-junctions and four-arm intersections) and five traffic regimes at one junction in the standard simulation setting. Training includes these scenes; using one checkpoint across them is not evidence of generalization to unseen intersections.
 
 ## Inference Performance
 
@@ -205,9 +220,9 @@ The server should report `DeepSignal-S1-1.0` and return a selected action with c
 
 ## Evaluation Scope
 
-- **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; Nansha uses the published per-intersection plans and Town10HD uses `31/6/31/6 s`.
+- **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; the multi-intersection setting uses the published per-intersection plans and the standard simulation setting uses `31/6/31/6 s`.
 - **Visual comparison:** clean views compare all three controllers; perturbations compare S1 with YOLO+MP. Camera shifts occur after YOLO lane-region calibration, without recalibration.
-- **Scope:** results come from controlled Nansha and Town10HD simulations; deployment on real roads and under real weather remains to be validated.
+- **Scope:** results come from the two controlled simulation settings; deployment on real roads and under real weather remains to be validated.
 
 See [evaluation protocol](docs/fusion-pilot-evaluation.md), [metric definitions](docs/comparisons.md), and [media delivery](docs/media-delivery.md).
 
@@ -242,15 +257,15 @@ Flows are expected arrival rates **per approach**, not per lane or exact hourly 
 <details>
 <summary>Expand intersection views and case locations</summary>
 
-### Nansha · J03 Four-Way Junction
+### Multi-intersection · J03 Four-Way Junction
 
-<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="Bird's-eye view of Nansha J03 showing all four approaches, stop lines and the junction center">
+<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="Bird's-eye view of Multi-intersection J03 showing all four approaches, stop lines and the junction center">
 
-### Town10HD · Four-Way Junction
+### Standard simulation · Four-Way Junction
 
-<img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="Bird's-eye view of the CARLA Town10HD junction showing all four approaches, stop lines and surrounding city blocks">
+<img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="Bird's-eye view of the CARLA Standard simulation junction showing all four approaches, stop lines and surrounding city blocks">
 
-The Nansha camera-shift example uses J03; defocus, motion blur and shake examples use J08, J05 and J07, respectively. All four Town10HD examples use the same junction shown above.
+The Multi-intersection camera-shift example uses J03; defocus, motion blur and shake examples use J08, J05 and J07, respectively. All four Standard simulation examples use the same junction shown above.
 
 </details>
 
@@ -262,15 +277,15 @@ Two cases are featured above. Expand each disturbance below for the other six, w
 <details>
 <summary>Defocus σ=9</summary>
 
-### Nansha · Defocus σ=9
+### Multi-intersection · Defocus σ=9
 
-<img width="800" src="assets/previews/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
+<img width="800" src="assets/previews/en/nansha-df9.gif" alt="Multi-intersection · Defocus σ=9">
 
 [Watch video](https://github.com/user-attachments/assets/3230897e-9a4c-4493-9d12-263f16cf9647) · [Static cover](assets/previews/en/nansha-df9.jpg)
 
-### Town10HD · Defocus σ=9
+### Standard simulation · Defocus σ=9
 
-<img width="800" src="assets/previews/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
+<img width="800" src="assets/previews/en/town-df9.gif" alt="Standard simulation · Defocus σ=9">
 
 [Watch video](https://github.com/user-attachments/assets/84d65a84-5b20-4515-9fdd-f8ff73003a56) · [Static cover](assets/previews/en/town-df9.jpg)
 
@@ -279,11 +294,11 @@ Two cases are featured above. Expand each disturbance below for the other six, w
 <details>
 <summary>31 px motion blur</summary>
 
-Nansha: see the featured demos above.
+Multi-intersection: see the featured demos above.
 
-### Town10HD · 31 px motion blur
+### Standard simulation · 31 px motion blur
 
-<img width="800" src="assets/previews/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
+<img width="800" src="assets/previews/en/town-mb31.gif" alt="Standard simulation · 31 px motion blur">
 
 [Watch video](https://github.com/user-attachments/assets/b3b3a927-a5a5-4e43-9710-b94102f15bc4) · [Static cover](assets/previews/en/town-mb31.jpg)
 
@@ -292,35 +307,35 @@ Nansha: see the featured demos above.
 <details>
 <summary>Fixed yaw ±15° / pitch ±8°</summary>
 
-### Nansha · Fixed yaw ±15° / pitch ±8°
+### Multi-intersection · Fixed yaw ±15° / pitch ±8°
 
-<img width="800" src="assets/previews/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
+<img width="800" src="assets/previews/en/nansha-angle15.gif" alt="Multi-intersection · Fixed yaw ±15° / pitch ±8°">
 
 [Watch video](https://github.com/user-attachments/assets/fbeec8fa-af75-47da-9196-966038e1ad18) · [Static cover](assets/previews/en/nansha-angle15.jpg)
 
-Town10HD: see the featured demos above.
+Standard simulation: see the featured demos above.
 
 </details>
 
 <details>
 <summary>Dynamic shake 5°</summary>
 
-### Nansha · Dynamic shake 5°
+### Multi-intersection · Dynamic shake 5°
 
-<img width="800" src="assets/previews/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
+<img width="800" src="assets/previews/en/nansha-shake5.gif" alt="Multi-intersection · Dynamic shake 5°">
 
 [Watch video](https://github.com/user-attachments/assets/28dfbfd5-ae9c-478e-8272-9e9c840242bc) · [Static cover](assets/previews/en/nansha-shake5.jpg)
 
-### Town10HD · Dynamic shake 5°
+### Standard simulation · Dynamic shake 5°
 
-<img width="800" src="assets/previews/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
+<img width="800" src="assets/previews/en/town-shake5.gif" alt="Standard simulation · Dynamic shake 5°">
 
 [Watch video](https://github.com/user-attachments/assets/9c9d2ac9-cc58-4959-8008-93ad5de7ca18) · [Static cover](assets/previews/en/town-shake5.jpg)
 
 </details>
 <!-- FUSION_GALLERY:END -->
 
-Recorded scores belong to their individual episodes. In the Nansha J08 defocus recording, S1 journey time is slightly longer than YOLO+MP; the recording is retained. See [media notes](docs/media-delivery.md) for dynamic versus formal metrics.
+Recorded scores belong to their individual episodes. In the Multi-intersection J08 defocus recording, S1 journey time is slightly longer than YOLO+MP; the recording is retained. See [media notes](docs/media-delivery.md) for dynamic versus formal metrics.
 
 Lane regions are calibrated on clean views and frozen; fixed shifts are not recalibrated. Dynamic shake peaks at 5° yaw/pitch and 2.5° roll.
 
@@ -328,14 +343,14 @@ Lane regions are calibrated on clean views and frozen; fixed shifts are not reca
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
-<summary>Video: Clean Nansha: Three Controllers</summary>
+<summary>Video: Clean Multi-intersection: Three Controllers</summary>
 
 https://github.com/user-attachments/assets/c4347efa-b450-4b79-a554-1157ddccb1bf
 
 </details>
 
 <details>
-<summary>Video: Clean Town10HD: Three Controllers</summary>
+<summary>Video: Clean Standard simulation: Three Controllers</summary>
 
 https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
 
@@ -344,6 +359,6 @@ https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
 
 ## Historical Releases
 
-Earlier `DeepSignal-S1-1.0-candidate` Nansha results and the separate historical Town checkpoint remain archived with their original protocol labels, distinct from the current 1.0 release and its results. See [historical released results](docs/released-results.md).
+Earlier `DeepSignal-S1-1.0-candidate` Multi-intersection results and the separate historical Town checkpoint remain archived with their original protocol labels, distinct from the current 1.0 release and its results. See [historical released results](docs/released-results.md).
 
 Contact: [dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)

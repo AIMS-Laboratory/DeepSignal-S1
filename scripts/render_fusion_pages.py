@@ -61,8 +61,8 @@ def validate(data: dict[str, Any]) -> None:
 
 def scene_label(row: dict[str, Any], chinese: bool) -> str:
     if chinese:
-        return str(row["scene_label"])
-    return "Nansha" if row["scene"] == "nansha" else "Town10HD"
+        return '多路口场景' if row['scene'] == 'nansha' else '标准仿真场景'
+    return 'Multi-intersection' if row['scene'] == 'nansha' else 'Standard simulation'
 
 
 def condition_label(code: str, chinese: bool) -> str:
@@ -229,15 +229,15 @@ def render_discussion(data: dict[str, Any], chinese: bool, records: list[dict[st
         return '\n\n'.join([
             '### 结果解读',
             '#### 正常视觉：高水平控制，不依赖独立车辆检测',
-            f"与固定配时方案相比，S1在南沙和Town10HD的平均行程分别降低 **{fixed_ns:.2f}%** 和 **{fixed_town:.2f}%**，平均等待分别降低 **{wait_ns:.2f}%** 和 **{wait_town:.2f}%**。收益不仅是车辆更早到达，也体现在更少的停车等待与更短的排队。",
-            f"与YOLO+MP相比，S1在南沙的平均行程再降低 **{mp_ns:.2f}%**、平均等待降低 **{mp_wait_ns:.2f}%**；Town10HD的平均行程基本持平。这说明，直接从视觉作出信号决策，可以在省去独立检测环节的同时达到有竞争力的交通控制效果，并在南沙取得小幅领先。",
+            f"与固定配时方案相比，S1在多路口场景和标准仿真场景的平均行程分别降低 **{fixed_ns:.2f}%** 和 **{fixed_town:.2f}%**，平均等待分别降低 **{wait_ns:.2f}%** 和 **{wait_town:.2f}%**。收益不仅是车辆更早到达，也体现在更少的停车等待与更短的排队。",
+            f"与YOLO+MP相比，S1在多路口场景的平均行程再降低 **{mp_ns:.2f}%**、平均等待降低 **{mp_wait_ns:.2f}%**；标准仿真场景的平均行程基本持平。这说明，直接从视觉作出信号决策，可以在省去独立检测环节的同时达到有竞争力的交通控制效果，并在多路口场景取得小幅领先。",
             '#### 特殊视觉：更值得关注的部署优势',
             '现实路口的车流未必改变，摄像头输入却可能因光照变化、设备维护或风振而发生变化。四类测试分别对应不同的成像问题，考察S1在画面不再清晰、稳定或保持原机位时，能否继续作出有效的信号决策。',
             '\n'.join([
-                f"- **失焦：对焦不准，车辆轮廓变软。** 夜间车灯等复杂光源可能干扰自动对焦，人工调焦或更换镜头后也可能没有重新调好焦点。车辆边缘和车道细节随之变得模糊，增加识别与计数的难度。在失焦测试中，S1相对YOLO+MP的平均行程在南沙、Town分别降低 **{df_ns:.2f}%**、**{df_town:.2f}%**。",
+                f"- **失焦：对焦不准，车辆轮廓变软。** 夜间车灯等复杂光源可能干扰自动对焦，人工调焦或更换镜头后也可能没有重新调好焦点。车辆边缘和车道细节随之变得模糊，增加识别与计数的难度。在失焦测试中，S1相对YOLO+MP的平均行程在多路口场景、标准仿真场景分别降低 **{df_ns:.2f}%**、**{df_town:.2f}%**。",
                 f"- **运动模糊：曝光期间的移动形成拖影。** 傍晚或夜间光照不足时，摄像头可能采用更长曝光；车辆运动或曝光期间的相机晃动便可能形成方向性拖影，使车辆形状和相邻车辆的边界更难分辨。在运动模糊测试中，S1的平均行程分别降低 **{mb_ns:.2f}%**、**{mb_town:.2f}%**。",
-                f"- **固定角度偏移：调整后稳定在新的机位。** 例如检修后重新调整视角，或支架发生偏转：画面已经稳定，但停车线和车道在图像中的位置改变了，原先画好的车道区域可能不再对应。我们的对比先在正常机位为YOLO画线，再固定改变相机角度，不重新画线。S1的平均行程在南沙降低 **{angle_ns:.2f}%**，在Town降低 **{angle_town:.2f}%**；Town的平均等待同时降低 **{angle_wait:.2f}%**。",
-                f"- **动态抖动：视角随时间来回变化。** 高杆摄像头可能受到阵风或邻近重型车辆引起的振动影响，车辆和车道在连续画面中的位置随之摆动；这与调整后保持不动的固定偏角不同。动态抖动测试中，S1的平均行程在南沙、Town分别降低 **{shake_ns:.2f}%**、**{shake_town:.2f}%**。抖动下仍有收益，模糊和机位偏移下的优势更突出。",
+                f"- **固定角度偏移：调整后稳定在新的机位。** 例如检修后重新调整视角，或支架发生偏转：画面已经稳定，但停车线和车道在图像中的位置改变了，原先画好的车道区域可能不再对应。我们的对比先在正常机位为YOLO画线，再固定改变相机角度，不重新画线。S1的平均行程在多路口场景降低 **{angle_ns:.2f}%**，在标准仿真场景降低 **{angle_town:.2f}%**；标准仿真场景的平均等待同时降低 **{angle_wait:.2f}%**。",
+                f"- **动态抖动：视角随时间来回变化。** 高杆摄像头可能受到阵风或邻近重型车辆引起的振动影响，车辆和车道在连续画面中的位置随之摆动；这与调整后保持不动的固定偏角不同。动态抖动测试中，S1的平均行程在多路口场景、标准仿真场景分别降低 **{shake_ns:.2f}%**、**{shake_town:.2f}%**。抖动下仍有收益，模糊和机位偏移下的优势更突出。",
             ]),
             '这些变化既可能影响车辆检测与计数，也可能使画面与原有车道区域错位，进而影响依赖检测计数的信号控制。S1直接依据时序画面和信号状态决策，不依赖这条独立检测计数链路。在本次两个场景、四种特殊视觉条件的对比中，S1的平均等待、平均排队长度和平均行程均低于YOLO+MP，体现出对这些输入变化的鲁棒性，优势直接落在车辆少等待、少排队和平均行程更短上。',
             '上述测试模拟的是这些现实问题可能造成的视觉变化，不等同于已经完成夜间现场或真实恶劣天气验证。[现实场景对应与资料依据](docs/visual-robustness.md)。',
@@ -247,15 +247,15 @@ def render_discussion(data: dict[str, Any], chinese: bool, records: list[dict[st
     return '\n\n'.join([
         '### What the Results Show',
         '#### Clean Views: Competitive Control Without a Separate Detector',
-        f"Against the fixed-time plan, S1 reduces mean journey time by **{fixed_ns:.2f}%** in Nansha and **{fixed_town:.2f}%** in Town10HD, while mean waiting falls by **{wait_ns:.2f}%** and **{wait_town:.2f}%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.",
-        f"Against YOLO+MP, S1 further reduces Nansha mean journey time by **{mp_ns:.2f}%** and mean waiting by **{mp_wait_ns:.2f}%**; Town10HD mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in Nansha.",
+        f"Against the fixed-time plan, S1 reduces mean journey time by **{fixed_ns:.2f}%** in the multi-intersection setting and **{fixed_town:.2f}%** in the standard simulation setting, while mean waiting falls by **{wait_ns:.2f}%** and **{wait_town:.2f}%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.",
+        f"Against YOLO+MP, S1 further reduces multi-intersection mean journey time by **{mp_ns:.2f}%** and mean waiting by **{mp_wait_ns:.2f}%**; standard-simulation mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in the multi-intersection setting.",
         '#### Visual Disruption: A More Distinctive Deployment Advantage',
         'Traffic demand may stay the same while camera input changes because of lighting, maintenance or vibration. The four tests target distinct imaging problems: can S1 continue making effective signal decisions when images lose sharpness or stability, or no longer match the original viewpoint?',
         '\n'.join([
-            f"- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **{df_ns:.2f}%** lower than YOLO+MP in Nansha and **{df_town:.2f}%** lower in Town.",
-            f"- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **{mb_ns:.2f}%** lower in Nansha and **{mb_town:.2f}%** lower in Town.",
-            f"- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **{angle_ns:.2f}%** lower in Nansha and **{angle_town:.2f}%** lower in Town; Town mean waiting is **{angle_wait:.2f}%** lower.",
-            f"- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **{shake_ns:.2f}%** in Nansha and **{shake_town:.2f}%** in Town. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.",
+            f"- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **{df_ns:.2f}%** lower than YOLO+MP in the multi-intersection setting and **{df_town:.2f}%** lower in the standard simulation setting.",
+            f"- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **{mb_ns:.2f}%** lower in the multi-intersection setting and **{mb_town:.2f}%** lower in the standard simulation setting.",
+            f"- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **{angle_ns:.2f}%** lower in the multi-intersection setting and **{angle_town:.2f}%** lower in the standard simulation setting; standard-simulation mean waiting is **{angle_wait:.2f}%** lower.",
+            f"- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **{shake_ns:.2f}%** in the multi-intersection setting and **{shake_town:.2f}%** in the standard simulation setting. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.",
         ]),
         'These changes can affect vehicle detection and counting or misalign the image with calibrated lane regions, with downstream consequences for count-based signal control. S1 decides directly from temporal images and signal state, without that separate detection-and-counting pipeline. Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP: robustness translates into less waiting, shorter queues and shorter average journeys.',
         'The tests simulate visual changes that these real-world problems can produce; they are not completed night-time field or real-world adverse-weather validation. [Real-world context and technical sources](docs/visual-robustness.md).',
@@ -272,37 +272,57 @@ def render_summary(data: dict[str, Any], chinese: bool, records: list[dict[str, 
     if chinese:
         return f"""### 正常画面：优于固定配时，与YOLO+MP保持竞争力
 
-相对冻结的工程固定配时，南沙72案例与Town10HD五类车流的平均行程分别降低 **{ns:.2f}%** 和 **{town:.2f}%**。相对YOLO+MP，南沙降低 **{mp:.2f}%**，Town10HD基本持平。
+> [!TIP]
+> **正常视觉下的控制收益**
+> 相对冻结的工程固定配时，多路口场景72案例与标准仿真场景五类车流的平均行程分别降低 **{ns:.2f}%** 和 **{town:.2f}%**。相对YOLO+MP，多路口场景降低 **{mp:.2f}%**，标准仿真场景基本持平。
 
 ### 画面受干扰：更鲜明的优势
 
-在两个场景、四种已测试干扰下，S1的平均等待、排队和行程均低于YOLO+MP。下图展示全部八组平均行程改善，避免只看最大值。
+> [!IMPORTANT]
+> **优势落在交通效果上：更少等待、更短排队、更短行程。**
+> 在两组场景、四种已测试干扰下，三项指标均优于YOLO+MP。下图展示全部八组平均行程改善。
 
 <img width="1000" src="assets/results-fusion/journey-summary-zh.png" alt="全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示"/>
 
-特殊视觉每个条件覆盖南沙9案例、Town10HD 5案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。"""
+特殊视觉每个条件覆盖多路口场景9案例、标准仿真场景 5案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。"""
     return f"""### Clean views: better than fixed timing, competitive with YOLO+MP
 
-Mean journey time falls by **{ns:.2f}%** across 72 Nansha cases and **{town:.2f}%** across five Town10HD regimes versus frozen engineering fixed timing. Against YOLO+MP, Nansha improves by **{mp:.2f}%**, while Town10HD is essentially tied.
+> [!TIP]
+> **Control gains in clean views**
+> Mean journey time falls by **{ns:.2f}%** across 72 multi-intersection cases and **{town:.2f}%** across five standard simulation regimes versus frozen engineering fixed timing. Against YOLO+MP, the multi-intersection setting improves by **{mp:.2f}%**, while standard simulation is essentially tied.
 
 ### Visual disruption: the more distinctive advantage
 
-S1 has lower mean waiting, queue length and journey time than YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions, rather than only the largest gain.
+> [!IMPORTANT]
+> **Robustness translates into less waiting, shorter queues and shorter journeys.**
+> S1 improves all three metrics over YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions.
 
 <img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
 
-Each perturbation covers nine Nansha cases and five Town10HD cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance."""
+Each perturbation covers nine multi-intersection cases and five standard simulation cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance."""
 
 
 def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
     latency = data['latency']['all_calls']
     if chinese:
-        return f"""- **直接决策：** 连续路口画面与信号状态进入同一个模型，直接输出控制动作，无需独立的车辆检测与计数环节。
-- **视觉干扰下更稳健：** 在已测试的失焦、运动模糊、机位偏移和抖动条件下，两个场景的等待、排队和行程指标均优于YOLO+MP。
-- **快速响应：** 未量化模型在RTX 5090上的 **{latency['count']:,}** 次请求平均 **{latency['mean_ms']:.0f}毫秒**，**{100*latency['under_1s_fraction']:.2f}%** 低于一秒。"""
-    return f"""- **Direct decisions:** one model maps temporal intersection views and signal state to control actions, without a separate vehicle-detection and counting stage.
-- **Robust under visual disruption:** lower waiting, queues and journey times than YOLO+MP in both evaluated scenes under defocus, motion blur, camera shifts and shake.
-- **Fast response:** **{latency['mean_ms']:.0f} ms** average over **{latency['count']:,}** unquantized RTX 5090 requests; **{100*latency['under_1s_fraction']:.2f}%** finish in under one second."""
+        return f"""## 核心创新与特色
+
+<img width="1200" src="assets/highlights/s1-features-zh.svg" alt="核心特色：视觉直接决策、四类视觉干扰下的控制优势、RTX 5090平均485毫秒模型响应"/>
+
+> [!IMPORTANT]
+> **视觉理解与信号决策，在同一个模型里完成。**
+> 连续三帧画面、路口信息与信号状态共同输入，直接返回合法控制动作及候选概率；无需独立的车辆检测与计数环节。
+
+**速度实测：** 未量化BF16模型、RTX 5090、{latency['count']:,}次请求，平均 **{latency['mean_ms']:.0f}毫秒**，**{100*latency['under_1s_fraction']:.2f}%** 低于一秒。 [工作原理](#工作原理) · [完整结果](#评测结果) · [延迟统计](#推理性能)"""
+    return f"""## Design and Strengths
+
+<img width="1200" src="assets/highlights/s1-features-en.svg" alt="Direct visual decisions, control gains under four perturbations, and 485 ms average RTX 5090 model-request latency"/>
+
+> [!IMPORTANT]
+> **Visual understanding and signal decisions in one model.**
+> Three temporal frames, intersection information and signal state produce a legal control action and candidate probabilities directly, without a separate vehicle-detection and counting stage.
+
+**Measured speed:** unquantized BF16, RTX 5090, {latency['count']:,} requests; **{latency['mean_ms']:.0f} ms** on average and **{100*latency['under_1s_fraction']:.2f}%** under one second. [How it works](#how-it-works) · [Full results](#results) · [Latency statistics](#inference-performance)"""
 
 
 def render_latency(data: dict[str, Any], chinese: bool) -> str:
@@ -340,7 +360,7 @@ def video_tag(scene: str, condition: str, chinese: bool) -> str:
 
 
 def render_video(scene: str, condition: str, chinese: bool) -> str:
-    label = 'Town10HD' if scene == 'town' else ('南沙' if chinese else 'Nansha')
+    label = scene_label({'scene': scene}, chinese)
     if condition == 'clean':
         title = f'正常视觉：{label}三方对比' if chinese else f'Clean {label}: Three Controllers'
     else:
@@ -351,7 +371,7 @@ def render_video(scene: str, condition: str, chinese: bool) -> str:
 
 def render_demo(scene: str, condition: str, chinese: bool) -> str:
     language = 'zh' if chinese else 'en'
-    label = 'Town10HD' if scene == 'town' else ('南沙' if chinese else 'Nansha')
+    label = scene_label({'scene': scene}, chinese)
     title = f'{label} · {condition_label(condition, chinese)}'
     base = f'assets/previews/{language}/{scene}-{condition}'
     video = video_tag(scene, condition, chinese)
@@ -372,7 +392,7 @@ def render_gallery(chinese: bool) -> str:
         lines += ['<details>', f'<summary>{title}</summary>', '']
         for scene in ('nansha', 'town'):
             if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
-                label = 'Town10HD' if scene == 'town' else ('南沙' if chinese else 'Nansha')
+                label = scene_label({'scene': scene}, chinese)
                 lines += [f"{label}: " + ('见上方代表演示。' if chinese else 'see the featured demos above.'), '']
             else:
                 lines += [render_demo(scene, condition, chinese), '']
@@ -430,8 +450,13 @@ def main() -> None:
     )
     args = parser.parse_args()
     data = json.loads(args.results.read_text(encoding="utf-8"))
-    traffic_records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
     validate(data)
+    from render_feature_panel import render as feature_panel
+    panel_dir = ROOT / "assets/highlights"
+    panel_dir.mkdir(exist_ok=True)
+    for language in ("en", "zh"):
+        (panel_dir / f"s1-features-{language}.svg").write_text(feature_panel(data, language == "zh"))
+    traffic_records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
     with (ROOT / 'results/fusion-2026-10-30-traffic.csv').open('w', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=['scene', 'condition', 'cases', 'vehicles', 'controller', 'mean_journey_s_per_vehicle', 'mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'complete_cases'], lineterminator='\n')
         writer.writeheader()

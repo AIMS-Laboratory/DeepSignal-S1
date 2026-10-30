@@ -33,8 +33,8 @@ def plot(language):
     conditions=('df9','mb31','angle15','shake5')
     labels=(['失焦 σ=9','运动模糊 31像素','固定偏角\n偏航±15° / 俯仰±8°','动态抖动 峰值5°'] if zh else
             ['Defocus σ=9','Motion blur 31 px','Fixed camera shift\nyaw ±15° / pitch ±8°','Dynamic shake peak 5°'])
-    for scene,offset,color,label in [('nansha',.18,'#147D78','南沙 · 9案例/条件' if zh else 'Nansha · 9 cases/condition'),
-                                     ('town',-.18,'#6486A9','Town10HD · 5案例/条件' if zh else 'Town10HD · 5 cases/condition')]:
+    for scene,offset,color,label in [('nansha',.18,'#147D78','多路口场景 · 9案例/条件' if zh else 'Multi-intersection · 9 cases/condition'),
+                                     ('town',-.18,'#6486A9','标准仿真场景 · 5案例/条件' if zh else 'Standard simulation · 5 cases/condition')]:
         vals=[100*(1-rows[(scene,c,'s1')]['mean_journey_s_per_vehicle']/rows[(scene,c,'mp')]['mean_journey_s_per_vehicle']) for c in conditions]
         ys=[3-i+offset for i in range(4)]
         ax.barh(ys,vals,height=.29,color=color,label=label)
@@ -47,7 +47,7 @@ def plot(language):
     ax.set_axisbelow(True)
     for spine in ax.spines.values(): spine.set_visible(False)
     ax.tick_params(length=0,pad=8)
-    fig.legend(loc='upper left',bbox_to_anchor=(.025,.855),ncol=2,frameon=False,fontsize=11)
+    fig.legend(loc='upper left',bbox_to_anchor=(.025,.855),ncol=2,frameon=False,fontsize=10)
     fig.text(.035,.045,'受控仿真；每场景每条件一个种子；YOLO车道区域冻结，不随偏角重新标定。' if zh else
              'Controlled simulation; one seed per scene/condition; frozen YOLO lane regions, no recalibration.',fontsize=10,color='#53656F')
     return fig

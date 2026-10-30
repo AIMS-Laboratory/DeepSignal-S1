@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 415" role="img" aria-labelledby="title desc">
+<title id="title">Direct decisions. Robust control. Fast response.</title><desc id="desc">Controlled simulation; model-request latency only. BF16 / RTX 5090. Full comparisons and conditions below.</desc>
+<rect width="1200" height="415" rx="18" fill="#F5F8FB"/>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<text x="30" y="39" font-size="17" fill="#526577">DeepSignal S1 / Design and strengths</text>
+<text x="30" y="85" font-size="34" font-weight="700" fill="#132E41">Direct decisions. Robust control. Fast response.</text>
+<rect x="30" y="112" width="360" height="239" rx="12" fill="#E9F6F4"/>
+<rect x="30" y="134" width="4" height="26" rx="2" fill="#087F8C"/>
+<text x="50" y="153" font-size="17" font-weight="700" fill="#087F8C">01  MODEL DESIGN</text>
+<text x="50" y="212" font-size="29" font-weight="700" fill="#132E41">Vision → action</text>
+<text x="50" y="252" font-size="19" font-weight="400" fill="#243F50">One model interprets and decides</text>
+<text x="50" y="296" font-size="17" font-weight="400" fill="#526577">Three frames + intersection/signal state</text>
+<text x="50" y="325" font-size="17" font-weight="400" fill="#526577">Legal actions and candidate probabilities</text>
+<rect x="420" y="112" width="360" height="239" rx="12" fill="#EDF2FC"/>
+<rect x="420" y="134" width="4" height="26" rx="2" fill="#315CA8"/>
+<text x="440" y="153" font-size="17" font-weight="700" fill="#315CA8">02  CONTROL</text>
+<text x="440" y="212" font-size="29" font-weight="700" fill="#132E41">4 perturbations</text>
+<text x="440" y="252" font-size="19" font-weight="400" fill="#243F50">Defocus · blur · shift · shake</text>
+<text x="440" y="296" font-size="17" font-weight="400" fill="#526577">Lower wait, queues and journey time</text>
+<text x="440" y="325" font-size="17" font-weight="400" fill="#526577">vs YOLO+MP in both tested scenes</text>
+<rect x="810" y="112" width="360" height="239" rx="12" fill="#F3EDF9"/>
+<rect x="810" y="134" width="4" height="26" rx="2" fill="#6E4AA2"/>
+<text x="830" y="153" font-size="17" font-weight="700" fill="#6E4AA2">03  RESPONSE</text>
+<text x="830" y="212" font-size="42" font-weight="700" fill="#132E41">485 ms</text>
+<text x="830" y="252" font-size="19" font-weight="400" fill="#243F50">Mean unquantized model-request time</text>
+<text x="830" y="296" font-size="17" font-weight="400" fill="#526577">6,823 RTX 5090 requests</text>
+<text x="830" y="325" font-size="17" font-weight="400" fill="#526577">99.08% of requests under 1 second</text>
+<text x="30" y="387" font-size="17" fill="#526577">Controlled simulation; model-request latency only. BF16 / RTX 5090. Full comparisons and conditions below.</text>
+</g></svg>

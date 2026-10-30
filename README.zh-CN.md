@@ -9,45 +9,60 @@ DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0
 [看演示](#代表演示) · [看结果](#评测结果) · [试一次决策](#下载与快速开始) · [申请模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [完整复现](docs/reproduction.md)
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **直接决策：** 连续路口画面与信号状态进入同一个模型，直接输出控制动作，无需独立的车辆检测与计数环节。
-- **视觉干扰下更稳健：** 在已测试的失焦、运动模糊、机位偏移和抖动条件下，两个场景的等待、排队和行程指标均优于YOLO+MP。
-- **快速响应：** 未量化模型在RTX 5090上的 **6,823** 次请求平均 **485毫秒**，**99.08%** 低于一秒。
+## 核心创新与特色
+
+<img width="1200" src="assets/highlights/s1-features-zh.svg" alt="核心特色：视觉直接决策、四类视觉干扰下的控制优势、RTX 5090平均485毫秒模型响应"/>
+
+> [!IMPORTANT]
+> **视觉理解与信号决策，在同一个模型里完成。**
+> 连续三帧画面、路口信息与信号状态共同输入，直接返回合法控制动作及候选概率；无需独立的车辆检测与计数环节。
+
+**速度实测：** 未量化BF16模型、RTX 5090、6,823次请求，平均 **485毫秒**，**99.08%** 低于一秒。 [工作原理](#工作原理) · [完整结果](#评测结果) · [延迟统计](#推理性能)
 <!-- FUSION_HIGHLIGHTS:END -->
 
 以上效果来自受控仿真；延迟仅计算模型请求，不包含相机采集、渲染和信号执行。
 
 ## 代表演示
 
-观察画面变化、双方信号动作和排队差异。以下沿用已发布的Town机位偏移与南沙运动模糊案例，**以5倍速播放**；画面分数属于该次录制，整体效果以配对评测为准。动图与静态封面由GitHub直接提供，无需登录。
+观察画面变化、双方信号动作和排队差异。以下沿用已发布的标准仿真场景机位偏移与多路口场景运动模糊案例，**以5倍速播放**；画面分数属于该次录制，整体效果以配对评测为准。动图与静态封面由GitHub直接提供，无需登录。
 
 <!-- FUSION_FEATURED:BEGIN -->
-### Town10HD · 固定偏航±15° / 俯仰±8°
+### 标准仿真场景 · 固定偏航±15° / 俯仰±8°
 
-<img width="800" src="assets/previews/zh/town-angle15.gif" alt="Town10HD · 固定偏航±15° / 俯仰±8°">
+<img width="800" src="assets/previews/zh/town-angle15.gif" alt="标准仿真场景 · 固定偏航±15° / 俯仰±8°">
 
 [观看视频](https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71) · [静态封面](assets/previews/zh/town-angle15.jpg)
 
-### 南沙 · 31像素运动模糊
+### 多路口场景 · 31像素运动模糊
 
-<img width="800" src="assets/previews/zh/nansha-mb31.gif" alt="南沙 · 31像素运动模糊">
+<img width="800" src="assets/previews/zh/nansha-mb31.gif" alt="多路口场景 · 31像素运动模糊">
 
 [观看视频](https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73) · [静态封面](assets/previews/zh/nansha-mb31.jpg)
 <!-- FUSION_FEATURED:END -->
 
 ## 评测结果
 
+**两组场景，分别评测：**
+
+- **多路口场景：** 9个仿真路口，包含丁字和十字路口，考察不同路口形态下的控制表现。
+- **标准仿真场景：** 采用CARLA仿真软件的 **Town10HD虚拟城市地图**，在其中1个十字路口测试5类车流；Town10HD是地图名称。
+
 <!-- FUSION_RESULTS:BEGIN -->
 ### 正常画面：优于固定配时，与YOLO+MP保持竞争力
 
-相对冻结的工程固定配时，南沙72案例与Town10HD五类车流的平均行程分别降低 **18.17%** 和 **33.77%**。相对YOLO+MP，南沙降低 **1.36%**，Town10HD基本持平。
+> [!TIP]
+> **正常视觉下的控制收益**
+> 相对冻结的工程固定配时，多路口场景72案例与标准仿真场景五类车流的平均行程分别降低 **18.17%** 和 **33.77%**。相对YOLO+MP，多路口场景降低 **1.36%**，标准仿真场景基本持平。
 
 ### 画面受干扰：更鲜明的优势
 
-在两个场景、四种已测试干扰下，S1的平均等待、排队和行程均低于YOLO+MP。下图展示全部八组平均行程改善，避免只看最大值。
+> [!IMPORTANT]
+> **优势落在交通效果上：更少等待、更短排队、更短行程。**
+> 在两组场景、四种已测试干扰下，三项指标均优于YOLO+MP。下图展示全部八组平均行程改善。
 
 <img width="1000" src="assets/results-fusion/journey-summary-zh.png" alt="全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示"/>
 
-特殊视觉每个条件覆盖南沙9案例、Town10HD 5案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。
+特殊视觉每个条件覆盖多路口场景9案例、标准仿真场景 5案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。
 
 <details>
 <summary>正常视觉：三方比较 — 完整数值与三指标图</summary>
@@ -57,10 +72,10 @@ DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0
 <tr><th scope="col">场景</th><th scope="col">条件</th><th scope="col">案例数</th><th scope="col">控制方法</th><th scope="col">平均等待（秒/车）</th><th scope="col">平均排队长度（辆）</th><th scope="col">平均行程（秒/车）</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="3" align="center" valign="middle">南沙</td><td rowspan="3" align="center" valign="middle">正常</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
+<tr><td rowspan="3" align="center" valign="middle">多路口场景</td><td rowspan="3" align="center" valign="middle">正常</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
 <tr><td>固定配时方案</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
 <tr><td>YOLO+MP</td><td align="right">46.89</td><td align="right">10.56</td><td align="right">108.79</td></tr>
-<tr><td rowspan="3" align="center" valign="middle">Town10HD</td><td rowspan="3" align="center" valign="middle">正常</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
+<tr><td rowspan="3" align="center" valign="middle">标准仿真场景</td><td rowspan="3" align="center" valign="middle">正常</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
 <tr><td>固定配时方案</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
 <tr><td>YOLO+MP</td><td align="right">20.22</td><td align="right">3.59</td><td align="right">38.22</td></tr>
 </tbody>
@@ -78,21 +93,21 @@ DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0
 <tr><th scope="col">场景</th><th scope="col">条件</th><th scope="col">案例数</th><th scope="col">控制方法</th><th scope="col">平均等待（秒/车）</th><th scope="col">平均排队长度（辆）</th><th scope="col">平均行程（秒/车）</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="2" align="center" valign="middle">南沙</td><td rowspan="2" align="center" valign="middle">失焦σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">多路口场景</td><td rowspan="2" align="center" valign="middle">失焦σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
 <tr><td>YOLO+MP</td><td align="right">104.86</td><td align="right">31.04</td><td align="right">167.48</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">南沙</td><td rowspan="2" align="center" valign="middle">31像素运动模糊</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">多路口场景</td><td rowspan="2" align="center" valign="middle">31像素运动模糊</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
 <tr><td>YOLO+MP</td><td align="right">124.59</td><td align="right">30.18</td><td align="right">188.34</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">南沙</td><td rowspan="2" align="center" valign="middle">固定偏航±15° / 俯仰±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">多路口场景</td><td rowspan="2" align="center" valign="middle">固定偏航±15° / 俯仰±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
 <tr><td>YOLO+MP</td><td align="right">87.01</td><td align="right">21.18</td><td align="right">154.36</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">南沙</td><td rowspan="2" align="center" valign="middle">动态抖动峰值5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">多路口场景</td><td rowspan="2" align="center" valign="middle">动态抖动峰值5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
 <tr><td>YOLO+MP</td><td align="right">72.15</td><td align="right">17.91</td><td align="right">137.61</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">失焦σ=9</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">27.51</td><td align="right">4.10</td><td align="right">44.43</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">标准仿真场景</td><td rowspan="2" align="center" valign="middle">失焦σ=9</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">27.51</td><td align="right">4.10</td><td align="right">44.43</td></tr>
 <tr><td>YOLO+MP</td><td align="right">92.97</td><td align="right">9.75</td><td align="right">109.15</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">31像素运动模糊</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.28</td><td align="right">3.58</td><td align="right">38.10</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">标准仿真场景</td><td rowspan="2" align="center" valign="middle">31像素运动模糊</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.28</td><td align="right">3.58</td><td align="right">38.10</td></tr>
 <tr><td>YOLO+MP</td><td align="right">111.26</td><td align="right">10.24</td><td align="right">127.71</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">固定偏航±15° / 俯仰±8°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.23</td><td align="right">3.45</td><td align="right">37.11</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">标准仿真场景</td><td rowspan="2" align="center" valign="middle">固定偏航±15° / 俯仰±8°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.23</td><td align="right">3.45</td><td align="right">37.11</td></tr>
 <tr><td>YOLO+MP</td><td align="right">205.09</td><td align="right">13.67</td><td align="right">217.40</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">动态抖动峰值5°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.13</td><td align="right">3.32</td><td align="right">37.20</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">标准仿真场景</td><td rowspan="2" align="center" valign="middle">动态抖动峰值5°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.13</td><td align="right">3.32</td><td align="right">37.20</td></tr>
 <tr><td>YOLO+MP</td><td align="right">21.49</td><td align="right">3.53</td><td align="right">39.88</td></tr>
 </tbody>
 </table>
@@ -110,18 +125,18 @@ DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0
 
 #### 正常视觉：高水平控制，不依赖独立车辆检测
 
-与固定配时方案相比，S1在南沙和Town10HD的平均行程分别降低 **18.17%** 和 **33.77%**，平均等待分别降低 **33.15%** 和 **49.45%**。收益不仅是车辆更早到达，也体现在更少的停车等待与更短的排队。
+与固定配时方案相比，S1在多路口场景和标准仿真场景的平均行程分别降低 **18.17%** 和 **33.77%**，平均等待分别降低 **33.15%** 和 **49.45%**。收益不仅是车辆更早到达，也体现在更少的停车等待与更短的排队。
 
-与YOLO+MP相比，S1在南沙的平均行程再降低 **1.36%**、平均等待降低 **2.28%**；Town10HD的平均行程基本持平。这说明，直接从视觉作出信号决策，可以在省去独立检测环节的同时达到有竞争力的交通控制效果，并在南沙取得小幅领先。
+与YOLO+MP相比，S1在多路口场景的平均行程再降低 **1.36%**、平均等待降低 **2.28%**；标准仿真场景的平均行程基本持平。这说明，直接从视觉作出信号决策，可以在省去独立检测环节的同时达到有竞争力的交通控制效果，并在多路口场景取得小幅领先。
 
 #### 特殊视觉：更值得关注的部署优势
 
 现实路口的车流未必改变，摄像头输入却可能因光照变化、设备维护或风振而发生变化。四类测试分别对应不同的成像问题，考察S1在画面不再清晰、稳定或保持原机位时，能否继续作出有效的信号决策。
 
-- **失焦：对焦不准，车辆轮廓变软。** 夜间车灯等复杂光源可能干扰自动对焦，人工调焦或更换镜头后也可能没有重新调好焦点。车辆边缘和车道细节随之变得模糊，增加识别与计数的难度。在失焦测试中，S1相对YOLO+MP的平均行程在南沙、Town分别降低 **15.79%**、**59.29%**。
+- **失焦：对焦不准，车辆轮廓变软。** 夜间车灯等复杂光源可能干扰自动对焦，人工调焦或更换镜头后也可能没有重新调好焦点。车辆边缘和车道细节随之变得模糊，增加识别与计数的难度。在失焦测试中，S1相对YOLO+MP的平均行程在多路口场景、标准仿真场景分别降低 **15.79%**、**59.29%**。
 - **运动模糊：曝光期间的移动形成拖影。** 傍晚或夜间光照不足时，摄像头可能采用更长曝光；车辆运动或曝光期间的相机晃动便可能形成方向性拖影，使车辆形状和相邻车辆的边界更难分辨。在运动模糊测试中，S1的平均行程分别降低 **30.14%**、**70.16%**。
-- **固定角度偏移：调整后稳定在新的机位。** 例如检修后重新调整视角，或支架发生偏转：画面已经稳定，但停车线和车道在图像中的位置改变了，原先画好的车道区域可能不再对应。我们的对比先在正常机位为YOLO画线，再固定改变相机角度，不重新画线。S1的平均行程在南沙降低 **16.40%**，在Town降低 **82.93%**；Town的平均等待同时降低 **90.63%**。
-- **动态抖动：视角随时间来回变化。** 高杆摄像头可能受到阵风或邻近重型车辆引起的振动影响，车辆和车道在连续画面中的位置随之摆动；这与调整后保持不动的固定偏角不同。动态抖动测试中，S1的平均行程在南沙、Town分别降低 **6.80%**、**6.72%**。抖动下仍有收益，模糊和机位偏移下的优势更突出。
+- **固定角度偏移：调整后稳定在新的机位。** 例如检修后重新调整视角，或支架发生偏转：画面已经稳定，但停车线和车道在图像中的位置改变了，原先画好的车道区域可能不再对应。我们的对比先在正常机位为YOLO画线，再固定改变相机角度，不重新画线。S1的平均行程在多路口场景降低 **16.40%**，在标准仿真场景降低 **82.93%**；标准仿真场景的平均等待同时降低 **90.63%**。
+- **动态抖动：视角随时间来回变化。** 高杆摄像头可能受到阵风或邻近重型车辆引起的振动影响，车辆和车道在连续画面中的位置随之摆动；这与调整后保持不动的固定偏角不同。动态抖动测试中，S1的平均行程在多路口场景、标准仿真场景分别降低 **6.80%**、**6.72%**。抖动下仍有收益，模糊和机位偏移下的优势更突出。
 
 这些变化既可能影响车辆检测与计数，也可能使画面与原有车道区域错位，进而影响依赖检测计数的信号控制。S1直接依据时序画面和信号状态决策，不依赖这条独立检测计数链路。在本次两个场景、四种特殊视觉条件的对比中，S1的平均等待、平均排队长度和平均行程均低于YOLO+MP，体现出对这些输入变化的鲁棒性，优势直接落在车辆少等待、少排队和平均行程更短上。
 
@@ -146,7 +161,7 @@ flowchart LR
 
 System One 强调快速、直接输出结构化决策，不生成逐字展开的长篇推理文字。S1借鉴 [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) 与 [OneJev](https://github.com/OmniJev/OneJev) 所体现的决策范式，在本地运行模型，不调用商业Jev服务。
 
-同一份1.0权重覆盖南沙9个路口的仿真场景（丁字和十字路口），以及Town10HD一个十字路口的五类车流。训练覆盖这些场景；此处不将跨场景使用等同于未见路口泛化验证。
+同一份1.0权重覆盖多路口场景的9个路口（丁字和十字路口），以及标准仿真场景一个十字路口的五类车流。训练覆盖这些场景；此处不将跨场景使用等同于未见路口泛化验证。
 
 ## 推理性能
 
@@ -205,9 +220,9 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 
 ## 评测说明
 
-- **唯一固定基线：** 固定配时方案，评测期间保持配时参数不变；南沙使用已发布的各路口配时表，Town10HD使用`31/6/31/6秒`。
+- **唯一固定基线：** 固定配时方案，评测期间保持配时参数不变；多路口场景使用已发布的各路口配时表，标准仿真场景使用`31/6/31/6秒`。
 - **视觉对照：** 正常视觉比较三方，特殊视觉比较S1与YOLO+MP；相机偏移发生在YOLO画线之后，不重新标定。
-- **适用范围：** 结果来自南沙与Town10HD的受控仿真，真实道路和天气条件下的部署效果仍需验证。
+- **适用范围：** 结果来自多路口场景与标准仿真场景的受控仿真，真实道路和天气条件下的部署效果仍需验证。
 
 详见[评测说明](docs/fusion-pilot-evaluation.md)、[指标定义](docs/comparisons.md)和[素材交付说明](docs/media-delivery.md)。
 
@@ -242,15 +257,15 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 <details>
 <summary>展开路口鸟瞰与案例位置</summary>
 
-### 南沙 · J03十字路口
+### 多路口场景 · J03十字路口
 
-<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="南沙J03十字路口鸟瞰，展示四向车道、停车线和中央交叉区域">
+<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="多路口场景J03十字路口鸟瞰，展示四向车道、停车线和中央交叉区域">
 
-### Town10HD · 十字路口
+### 标准仿真场景 · 十字路口
 
-<img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="CARLA Town10HD十字路口鸟瞰，展示四向道路、停车线和周边街区">
+<img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="CARLA 标准仿真场景十字路口鸟瞰，展示四向道路、停车线和周边街区">
 
-南沙固定偏角示例使用J03，失焦、运动模糊和动态抖动示例分别使用J08、J05和J07；Town10HD四组示例均来自上图同一十字路口。
+多路口场景固定偏角示例使用J03，失焦、运动模糊和动态抖动示例分别使用J08、J05和J07；标准仿真场景四组示例均来自上图同一十字路口。
 
 </details>
 
@@ -262,15 +277,15 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 <details>
 <summary>失焦σ=9</summary>
 
-### 南沙 · 失焦σ=9
+### 多路口场景 · 失焦σ=9
 
-<img width="800" src="assets/previews/zh/nansha-df9.gif" alt="南沙 · 失焦σ=9">
+<img width="800" src="assets/previews/zh/nansha-df9.gif" alt="多路口场景 · 失焦σ=9">
 
 [观看视频](https://github.com/user-attachments/assets/f87f3efe-5ffd-483d-8a59-0ac73a578493) · [静态封面](assets/previews/zh/nansha-df9.jpg)
 
-### Town10HD · 失焦σ=9
+### 标准仿真场景 · 失焦σ=9
 
-<img width="800" src="assets/previews/zh/town-df9.gif" alt="Town10HD · 失焦σ=9">
+<img width="800" src="assets/previews/zh/town-df9.gif" alt="标准仿真场景 · 失焦σ=9">
 
 [观看视频](https://github.com/user-attachments/assets/dc64bac6-001d-42fd-ae0f-e58bbb6070af) · [静态封面](assets/previews/zh/town-df9.jpg)
 
@@ -279,11 +294,11 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 <details>
 <summary>31像素运动模糊</summary>
 
-南沙: 见上方代表演示。
+多路口场景: 见上方代表演示。
 
-### Town10HD · 31像素运动模糊
+### 标准仿真场景 · 31像素运动模糊
 
-<img width="800" src="assets/previews/zh/town-mb31.gif" alt="Town10HD · 31像素运动模糊">
+<img width="800" src="assets/previews/zh/town-mb31.gif" alt="标准仿真场景 · 31像素运动模糊">
 
 [观看视频](https://github.com/user-attachments/assets/f697bbca-f885-4a95-adab-412699c88de9) · [静态封面](assets/previews/zh/town-mb31.jpg)
 
@@ -292,35 +307,35 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 <details>
 <summary>固定偏航±15° / 俯仰±8°</summary>
 
-### 南沙 · 固定偏航±15° / 俯仰±8°
+### 多路口场景 · 固定偏航±15° / 俯仰±8°
 
-<img width="800" src="assets/previews/zh/nansha-angle15.gif" alt="南沙 · 固定偏航±15° / 俯仰±8°">
+<img width="800" src="assets/previews/zh/nansha-angle15.gif" alt="多路口场景 · 固定偏航±15° / 俯仰±8°">
 
 [观看视频](https://github.com/user-attachments/assets/199bbd0f-da7d-4d16-968d-89b0bf5de5fe) · [静态封面](assets/previews/zh/nansha-angle15.jpg)
 
-Town10HD: 见上方代表演示。
+标准仿真场景: 见上方代表演示。
 
 </details>
 
 <details>
 <summary>动态抖动峰值5°</summary>
 
-### 南沙 · 动态抖动峰值5°
+### 多路口场景 · 动态抖动峰值5°
 
-<img width="800" src="assets/previews/zh/nansha-shake5.gif" alt="南沙 · 动态抖动峰值5°">
+<img width="800" src="assets/previews/zh/nansha-shake5.gif" alt="多路口场景 · 动态抖动峰值5°">
 
 [观看视频](https://github.com/user-attachments/assets/8b6caf1c-393c-4668-95a8-3a62e980d1b7) · [静态封面](assets/previews/zh/nansha-shake5.jpg)
 
-### Town10HD · 动态抖动峰值5°
+### 标准仿真场景 · 动态抖动峰值5°
 
-<img width="800" src="assets/previews/zh/town-shake5.gif" alt="Town10HD · 动态抖动峰值5°">
+<img width="800" src="assets/previews/zh/town-shake5.gif" alt="标准仿真场景 · 动态抖动峰值5°">
 
 [观看视频](https://github.com/user-attachments/assets/658a8f96-ed06-44b4-b398-a1ca49b15ed7) · [静态封面](assets/previews/zh/town-shake5.jpg)
 
 </details>
 <!-- FUSION_GALLERY:END -->
 
-录制分数仅属于对应回合；南沙J08失焦录制中S1行程略长于YOLO+MP，仍如实保留。动态指标与正式评测口径见[素材说明](docs/media-delivery.md)。
+录制分数仅属于对应回合；多路口场景J08失焦录制中S1行程略长于YOLO+MP，仍如实保留。动态指标与正式评测口径见[素材说明](docs/media-delivery.md)。
 
 YOLO车道画线在正常机位完成后冻结；固定偏角测试不重新标定。动态抖动的偏航/俯仰峰值5°、横滚峰值2.5°。
 
@@ -328,14 +343,14 @@ YOLO车道画线在正常机位完成后冻结；固定偏角测试不重新标�
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
-<summary>视频：正常视觉：南沙三方对比</summary>
+<summary>视频：正常视觉：多路口场景三方对比</summary>
 
 https://github.com/user-attachments/assets/de7933ba-fcd9-42a6-befd-48b0e0c51cf8
 
 </details>
 
 <details>
-<summary>视频：正常视觉：Town10HD三方对比</summary>
+<summary>视频：正常视觉：标准仿真场景三方对比</summary>
 
 https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a
 
@@ -344,6 +359,6 @@ https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a
 
 ## 历史版本
 
-此前 `DeepSignal-S1-1.0-candidate` 的南沙结果和历史Town专用权重继续按原协议归档，与当前1.0版本及其成绩区分。见[历史发布结果](docs/released-results.md)。
+此前 `DeepSignal-S1-1.0-candidate` 的多路口场景结果和历史Town专用权重继续按原协议归档，与当前1.0版本及其成绩区分。见[历史发布结果](docs/released-results.md)。
 
 联系：[dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)

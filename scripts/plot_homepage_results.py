@@ -11,6 +11,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 from matplotlib.ticker import MaxNLocator
@@ -33,9 +34,14 @@ CONDITIONS = ("df9", "mb31", "angle15", "shake5")
 
 
 def style(language: str = "en") -> None:
+    chinese_fonts = ["Noto Sans CJK SC", "Noto Sans CJK JP", "DejaVu Sans"]
+    local_font = Path("/System/Library/Fonts/STHeiti Medium.ttc")
+    if language == "zh" and local_font.exists():
+        font_manager.fontManager.addfont(local_font)
+        chinese_fonts.insert(0, font_manager.FontProperties(fname=local_font).get_name())
     plt.rcParams.update({
         "font.family": "sans-serif",
-        "font.sans-serif": (["Noto Sans CJK SC", "Noto Sans CJK JP", "DejaVu Sans"] if language == "zh"
+        "font.sans-serif": (chinese_fonts if language == "zh"
                             else ["Inter", "DejaVu Sans"]),
         "font.size": 11,
         "font.weight": "normal",
@@ -69,7 +75,8 @@ def load_rows(path: Path) -> dict:
 
 
 def scene_name(scene: str, language: str) -> str:
-    return ("南沙" if language == "zh" else "Nansha") if scene == "nansha" else "Town10HD"
+    return (("多路口场景" if language == "zh" else "Multi-intersection") if scene == "nansha"
+            else ("标准仿真场景" if language == "zh" else "Standard simulation"))
 
 
 def condition_names(language: str) -> list[str]:
@@ -202,7 +209,10 @@ def plot_perturbed(rows: dict, language: str) -> plt.Figure:
 def save(fig: plt.Figure, output_dir: Path, name: str, language: str) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     for extension in ("png", "svg"):
-        fig.savefig(output_dir / f"{name}-{language}.{extension}", facecolor="white")
+        path = output_dir / f"{name}-{language}.{extension}"
+        fig.savefig(path, facecolor="white")
+        if extension == "svg":
+            path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
     plt.close(fig)
 
 
