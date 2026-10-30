@@ -21,9 +21,9 @@
 <rect x="810" y="112" width="360" height="239" rx="12" fill="#F3EDF9"/>
 <rect x="810" y="134" width="4" height="26" rx="2" fill="#6E4AA2"/>
 <text x="830" y="153" font-size="17" font-weight="700" fill="#6E4AA2">03  响应速度</text>
-<text x="830" y="212" font-size="42" font-weight="700" fill="#132E41">485 ms</text>
-<text x="830" y="252" font-size="19" font-weight="400" fill="#243F50">未量化模型的平均请求耗时</text>
-<text x="830" y="296" font-size="17" font-weight="400" fill="#526577">6,823 次 RTX 5090 请求</text>
-<text x="830" y="325" font-size="17" font-weight="400" fill="#526577">99.08% 的请求低于 1 秒</text>
+<text x="830" y="212" font-size="32" font-weight="700" fill="#132E41">平均 485毫秒</text>
+<text x="830" y="252" font-size="24" font-weight="400" fill="#243F50"><tspan font-weight="700">99.08%</tspan> 低于一秒</text>
+<text x="830" y="296" font-size="17" font-weight="400" fill="#526577">未量化 BF16 · RTX 5090</text>
+<text x="830" y="325" font-size="17" font-weight="400" fill="#526577">统计 6,823 次模型请求</text>
 <text x="30" y="387" font-size="17" fill="#526577">受控仿真结果；延迟仅指模型请求。BF16 / RTX 5090；完整比较与测试条件见下文。</text>
 </g></svg>
