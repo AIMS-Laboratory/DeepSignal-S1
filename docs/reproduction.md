@@ -6,7 +6,7 @@ CPU测试和6/6固定动作样例已经通过；从公开下载开始的完整�
 
 ## 1. 下载代码、模型与v3场景
 
-模型与仿真资产分别采用审批下载，继续使用v3资产。[融合版媒体和结果数据](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media)无需审批，观看媒体不需要下载场景包。
+模型与仿真资产分别采用审批下载，继续使用v3资产。[GitHub首页演示](../README.zh-CN.md#代表演示)与[结果数据](../results/fusion-2026-10-30.json)无需审批，观看媒体不需要下载场景包。
 
 ```bash
 pip install -U huggingface_hub
@@ -159,10 +159,12 @@ Town正常视觉使用 `town10hd-fusion-pilot`，同样分别运行`fixed`、`s1
 python scripts/export_fusion_results.py --help
 .venv-nansha/bin/pip install -e '.[plots]'
 python scripts/render_fusion_pages.py
+.venv-nansha/bin/python scripts/plot_journey_summary.py --language zh
+.venv-nansha/bin/python scripts/plot_journey_summary.py --language en
 .venv-nansha/bin/python scripts/plot_homepage_results.py --language zh
 .venv-nansha/bin/python scripts/plot_homepage_results.py --language en
 ```
 
 表格由 `results/fusion-2026-10-30.json` 和对应的 `fusion-2026-10-30-traffic.json` 生成。`plots` extra安装Matplotlib 3.9或更高版本。中文图需要系统字体Noto Sans CJK；英文图不依赖中文字体。历史candidate与历史Town专用权重的旧入口见[历史复现说明](historical-reproduction.md)，不得与融合1.0混算。
 
-主页两张三指标比较图由 `plot_homepage_results.py` 单独生成，直接读取表格生成器输出的 `results/fusion-2026-10-30-traffic.csv`，保留同一批次的等待、排队和行程，不读取历史归一化成绩。正常视觉比较 S1、冻结工程固定配时和 YOLO+MP；特殊视觉仅比较 S1 与 YOLO+MP，百分比为 `(YOLO+MP - S1) / YOLO+MP × 100%`。中英文分别保存为 `*-zh` 和 `*-en` 的 PNG 与可编辑 SVG，插入各自表格下方。图示为已公开的汇总均值，不添加置信区间。
+主页两张三指标比较图由 `plot_homepage_results.py` 单独生成，直接读取表格生成器输出的 `results/fusion-2026-10-30-traffic.csv`，保留同一批次的等待、排队和行程，不读取历史归一化成绩。正常视觉比较 S1、冻结工程固定配时和 YOLO+MP；特殊视觉仅比较 S1 与 YOLO+MP，百分比为 `(YOLO+MP - S1) / YOLO+MP × 100%`。中英文分别保存为 `*-zh` 和 `*-en` 的 PNG 与可编辑 SVG，保留在可展开的完整结果区域。首页另用 `plot_journey_summary.py` 展示全部八组平均行程降幅，使用同一CSV，不混合两个场景的绝对值。图示为已公开的汇总均值，不添加置信区间。

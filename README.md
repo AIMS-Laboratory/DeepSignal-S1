@@ -1,60 +1,56 @@
-# DeepSignal-S1-1.0
+# DeepSignal S1
 
-**A multimodal System One model for traffic signals: visual observations in, fast structured control decisions out.**
+**Traffic signal decisions, directly from intersection views.**
 
-English | [简体中文](README.zh-CN.md)
+The visual decision series in the DeepSignal model family · Current release **DeepSignal-S1-1.0**
 
-[DeepSignal family](https://github.com/AIMS-Laboratory/DeepSignal) · [Model](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Scenes](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [Results](results/fusion-2026-10-30.json) · [Reproduction](docs/reproduction.md)
+English | [简体中文](README.zh-CN.md) · [DeepSignal family](https://github.com/AIMS-Laboratory/DeepSignal)
 
-**DeepSignal S1** is the visual decision series in the [DeepSignal traffic-signal control model family](https://github.com/AIMS-Laboratory/DeepSignal). It selects signal actions directly from intersection camera views and current signal context. This repository hosts the S1 release page, code, evaluation results and reproduction instructions.
-
-DeepSignal-S1 follows a **Jev-style structured probabilistic decision** approach. It reads temporal intersection views and signal context, scores candidate actions, and selects a legal control action directly. It does not generate a traffic-analysis essay for another program to parse, and does not require a separate YOLO detection stage.
-
-**DeepSignal-S1-1.0** is trained on **simulation scenes from nine Nansha intersections**, including T-junctions and four-arm intersections, and **five traffic-demand scenarios at one four-arm intersection in CARLA's official Town10HD map**, covering balanced, uneven and time-varying flows. Its development addresses two practical questions: can visual control improve on the fixed-time plan in clean conditions, and can it remain more robust than detection plus Max Pressure when the camera feed degrades?
-
-## Why System One
-
-System One emphasizes fast, directly callable decisions, as illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and the open-source [OneJev](https://github.com/OmniJev/OneJev). DeepSignal-S1 applies this decision paradigm to traffic control: its inference interface returns an action and probabilities without generating a token-by-token reasoning narrative. It is not a wrapper around the commercial Jev service.
-
-- **Vision to control:** temporal observations and signal context determine actions without operator-supplied live vehicle counts.
-- **Structured decisions:** the model chooses among legal actions; the signal executor implements the committed green tail, yellow and all-red transitions.
-- **One checkpoint across scenes:** the release covers T-junctions and four-arm intersections in Nansha as well as Town10HD.
-- **Local deployment:** unquantized consumer-GPU inference is measured; quantization and edge deployment remain future work.
+[Watch demos](#featured-demos) · [Explore results](#results) · [Try a decision](#download-and-quickstart) · [Request model access](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Full reproduction](docs/reproduction.md)
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **Effective clean control:** versus the fixed-time plan, S1 reduces vehicle-weighted mean journey time by **18.17%** across 72 Nansha cases and **33.77%** across five Town regimes.
-- **Competitive with YOLO+MP in clean views:** Nansha mean journey time is a further **1.36%** lower, while Town10HD is essentially tied, without a separate detector.
-- **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **82.93%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **30.14%**.
-- **Unquantized local inference:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
+- **Direct decisions:** one model maps temporal intersection views and signal state to control actions, without a separate vehicle-detection and counting stage.
+- **Robust under visual disruption:** lower waiting, queues and journey times than YOLO+MP in both evaluated scenes under defocus, motion blur, camera shifts and shake.
+- **Fast response:** **485 ms** average over **6,823** unquantized RTX 5090 requests; **99.08%** finish in under one second.
 <!-- FUSION_HIGHLIGHTS:END -->
 
-## Five traffic demand scenarios
+Results are from controlled simulations. Latency measures model requests only, excluding camera capture, rendering and signal execution.
 
-<!-- TOWN_DEMAND:BEGIN -->
-All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.
+## Featured Demos
 
-<table>
-<thead>
-<tr><th scope="col" nowrap="nowrap">Demand scenario</th><th scope="col" nowrap="nowrap">Flow per approach<br/>(vehicles/hour)</th><th scope="col" nowrap="nowrap">Temporal pattern</th><th scope="col" nowrap="nowrap">Control challenge</th></tr>
-</thead>
-<tbody>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">Balanced flow</a></td><td nowrap="nowrap">All four: 360 each</td><td nowrap="nowrap">Constant throughout</td><td nowrap="nowrap">Basic control with similar<br/>demand in all directions</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">Sustained<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 600 each<br/>N and S: 120 each</td><td nowrap="nowrap">Constant<br/>major/minor ratio 5:1</td><td nowrap="nowrap">Prioritize persistently<br/>busier approaches</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json">Higher-load<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 750 each<br/>N and S: 150 each</td><td nowrap="nowrap">Constant<br/>still 5:1</td><td nowrap="nowrap">25% more total demand<br/>than the preceding regime</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json">Time-varying peak</a></td><td nowrap="nowrap">All approaches:<br/>200 → 700 → 200</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to rising demand<br/>and peak recovery</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">Shifted peak timing</a></td><td nowrap="nowrap">All approaches:<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to changes<br/>in peak timing</td></tr>
-</tbody>
-</table>
+Watch the visual disturbance, signal actions and queue behavior. These are the existing Town camera-shift and Nansha motion-blur recordings, played at **5× speed**. On-screen scores describe that recording; aggregate claims use the paired evaluations. GIFs and static covers are served directly by GitHub without login.
 
-Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use 70% straight, 15% left and 15% right turns. Time starts at simulation startup, with the final rate held until demand generation ends. Shifted peak timing reorders the time-varying rates by seed; the table shows the configuration behind the current results. Controllers receive identical vehicle plans.
-<!-- TOWN_DEMAND:END -->
+<!-- FUSION_FEATURED:BEGIN -->
+### Town10HD · Fixed yaw ±15° / pitch ±8°
+
+<img width="800" src="assets/previews/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
+
+[Watch video](https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91) · [Static cover](assets/previews/en/town-angle15.jpg)
+
+### Nansha · 31 px motion blur
+
+<img width="800" src="assets/previews/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
+
+[Watch video](https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a) · [Static cover](assets/previews/en/nansha-mb31.jpg)
+<!-- FUSION_FEATURED:END -->
 
 ## Results
 
-Results compare **mean waiting time per vehicle, mean queue length and mean journey time per vehicle; lower is better for all three**. Clean views compare S1, the fixed-time plan and YOLO+MP. Perturbed views compare S1 with YOLO+MP.
-
 <!-- FUSION_RESULTS:BEGIN -->
-### Clean views: three controllers
+### Clean views: better than fixed timing, competitive with YOLO+MP
+
+Mean journey time falls by **18.17%** across 72 Nansha cases and **33.77%** across five Town10HD regimes versus frozen engineering fixed timing. Against YOLO+MP, Nansha improves by **1.36%**, while Town10HD is essentially tied.
+
+### Visual disruption: the more distinctive advantage
+
+S1 has lower mean waiting, queue length and journey time than YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions, rather than only the largest gain.
+
+<img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
+
+Each perturbation covers nine Nansha cases and five Town10HD cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance.
+
+<details>
+<summary>Clean views: three controllers — full values and three-metric chart</summary>
 
 <table>
 <thead>
@@ -72,7 +68,10 @@ Results compare **mean waiting time per vehicle, mean queue length and mean jour
 
 <img width="1280" src="assets/results-fusion/clean-comparison-en.png" alt="Clean-view comparison of waiting time, queue length and journey time for three controllers"/>
 
-### Perturbed views: S1 vs YOLO+MP
+</details>
+
+<details>
+<summary>Perturbed views: S1 vs YOLO+MP — full values and three-metric chart</summary>
 
 <table>
 <thead>
@@ -100,7 +99,12 @@ Results compare **mean waiting time per vehicle, mean queue length and mean jour
 
 <img width="1280" src="assets/results-fusion/perturbed-comparison-en.png" alt="Perturbed-view comparison of S1 and YOLO+MP across all three traffic metrics"/>
 
+</details>
+
 **Metrics:** lower is better for all three. Mean wait includes stopped and insertion waiting; mean queue counts halted vehicles; journey time starts at planned departure, with unfinished vehicles contributing elapsed time at the evaluation cutoff. [Detailed definitions](docs/traffic-metrics.md).
+
+<details>
+<summary>Detailed interpretation and real-world context</summary>
 
 ### What the Results Show
 
@@ -126,13 +130,117 @@ The tests simulate visual changes that these real-world problems can produce; th
 #### Sub-Second Decisions From a Visual Model
 
 Across **6823** unquantized RTX 5090 decision requests, latency averages **485 ms**, with **99.08%** below one second; steady-state requests average **477 ms**. System One emits structured control actions directly, without waiting for a long textual response, combining visual understanding, traffic-control performance and fast decisions.
+
+</details>
 <!-- FUSION_RESULTS:END -->
 
-**Evaluation scale:** clean views cover 72 cases across nine Nansha intersections and five Town10HD demand regimes. Each of the four perturbations covers nine Nansha cases and five Town10HD cases, using one traffic seed per scene.
+## How It Works
 
-Recorded cases show the actual visual condition and controller behavior; the on-screen score belongs to that recording. Overall effects are defined by the paired tables above.
+The model receives three temporal frames (a four-second window sampled every two seconds), static intersection information, current signal state and legal actions. It returns an action and candidate-action probabilities, without simulator vehicle counts or future arrival plans.
+
+```mermaid
+flowchart LR
+    A["Temporal views + intersection and signal state"] --> B["DeepSignal S1: select a legal action"]
+    B --> C["Signal executor: green tail, yellow and all-red"]
+```
+
+System One emphasizes fast, structured decisions without generating a token-by-token reasoning narrative. S1 draws on the decision paradigm illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and [OneJev](https://github.com/OmniJev/OneJev). It runs locally and does not call the commercial Jev service.
+
+One 1.0 checkpoint covers simulations of nine Nansha intersections (T-junctions and four-arm intersections) and five traffic regimes at one Town10HD intersection. Training includes these scenes; using one checkpoint across them is not evidence of generalization to unseen intersections.
+
+## Inference Performance
+
+<!-- FUSION_LATENCY:BEGIN -->
+| Scope | Count | Mean | Median | P95 | Max | Under 1 s |
+|---|---:|---:|---:|---:|---:|---:|
+| All calls | 6823 | 485.4 ms | 479.0 ms | 494.0 ms | 2304.0 ms | 99.08% |
+| First call per run | 133 | 911.1 ms | 495.0 ms | 1460.2 ms | 2304.0 ms | 52.63% |
+| Subsequent calls | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
+<!-- FUSION_LATENCY:END -->
+
+Statistics cover 133 S1 evaluation cases and 6823 decision requests with the unquantized BF16 model. Latency measures model decision requests, excluding camera capture, rendering and signal execution; first calls include initialization effects.
+
+**Deployment value:** sub-second model decisions make consumer-GPU signal-control workstations a practical target. We also tested the unquantized model on an **RTX 4090**, observing approximately **900 ms per decision**. This independent observation uses measurement conditions that have not yet been aligned and is not included in the table. Quantization and edge deployment are future directions for reducing compute requirements.
+
+### Runtime Requirements
+
+| Item | Current guidance |
+|---|---|
+| Precision | Unquantized BF16 |
+| Tested inference hardware | RTX 5090; a separate RTX 4090 observation is approximately 900 ms |
+| Model server | Linux, NVIDIA GPU, Python 3.12; install dependencies from the complete model package |
+| Single decision | Use the included three-frame request; no simulator required |
+| Full simulation | Python 3.10, SUMO 1.18.0 and the matching CARLA environment; see reproduction instructions |
+
+A verified minimum-VRAM configuration has not been published; the tested hardware is not a minimum requirement.
+
+## Download and Quickstart
+
+- **Watch demos:** previews, GitHub videos and [result data](results/fusion-2026-10-30.json) need no approval.
+- **Try one decision:** request access on the [model page](https://huggingface.co/AIMS2025/DeepSignal-S1), download the complete model folder, then start the local server below.
+- **Run a full simulation:** separately request [scene assets](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) and follow [full reproduction](docs/reproduction.md) for v3 assets and scene-specific environments.
+
+**1. Download and start the model server** (Linux, NVIDIA GPU, Python 3.12; model access approved):
+
+```bash
+git clone https://github.com/AIMS-Laboratory/DeepSignal-S1.git
+cd DeepSignal-S1
+python3.12 -m venv .venv-inference
+.venv-inference/bin/pip install -U huggingface_hub
+.venv-inference/bin/hf auth login
+.venv-inference/bin/hf download AIMS2025/DeepSignal-S1 --local-dir ../DeepSignal-S1-model
+.venv-inference/bin/pip install -r ../DeepSignal-S1-model/requirements.txt
+.venv-inference/bin/python scripts/serve_model.py --model ../DeepSignal-S1-model --port 18404 --device cuda:0
+```
+
+**2. In a second terminal, send the included real three-frame request** (from the same repository directory):
+
+```bash
+curl --fail http://127.0.0.1:18404/v1/decide \
+  -H 'Content-Type: application/json' \
+  --data-binary @examples/nansha-defocus-request.json
+```
+
+The server should report `DeepSignal-S1-1.0` and return a selected action with candidate-action probabilities. This request checks inference, not closed-loop traffic performance. Approved model access does not provide a hosted API; a full fresh-download closed-loop replay has not yet been certified.
+
+## Evaluation Scope
+
+- **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; Nansha uses the published per-intersection plans and Town10HD uses `31/6/31/6 s`.
+- **Visual comparison:** clean views compare all three controllers; perturbations compare S1 with YOLO+MP. Camera shifts occur after YOLO lane-region calibration, without recalibration.
+- **Scope:** results come from controlled Nansha and Town10HD simulations; deployment on real roads and under real weather remains to be validated.
+
+See [evaluation protocol](docs/fusion-pilot-evaluation.md), [metric definitions](docs/comparisons.md), and [media delivery](docs/media-delivery.md).
+
+## Five traffic demand scenarios
+
+<details>
+<summary>Expand traffic rates and timing</summary>
+
+<!-- TOWN_DEMAND:BEGIN -->
+All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.
+
+<table>
+<thead>
+<tr><th scope="col" nowrap="nowrap">Demand scenario</th><th scope="col" nowrap="nowrap">Flow per approach<br/>(vehicles/hour)</th><th scope="col" nowrap="nowrap">Temporal pattern</th><th scope="col" nowrap="nowrap">Control challenge</th></tr>
+</thead>
+<tbody>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">Balanced flow</a></td><td nowrap="nowrap">All four: 360 each</td><td nowrap="nowrap">Constant throughout</td><td nowrap="nowrap">Basic control with similar<br/>demand in all directions</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">Sustained<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 600 each<br/>N and S: 120 each</td><td nowrap="nowrap">Constant<br/>major/minor ratio 5:1</td><td nowrap="nowrap">Prioritize persistently<br/>busier approaches</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json">Higher-load<br/>directional imbalance</a></td><td nowrap="nowrap">E and W: 750 each<br/>N and S: 150 each</td><td nowrap="nowrap">Constant<br/>still 5:1</td><td nowrap="nowrap">25% more total demand<br/>than the preceding regime</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json">Time-varying peak</a></td><td nowrap="nowrap">All approaches:<br/>200 → 700 → 200</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to rising demand<br/>and peak recovery</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">Shifted peak timing</a></td><td nowrap="nowrap">All approaches:<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60 s<br/>60-120 s<br/>from 120 s</td><td nowrap="nowrap">Adapt to changes<br/>in peak timing</td></tr>
+</tbody>
+</table>
+
+Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use 70% straight, 15% left and 15% right turns. Time starts at simulation startup, with the final rate held until demand generation ends. Shifted peak timing reorders the time-varying rates by seed; the table shows the configuration behind the current results. Controllers receive identical vehicle plans.
+<!-- TOWN_DEMAND:END -->
+
+</details>
 
 ## Junctions at a Glance
+
+<details>
+<summary>Expand intersection views and case locations</summary>
 
 ### Nansha · J03 Four-Way Junction
 
@@ -144,63 +252,79 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 The Nansha camera-shift example uses J03; defocus, motion blur and shake examples use J08, J05 and J07, respectively. All four Town10HD examples use the same junction shown above.
 
+</details>
+
 ## Eight Perturbation Views
 
+Two cases are featured above. Expand each disturbance below for the other six, with direct video and static-cover links.
+
 <!-- FUSION_GALLERY:BEGIN -->
-### Town10HD
-
-#### Town10HD · Fixed yaw ±15° / pitch ±8°
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif" alt="Town10HD · Fixed yaw ±15° / pitch ±8°">
-
 <details>
-<summary>Video: Town10HD · Fixed yaw ±15° / pitch ±8°</summary>
+<summary>Defocus σ=9</summary>
 
-https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91
+### Nansha · Defocus σ=9
+
+<img width="800" src="assets/previews/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
+
+[Watch video](https://github.com/user-attachments/assets/3230897e-9a4c-4493-9d12-263f16cf9647) · [Static cover](assets/previews/en/nansha-df9.jpg)
+
+### Town10HD · Defocus σ=9
+
+<img width="800" src="assets/previews/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
+
+[Watch video](https://github.com/user-attachments/assets/84d65a84-5b20-4515-9fdd-f8ff73003a56) · [Static cover](assets/previews/en/town-df9.jpg)
 
 </details>
 
-#### Town10HD · Defocus σ=9
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
-
-#### Town10HD · 31 px motion blur
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
-
-#### Town10HD · Dynamic shake 5°
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
-
-### Nansha
-
-#### Nansha · Fixed yaw ±15° / pitch ±8°
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
-
-#### Nansha · Defocus σ=9
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
-
-#### Nansha · 31 px motion blur
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-mb31.gif" alt="Nansha · 31 px motion blur">
-
 <details>
-<summary>Video: Nansha · 31 px motion blur</summary>
+<summary>31 px motion blur</summary>
 
-https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a
+Nansha: see the featured demos above.
+
+### Town10HD · 31 px motion blur
+
+<img width="800" src="assets/previews/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
+
+[Watch video](https://github.com/user-attachments/assets/b3b3a927-a5a5-4e43-9710-b94102f15bc4) · [Static cover](assets/previews/en/town-mb31.jpg)
 
 </details>
 
-#### Nansha · Dynamic shake 5°
+<details>
+<summary>Fixed yaw ±15° / pitch ±8°</summary>
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
+### Nansha · Fixed yaw ±15° / pitch ±8°
+
+<img width="800" src="assets/previews/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
+
+[Watch video](https://github.com/user-attachments/assets/fbeec8fa-af75-47da-9196-966038e1ad18) · [Static cover](assets/previews/en/nansha-angle15.jpg)
+
+Town10HD: see the featured demos above.
+
+</details>
+
+<details>
+<summary>Dynamic shake 5°</summary>
+
+### Nansha · Dynamic shake 5°
+
+<img width="800" src="assets/previews/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
+
+[Watch video](https://github.com/user-attachments/assets/28dfbfd5-ae9c-478e-8272-9e9c840242bc) · [Static cover](assets/previews/en/nansha-shake5.jpg)
+
+### Town10HD · Dynamic shake 5°
+
+<img width="800" src="assets/previews/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
+
+[Watch video](https://github.com/user-attachments/assets/9c9d2ac9-cc58-4959-8008-93ad5de7ca18) · [Static cover](assets/previews/en/town-shake5.jpg)
+
+</details>
 <!-- FUSION_GALLERY:END -->
 
-Media show the actual model input, live traffic metrics and the latest recorded decision. Dynamic statistics describe the recorded episode; overall comparisons use the result tables. [Dynamic-metric definitions](docs/media-delivery.md) are documented separately.
+Recorded scores belong to their individual episodes. In the Nansha J08 defocus recording, S1 journey time is slightly longer than YOLO+MP; the recording is retained. See [media notes](docs/media-delivery.md) for dynamic versus formal metrics.
 
-Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
+Lane regions are calibrated on clean views and frozen; fixed shifts are not recalibrated. Dynamic shake peaks at 5° yaw/pitch and 2.5° roll.
+
+### Clean-view videos
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
@@ -217,49 +341,6 @@ https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
 
 </details>
 <!-- FUSION_CLEAN_VIDEOS:END -->
-
-## Inference Performance
-
-<!-- FUSION_LATENCY:BEGIN -->
-| Scope | Count | Mean | Median | P95 | Max | Under 1 s |
-|---|---:|---:|---:|---:|---:|---:|
-| All calls | 6823 | 485.4 ms | 479.0 ms | 494.0 ms | 2304.0 ms | 99.08% |
-| First call per run | 133 | 911.1 ms | 495.0 ms | 1460.2 ms | 2304.0 ms | 52.63% |
-| Subsequent calls | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
-<!-- FUSION_LATENCY:END -->
-
-Statistics cover 133 S1 evaluation cases and 6823 decision requests with the unquantized BF16 model. Latency measures model decision requests, excluding camera capture, rendering and signal execution; first calls include initialization effects.
-
-**Deployment value:** sub-second model decisions make consumer-GPU signal-control workstations a practical target. We also tested the unquantized model on an **RTX 4090**, observing approximately **900 ms per decision**. This independent observation uses measurement conditions that have not yet been aligned and is not included in the table. Quantization and edge deployment are future directions for reducing compute requirements.
-
-## Download and Quickstart
-
-Model and simulation-asset downloads require separate access approvals. Demo GIFs, videos and result data are openly available from [DeepSignal-S1-Media](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media). The release retains the v3 scene assets; use them with the latest GitHub code. Viewing media does not require downloading the scene package.
-
-```bash
-python3.12 -m venv .venv-inference
-source .venv-inference/bin/activate
-pip install -U huggingface_hub
-hf auth login
-hf download AIMS2025/DeepSignal-S1 --local-dir ./DeepSignal-S1-model
-
-deactivate
-
-git clone https://github.com/AIMS-Laboratory/DeepSignal-S1.git DeepSignal-S1
-cd DeepSignal-S1
-python3.10 -m venv .venv
-.venv/bin/pip install -e '.[test,reproduction,download]'
-```
-
-The model server, a real three-frame request that needs no simulator, and closed-loop commands are documented in [Reproduction](docs/reproduction.md). Download the complete model folder; approved access does not create a hosted API. A full fresh-download closed-loop replay has not yet been certified.
-
-## Evaluation Scope
-
-- **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; Nansha uses the published per-intersection plans and Town10HD uses `31/6/31/6 s`.
-- **Visual comparison:** clean views compare all three controllers; perturbations compare S1 with YOLO+MP. Camera shifts occur after YOLO lane-region calibration, without recalibration.
-- **Scope:** results come from controlled Nansha and Town10HD simulations; deployment on real roads and under real weather remains to be validated.
-
-See [evaluation protocol](docs/fusion-pilot-evaluation.md), [metric definitions](docs/comparisons.md), and [media delivery](docs/media-delivery.md).
 
 ## Historical Releases
 

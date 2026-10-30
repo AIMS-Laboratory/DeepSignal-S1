@@ -1,60 +1,56 @@
-# DeepSignal-S1-1.0
+# DeepSignal S1
 
-**面向交通信号控制的多模态 System One（端到端快思考）模型：从路口视觉直接作出快速、结构化的控制决策。**
+**从路口画面直接作出交通信号决策。**
 
-[English](README.md) | 简体中文
+DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0**
 
-[DeepSignal 模型家族](https://github.com/AIMS-Laboratory/DeepSignal/blob/main/README_zh.md) · [模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [场景](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [结果数据](results/fusion-2026-10-30.json) · [复现说明](docs/reproduction.md)
+[English](README.md) | 简体中文 · [品牌首页](https://github.com/AIMS-Laboratory/DeepSignal/blob/main/README_zh.md)
 
-**DeepSignal S1** 是 [DeepSignal 交通信号控制模型家族](https://github.com/AIMS-Laboratory/DeepSignal/blob/main/README_zh.md)中的视觉决策系列，通过路口摄像头画面与当前信号状态直接选择信号动作。本仓库提供 S1 的发布页、代码、评测结果与复现说明。
-
-DeepSignal-S1 采用 **Jev 式结构化概率决策**路线：读取连续路口画面和信号状态，直接对候选控制动作给出概率并选择合法动作，而不是先生成长篇交通分析，再由外部程序解析文字。视觉理解与动作选择在同一个模型中完成，不依赖额外的YOLO车辆检测环节。
-
-**DeepSignal-S1-1.0** 的训练覆盖**南沙9个路口的仿真场景**（包括丁字与十字交叉口），以及 **CARLA 官方 Town10HD 地图中1个十字交叉口的5类交通需求场景**，涵盖均衡、不均衡和时变车流。项目围绕两个实际问题展开：正常视觉下，能否比固定配时方案更有效；摄像头失焦、运动模糊或机位变化后，能否比“目标检测＋最大压力控制”更稳健。
-
-## 为什么是 System One
-
-System One（端到端快思考）强调快速、直接、可被软件调用的决策。[Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)与开源[OneJev](https://github.com/OmniJev/OneJev)体现了这一模型范式。DeepSignal-S1 将这种决策方式用于交通信号控制，当前推理接口直接返回动作及其概率，不逐字生成解释或推理过程；它不是调用商业Jev服务。
-
-- **从视觉到控制：** 时序路口画面与当前信号上下文共同决定动作，无需人工提供实时车辆计数。
-- **结构化输出：** 在当前合法动作中直接决策，信号执行器负责既定的绿灯尾段、黄灯和全红转换。
-- **适应不同路口：** 同一模型覆盖南沙的丁字及十字路口和Town10HD场景，不为每个场景更换权重。
-- **面向本地部署：** 使用未量化模型验证消费级GPU上的决策延迟，量化与边缘部署仍是后续工作。
+[看演示](#代表演示) · [看结果](#评测结果) · [试一次决策](#下载与快速开始) · [申请模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [完整复现](docs/reproduction.md)
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **正常控制有效：** 相对固定配时方案，平均行程时间在南沙72案例降低 **18.17%**，在Town五类车流降低 **33.77%**。
-- **正常视觉对标YOLO+MP：** 南沙平均行程进一步降低 **1.36%**，Town10HD基本持平，无需独立车辆检测环节。
-- **特殊视觉稳健：** 固定机位偏移下，Town平均行程比YOLO+MP降低 **82.93%**；31像素运动模糊下，南沙降低 **30.14%**。
-- **未量化本地推理：** RTX 5090共6823次模型请求，平均 **485毫秒**，中位数479毫秒。
+- **直接决策：** 连续路口画面与信号状态进入同一个模型，直接输出控制动作，无需独立的车辆检测与计数环节。
+- **视觉干扰下更稳健：** 在已测试的失焦、运动模糊、机位偏移和抖动条件下，两个场景的等待、排队和行程指标均优于YOLO+MP。
+- **快速响应：** 未量化模型在RTX 5090上的 **6,823** 次请求平均 **485毫秒**，**99.08%** 低于一秒。
 <!-- FUSION_HIGHLIGHTS:END -->
 
-## 5类交通需求场景
+以上效果来自受控仿真；延迟仅计算模型请求，不包含相机采集、渲染和信号执行。
 
-<!-- TOWN_DEMAND:BEGIN -->
-五类车流均设置在**同一个十字路口**，区别在方向分配、流量大小和高峰出现时点，而不是五个不同路口。下表列出当前评测使用的设置。
+## 代表演示
 
-<table>
-<thead>
-<tr><th scope="col" nowrap="nowrap">交通需求场景</th><th scope="col" nowrap="nowrap">每个进口方向的流量<br/>（辆/小时）</th><th scope="col" nowrap="nowrap">时间变化</th><th scope="col" nowrap="nowrap">考察重点</th></tr>
-</thead>
-<tbody>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">均衡车流</a></td><td nowrap="nowrap">东、西、南、北各360</td><td nowrap="nowrap">全程恒定</td><td nowrap="nowrap">四向需求相近时<br/>的基本控制能力</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">持续方向不均衡</a></td><td nowrap="nowrap">东、西各600<br/>南、北各120</td><td nowrap="nowrap">全程恒定<br/>主次方向流量比5:1</td><td nowrap="nowrap">持续向高需求方向<br/>分配绿灯</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json">更高流量的不均衡</a></td><td nowrap="nowrap">东、西各750<br/>南、北各150</td><td nowrap="nowrap">全程恒定<br/>仍为5:1</td><td nowrap="nowrap">比上一类总需求增加25%<br/>考察较高负荷</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json">时变高峰</a></td><td nowrap="nowrap">四向均为<br/>200 → 700 → 200</td><td nowrap="nowrap">0-60秒<br/>60-120秒<br/>120秒起</td><td nowrap="nowrap">适应车流上升<br/>及高峰消退</td></tr>
-<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">高峰时序变化</a></td><td nowrap="nowrap">四向均为<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60秒<br/>60-120秒<br/>120秒起</td><td nowrap="nowrap">改变高峰出现时点<br/>考察时序适应能力</td></tr>
-</tbody>
-</table>
+观察画面变化、双方信号动作和排队差异。以下沿用已发布的Town机位偏移与南沙运动模糊案例，**以5倍速播放**；画面分数属于该次录制，整体效果以配对评测为准。动图与静态封面由GitHub直接提供，无需登录。
 
-流量是**每个进口方向**的期望到达率，不是每车道流量，也不是每小时固定生成的车辆数；车辆按该流率随机到达。五类均采用直行70%、左转15%、右转15%。时间从仿真启动计，末档流量保持至需求生成结束。“高峰时序变化”按种子重排时变流量，上表为当前结果对应的配置。各控制器使用相同的车辆计划。
-<!-- TOWN_DEMAND:END -->
+<!-- FUSION_FEATURED:BEGIN -->
+### Town10HD · 固定偏航±15° / 俯仰±8°
+
+<img width="800" src="assets/previews/zh/town-angle15.gif" alt="Town10HD · 固定偏航±15° / 俯仰±8°">
+
+[观看视频](https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71) · [静态封面](assets/previews/zh/town-angle15.jpg)
+
+### 南沙 · 31像素运动模糊
+
+<img width="800" src="assets/previews/zh/nansha-mb31.gif" alt="南沙 · 31像素运动模糊">
+
+[观看视频](https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73) · [静态封面](assets/previews/zh/nansha-mb31.jpg)
+<!-- FUSION_FEATURED:END -->
 
 ## 评测结果
 
-以下比较**平均每车等待时间、平均排队长度和平均每车行程时间**，三项指标均越低越好。正常视觉比较S1、固定配时方案和YOLO+MP三方；特殊视觉比较S1与YOLO+MP。
-
 <!-- FUSION_RESULTS:BEGIN -->
-### 正常视觉：三方比较
+### 正常画面：优于固定配时，与YOLO+MP保持竞争力
+
+相对冻结的工程固定配时，南沙72案例与Town10HD五类车流的平均行程分别降低 **18.17%** 和 **33.77%**。相对YOLO+MP，南沙降低 **1.36%**，Town10HD基本持平。
+
+### 画面受干扰：更鲜明的优势
+
+在两个场景、四种已测试干扰下，S1的平均等待、排队和行程均低于YOLO+MP。下图展示全部八组平均行程改善，避免只看最大值。
+
+<img width="1000" src="assets/results-fusion/journey-summary-zh.png" alt="全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示"/>
+
+特殊视觉每个条件覆盖南沙9案例、Town10HD 5案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。
+
+<details>
+<summary>正常视觉：三方比较 — 完整数值与三指标图</summary>
 
 <table>
 <thead>
@@ -72,7 +68,10 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 <img width="1280" src="assets/results-fusion/clean-comparison-zh.png" alt="正常视觉三种控制方法的等待、排队和行程比较"/>
 
-### 特殊视觉：S1与YOLO+MP
+</details>
+
+<details>
+<summary>特殊视觉：S1与YOLO+MP — 完整数值与三指标图</summary>
 
 <table>
 <thead>
@@ -100,7 +99,12 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 <img width="1280" src="assets/results-fusion/perturbed-comparison-zh.png" alt="特殊视觉下S1与YOLO+MP的等待、排队和行程比较"/>
 
+</details>
+
 **指标说明：** 三项指标均越低越好。平均等待包括停车等待和入网等待；平均排队长度以停车车辆数计；平均行程从计划出发计时，未完成车辆计入评估截止时的已耗时。[详细指标定义](docs/traffic-metrics.md)。
+
+<details>
+<summary>详细结果解读与现实场景对应</summary>
 
 ### 结果解读
 
@@ -126,13 +130,117 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 #### 亚秒级决策：视觉模型也能快速响应
 
 未量化模型在RTX 5090上的 **6823** 次决策请求平均耗时 **485毫秒**，**99.08%** 的请求低于1秒；稳态请求平均 **477毫秒**。System One直接输出结构化控制动作，无需等待长篇文字生成，让视觉理解、交通控制效果与快速响应能够同时兼顾。
+
+</details>
 <!-- FUSION_RESULTS:END -->
 
-**评测规模：** 正常视觉覆盖南沙9个路口的72案例和Town10HD的5类车流；四种特殊视觉条件下，每种分别覆盖南沙9案例和Town10HD 5案例。特殊视觉为单种子仿真评测。
+## 工作原理
 
-录制案例展示真实视觉条件和控制行为，画面中的分数只属于该次录制；整体效果以以上配对表为准。
+连续三帧画面（4秒观察窗、间隔2秒）、静态路口信息、当前信号状态与合法动作共同输入模型；模型返回动作及候选动作概率。无需提供仿真车辆计数或未来到达计划。
+
+```mermaid
+flowchart LR
+    A["连续路口画面 + 路口与信号状态"] --> B["DeepSignal S1：选择合法动作"]
+    B --> C["信号执行器：绿灯尾段、黄灯、全红转换"]
+```
+
+System One 强调快速、直接输出结构化决策，不生成逐字展开的长篇推理文字。S1借鉴 [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) 与 [OneJev](https://github.com/OmniJev/OneJev) 所体现的决策范式，在本地运行模型，不调用商业Jev服务。
+
+同一份1.0权重覆盖南沙9个路口的仿真场景（丁字和十字路口），以及Town10HD一个十字路口的五类车流。训练覆盖这些场景；此处不将跨场景使用等同于未见路口泛化验证。
+
+## 推理性能
+
+<!-- FUSION_LATENCY:BEGIN -->
+| 范围 | 数量 | 平均 | 中位数 | P95 | 最大值 | 小于1秒 |
+|---|---:|---:|---:|---:|---:|---:|
+| 全部请求 | 6823 | 485.4 ms | 479.0 ms | 494.0 ms | 2304.0 ms | 99.08% |
+| 每回合首请求 | 133 | 911.1 ms | 495.0 ms | 1460.2 ms | 2304.0 ms | 52.63% |
+| 后续请求 | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
+<!-- FUSION_LATENCY:END -->
+
+统计覆盖133个S1评测案例、6823次决策请求，使用未量化BF16模型。延迟仅计算模型决策请求，不含相机采集、渲染及信号执行；首请求包含初始化影响。
+
+**部署价值：** 亚秒级模型决策让消费级GPU信控工作站成为可考虑的落地方向。同时，我们也在 **RTX 4090** 上测试了未量化模型的推理速度，单次决策约 **900毫秒**；这是一项独立测试观测，测量条件尚未对齐，不计入上表。后续将探索量化与边缘部署，进一步降低算力需求。
+
+### 运行要求
+
+| 项目 | 当前说明 |
+|---|---|
+| 模型精度 | 未量化 BF16 |
+| 已测试推理硬件 | RTX 5090；RTX 4090另有约900毫秒的独立观测 |
+| 模型服务 | Linux、NVIDIA GPU、Python 3.12；安装完整模型包内的依赖 |
+| 只试一次决策 | 使用仓库附带的三帧请求，无需启动仿真器 |
+| 完整仿真 | Python 3.10、SUMO 1.18.0、匹配场景的CARLA环境；见复现说明 |
+
+最低显存需求尚未形成经验证的公开配置；以上测试硬件不代表最低要求。
+
+## 下载与快速开始
+
+- **看演示：** 本页预览、GitHub视频与[结果数据](results/fusion-2026-10-30.json)无需审批。
+- **试一次决策：** 先在[模型页](https://huggingface.co/AIMS2025/DeepSignal-S1)申请访问，下载完整模型目录，然后按下方启动本地服务。
+- **运行完整仿真：** 另行申请[场景资产](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes)，按[完整复现说明](docs/reproduction.md)配置v3资产与对应场景环境。
+
+**1. 下载并启动模型服务**（Linux、NVIDIA GPU、Python 3.12；账号已获模型访问权限）：
+
+```bash
+git clone https://github.com/AIMS-Laboratory/DeepSignal-S1.git
+cd DeepSignal-S1
+python3.12 -m venv .venv-inference
+.venv-inference/bin/pip install -U huggingface_hub
+.venv-inference/bin/hf auth login
+.venv-inference/bin/hf download AIMS2025/DeepSignal-S1 --local-dir ../DeepSignal-S1-model
+.venv-inference/bin/pip install -r ../DeepSignal-S1-model/requirements.txt
+.venv-inference/bin/python scripts/serve_model.py --model ../DeepSignal-S1-model --port 18404 --device cuda:0
+```
+
+**2. 在另一个终端发送仓库附带的真实三帧请求**（进入同一仓库目录）：
+
+```bash
+curl --fail http://127.0.0.1:18404/v1/decide \
+  -H 'Content-Type: application/json' \
+  --data-binary @examples/nansha-defocus-request.json
+```
+
+服务应报告版本 `DeepSignal-S1-1.0`，响应包含模型选择的动作及候选动作概率。该请求测试模型接口，不代表完成闭环交通评测。模型访问获批不提供远程托管API；从公开下载开始的完整闭环复跑尚未完成认证。
+
+## 评测说明
+
+- **唯一固定基线：** 固定配时方案，评测期间保持配时参数不变；南沙使用已发布的各路口配时表，Town10HD使用`31/6/31/6秒`。
+- **视觉对照：** 正常视觉比较三方，特殊视觉比较S1与YOLO+MP；相机偏移发生在YOLO画线之后，不重新标定。
+- **适用范围：** 结果来自南沙与Town10HD的受控仿真，真实道路和天气条件下的部署效果仍需验证。
+
+详见[评测说明](docs/fusion-pilot-evaluation.md)、[指标定义](docs/comparisons.md)和[素材交付说明](docs/media-delivery.md)。
+
+## 5类交通需求场景
+
+<details>
+<summary>展开车流参数和时间设置</summary>
+
+<!-- TOWN_DEMAND:BEGIN -->
+五类车流均设置在**同一个十字路口**，区别在方向分配、流量大小和高峰出现时点，而不是五个不同路口。下表列出当前评测使用的设置。
+
+<table>
+<thead>
+<tr><th scope="col" nowrap="nowrap">交通需求场景</th><th scope="col" nowrap="nowrap">每个进口方向的流量<br/>（辆/小时）</th><th scope="col" nowrap="nowrap">时间变化</th><th scope="col" nowrap="nowrap">考察重点</th></tr>
+</thead>
+<tbody>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-balanced.formal.json">均衡车流</a></td><td nowrap="nowrap">东、西、南、北各360</td><td nowrap="nowrap">全程恒定</td><td nowrap="nowrap">四向需求相近时<br/>的基本控制能力</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json">持续方向不均衡</a></td><td nowrap="nowrap">东、西各600<br/>南、北各120</td><td nowrap="nowrap">全程恒定<br/>主次方向流量比5:1</td><td nowrap="nowrap">持续向高需求方向<br/>分配绿灯</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json">更高流量的不均衡</a></td><td nowrap="nowrap">东、西各750<br/>南、北各150</td><td nowrap="nowrap">全程恒定<br/>仍为5:1</td><td nowrap="nowrap">比上一类总需求增加25%<br/>考察较高负荷</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json">时变高峰</a></td><td nowrap="nowrap">四向均为<br/>200 → 700 → 200</td><td nowrap="nowrap">0-60秒<br/>60-120秒<br/>120秒起</td><td nowrap="nowrap">适应车流上升<br/>及高峰消退</td></tr>
+<tr><td nowrap="nowrap"><a href="https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json">高峰时序变化</a></td><td nowrap="nowrap">四向均为<br/>200 → 200 → 700</td><td nowrap="nowrap">0-60秒<br/>60-120秒<br/>120秒起</td><td nowrap="nowrap">改变高峰出现时点<br/>考察时序适应能力</td></tr>
+</tbody>
+</table>
+
+流量是**每个进口方向**的期望到达率，不是每车道流量，也不是每小时固定生成的车辆数；车辆按该流率随机到达。五类均采用直行70%、左转15%、右转15%。时间从仿真启动计，末档流量保持至需求生成结束。“高峰时序变化”按种子重排时变流量，上表为当前结果对应的配置。各控制器使用相同的车辆计划。
+<!-- TOWN_DEMAND:END -->
+
+</details>
 
 ## 展示路口鸟瞰
+
+<details>
+<summary>展开路口鸟瞰与案例位置</summary>
 
 ### 南沙 · J03十字路口
 
@@ -144,63 +252,79 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 南沙固定偏角示例使用J03，失焦、运动模糊和动态抖动示例分别使用J08、J05和J07；Town10HD四组示例均来自上图同一十字路口。
 
+</details>
+
 ## 八组特殊视觉
 
+上方已展示两组代表案例；其余六组按干扰类型展开。每组均提供独立视频与静态封面。
+
 <!-- FUSION_GALLERY:BEGIN -->
-### Town10HD
-
-#### Town10HD · 固定偏航±15° / 俯仰±8°
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-angle15.gif" alt="Town10HD · 固定偏航±15° / 俯仰±8°">
-
 <details>
-<summary>视频：Town10HD · 固定偏航±15° / 俯仰±8°</summary>
+<summary>失焦σ=9</summary>
 
-https://github.com/user-attachments/assets/029efc8f-dc94-4241-b5f0-a81985921d71
+### 南沙 · 失焦σ=9
+
+<img width="800" src="assets/previews/zh/nansha-df9.gif" alt="南沙 · 失焦σ=9">
+
+[观看视频](https://github.com/user-attachments/assets/f87f3efe-5ffd-483d-8a59-0ac73a578493) · [静态封面](assets/previews/zh/nansha-df9.jpg)
+
+### Town10HD · 失焦σ=9
+
+<img width="800" src="assets/previews/zh/town-df9.gif" alt="Town10HD · 失焦σ=9">
+
+[观看视频](https://github.com/user-attachments/assets/dc64bac6-001d-42fd-ae0f-e58bbb6070af) · [静态封面](assets/previews/zh/town-df9.jpg)
 
 </details>
 
-#### Town10HD · 失焦σ=9
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-df9.gif" alt="Town10HD · 失焦σ=9">
-
-#### Town10HD · 31像素运动模糊
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-mb31.gif" alt="Town10HD · 31像素运动模糊">
-
-#### Town10HD · 动态抖动峰值5°
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-shake5.gif" alt="Town10HD · 动态抖动峰值5°">
-
-### 南沙
-
-#### 南沙 · 固定偏航±15° / 俯仰±8°
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-angle15.gif" alt="南沙 · 固定偏航±15° / 俯仰±8°">
-
-#### 南沙 · 失焦σ=9
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-df9.gif" alt="南沙 · 失焦σ=9">
-
-#### 南沙 · 31像素运动模糊
-
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-mb31.gif" alt="南沙 · 31像素运动模糊">
-
 <details>
-<summary>视频：南沙 · 31像素运动模糊</summary>
+<summary>31像素运动模糊</summary>
 
-https://github.com/user-attachments/assets/d2561b6f-2333-4679-b404-fa3095468c73
+南沙: 见上方代表演示。
+
+### Town10HD · 31像素运动模糊
+
+<img width="800" src="assets/previews/zh/town-mb31.gif" alt="Town10HD · 31像素运动模糊">
+
+[观看视频](https://github.com/user-attachments/assets/f697bbca-f885-4a95-adab-412699c88de9) · [静态封面](assets/previews/zh/town-mb31.jpg)
 
 </details>
 
-#### 南沙 · 动态抖动峰值5°
+<details>
+<summary>固定偏航±15° / 俯仰±8°</summary>
 
-<img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-shake5.gif" alt="南沙 · 动态抖动峰值5°">
+### 南沙 · 固定偏航±15° / 俯仰±8°
+
+<img width="800" src="assets/previews/zh/nansha-angle15.gif" alt="南沙 · 固定偏航±15° / 俯仰±8°">
+
+[观看视频](https://github.com/user-attachments/assets/199bbd0f-da7d-4d16-968d-89b0bf5de5fe) · [静态封面](assets/previews/zh/nansha-angle15.jpg)
+
+Town10HD: 见上方代表演示。
+
+</details>
+
+<details>
+<summary>动态抖动峰值5°</summary>
+
+### 南沙 · 动态抖动峰值5°
+
+<img width="800" src="assets/previews/zh/nansha-shake5.gif" alt="南沙 · 动态抖动峰值5°">
+
+[观看视频](https://github.com/user-attachments/assets/8b6caf1c-393c-4668-95a8-3a62e980d1b7) · [静态封面](assets/previews/zh/nansha-shake5.jpg)
+
+### Town10HD · 动态抖动峰值5°
+
+<img width="800" src="assets/previews/zh/town-shake5.gif" alt="Town10HD · 动态抖动峰值5°">
+
+[观看视频](https://github.com/user-attachments/assets/658a8f96-ed06-44b4-b398-a1ca49b15ed7) · [静态封面](assets/previews/zh/town-shake5.jpg)
+
+</details>
 <!-- FUSION_GALLERY:END -->
 
-动图展示模型实际看到的画面、实时交通指标与最近一次真实决策。动态指标反映录制回合的统计，整体效果以结果表为准；[动态指标口径](docs/media-delivery.md)另有说明。
+录制分数仅属于对应回合；南沙J08失焦录制中S1行程略长于YOLO+MP，仍如实保留。动态指标与正式评测口径见[素材说明](docs/media-delivery.md)。
 
-YOLO车道画线先在正常机位完成并冻结。`angle15`在画线后改变机位，整回合保持固定，不重新标定；`shake5`的偏航和俯仰峰值为5°，横滚峰值为2.5°。
+YOLO车道画线在正常机位完成后冻结；固定偏角测试不重新标定。动态抖动的偏航/俯仰峰值5°、横滚峰值2.5°。
+
+### 正常视觉视频
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
@@ -217,49 +341,6 @@ https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a
 
 </details>
 <!-- FUSION_CLEAN_VIDEOS:END -->
-
-## 推理性能
-
-<!-- FUSION_LATENCY:BEGIN -->
-| 范围 | 数量 | 平均 | 中位数 | P95 | 最大值 | 小于1秒 |
-|---|---:|---:|---:|---:|---:|---:|
-| 全部请求 | 6823 | 485.4 ms | 479.0 ms | 494.0 ms | 2304.0 ms | 99.08% |
-| 每回合首请求 | 133 | 911.1 ms | 495.0 ms | 1460.2 ms | 2304.0 ms | 52.63% |
-| 后续请求 | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
-<!-- FUSION_LATENCY:END -->
-
-统计覆盖133个S1评测案例、6823次决策请求，使用未量化BF16模型。延迟仅计算模型决策请求，不含相机采集、渲染及信号执行；首请求包含初始化影响。
-
-**部署价值：** 亚秒级模型决策让消费级GPU信控工作站成为可考虑的落地方向。同时，我们也在 **RTX 4090** 上测试了未量化模型的推理速度，单次决策约 **900毫秒**；这是一项独立测试观测，测量条件尚未对齐，不计入上表。后续将探索量化与边缘部署，进一步降低算力需求。
-
-## 下载与快速开始
-
-模型与仿真资产下载分别需要申请审批。GIF、视频和结果数据在[DeepSignal-S1-Media](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media)免费公开，无需审批。当前版本沿用v3场景资产并配合GitHub最新代码；观看媒体无需下载场景包。
-
-```bash
-python3.12 -m venv .venv-inference
-source .venv-inference/bin/activate
-pip install -U huggingface_hub
-hf auth login
-hf download AIMS2025/DeepSignal-S1 --local-dir ./DeepSignal-S1-model
-
-deactivate
-
-git clone https://github.com/AIMS-Laboratory/DeepSignal-S1.git DeepSignal-S1
-cd DeepSignal-S1
-python3.10 -m venv .venv
-.venv/bin/pip install -e '.[test,reproduction,download]'
-```
-
-模型服务、无需启动仿真器的真实三帧请求示例，以及闭环命令见[复现说明](docs/reproduction.md)。请下载完整模型目录；模型获批不代表提供远程托管API。从公开下载开始的完整闭环复跑尚未完成认证。
-
-## 评测说明
-
-- **唯一固定基线：** 固定配时方案，评测期间保持配时参数不变；南沙使用已发布的各路口配时表，Town10HD使用`31/6/31/6秒`。
-- **视觉对照：** 正常视觉比较三方，特殊视觉比较S1与YOLO+MP；相机偏移发生在YOLO画线之后，不重新标定。
-- **适用范围：** 结果来自南沙与Town10HD的受控仿真，真实道路和天气条件下的部署效果仍需验证。
-
-详见[评测说明](docs/fusion-pilot-evaluation.md)、[指标定义](docs/comparisons.md)和[素材交付说明](docs/media-delivery.md)。
 
 ## 历史版本
 

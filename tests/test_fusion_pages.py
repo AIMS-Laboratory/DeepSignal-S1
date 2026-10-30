@@ -22,23 +22,27 @@ def test_mean_journey_is_vehicle_weighted_not_mean_of_case_means():
 
 
 @pytest.mark.parametrize('chinese,language', [(True, 'zh'), (False, 'en')])
-def test_gallery_shows_both_scenes_with_only_videos_collapsed(chinese, language):
+def test_gallery_groups_remaining_cases_and_keeps_public_fallbacks(chinese, language):
     body = PAGES.render_gallery(chinese)
-    assert body.count('<details>') == body.count('</details>') == 2
-    assert body.count('.gif') == 8
-    assert body.count('/town-') == 4
-    assert body.count('/nansha-') == 4
-    assert f'/fusion-1.0/v4/{language}/town-angle15.gif' in body
+    assert body.count('<details>') == body.count('</details>') == 4
+    assert body.count('.gif') == 6
+    assert body.count('.jpg') == 6
+    featured = PAGES.render_featured(chinese)
+    assert featured.count('.gif') == 2
+    assert f'assets/previews/{language}/town-angle15.gif' in featured
     assert '<video' not in body
-    assert body.count('https://github.com/user-attachments/assets/') == 2
+    assert body.count('https://github.com/user-attachments/assets/') == 6
 
 
 @pytest.mark.parametrize('filename,language', [('README.md', 'en'), ('README.zh-CN.md', 'zh')])
-def test_camera_shift_demo_appears_only_in_the_gallery(filename, language):
+def test_featured_demos_are_not_duplicated_in_the_gallery(filename, language):
     body = (ROOT / filename).read_text()
     gallery = body.split('<!-- FUSION_GALLERY:BEGIN -->')[1].split('<!-- FUSION_GALLERY:END -->')[0]
-    image = f'/fusion-1.0/v4/{language}/town-angle15.gif'
-    assert body.count(image) == gallery.count(image) == 1
+    featured = body.split('<!-- FUSION_FEATURED:BEGIN -->')[1].split('<!-- FUSION_FEATURED:END -->')[0]
+    for name in ('town-angle15', 'nansha-mb31'):
+        image = f'assets/previews/{language}/{name}.gif'
+        assert body.count(image) == featured.count(image) == 1
+        assert image not in gallery
     assert '## Town10HD: Decisions After Camera Repositioning' not in body
     assert '## Town10HD：机位改变后仍直接决策' not in body
 
@@ -95,7 +99,7 @@ def test_town_demand_table_matches_configs_and_current_evaluation_seed(chinese, 
 def test_comparison_groups_share_three_cells_without_merging_controller_metrics(chinese):
     data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())
     records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
-    tables = ET.fromstring('<root>' + PAGES.render(data, chinese, records) + '</root>').findall('table')
+    tables = ET.fromstring('<root>' + PAGES.render(data, chinese, records) + '</root>').findall('.//table')
     assert len(tables) == 2
     for table, key, controllers in zip(tables, ('normal', 'extreme'), (('s1', 'fixed', 'mp'), ('s1', 'mp'))):
         assert len(table.findall('./thead/tr/th')) == 7
@@ -130,7 +134,7 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media():
     assert 'FUSION_GALLERY' not in body and 'FUSION_CLEAN_VIDEOS' not in body
     assert '## 评测结果' in body and '## Results' in body
     assert body.count('<table>') == 6
-    assert 'System One（端到端快思考）' in body and 'System One（系统一）' not in body
+    assert 'System One' in body and '## 工作原理' in body
     assert 'Lane regions are calibrated' in body and 'YOLO车道画线' in body
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/reproduction.md' in body
     assert f'[English]({homepage})' in body and '[简体中文](#简体中文)' in body
@@ -167,7 +171,8 @@ def test_discussion_uses_current_comparisons_and_keeps_clean_town_tied(chinese):
         assert 'Unlike a fixed angle shift' in body
     assert '(docs/visual-robustness.md)' in body
     highlights = PAGES.render_highlights(data, chinese, records)
-    assert '**1.36%**' in highlights
+    assert '**99.08%**' in highlights
+    assert '**1.36%**' in PAGES.render_summary(data, chinese, records)
     for group in data['extreme']:
         s1 = PAGES.traffic_stats(group, 's1', records)
         mp = PAGES.traffic_stats(group, 'mp', records)
@@ -196,13 +201,24 @@ def test_wait_includes_measured_insertion_wait_not_only_inserted_vehicles():
         'mean_queue_vehicles': 3, 'complete_cases': 1}
 
 
-def test_large_gallery_does_not_reduce_shake_to_a_narrow_preview():
-    body = PAGES.render_gallery(True)
-    assert body.count('<img width="1280"') == 8
-    assert body.count('https://github.com/user-attachments/assets/') == 2
-    assert '/fusion-1.0/v4/zh/town-shake5.gif' in body
-    assert '备用播放' not in body
-    assert 'Large-screen / alternate player' not in body
+def test_public_previews_preserve_animation_and_have_traceable_sources():
+    import hashlib
+    from PIL import Image
+    manifest = json.loads((ROOT / 'assets/previews/manifest.json').read_text())['files']
+    source = json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos']
+    assert set(manifest) == set(source)
+    assert len([r for r in manifest.values() if 'preview' in r]) == 16
+    for key, row in manifest.items():
+        assert row['source'] == source[key]
+        assert (ROOT / row['poster']).is_file()
+        if 'preview' in row:
+            path = ROOT / row['preview']
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == row['sha256']
+            assert path.stat().st_size < 4_800_000
+            with Image.open(path) as im:
+                assert im.n_frames > 1
+                assert list(im.size) == row['size']
+                assert row['duration_ms'] >= (4700 if 'shake5' in key else 11900)
 
 
 @pytest.mark.parametrize('chinese', [False, True])
@@ -231,9 +247,11 @@ def test_video_starts_collapsed_without_changing_the_native_player(chinese, scen
 
 
 @pytest.mark.parametrize('filename', ['README.md', 'README.zh-CN.md'])
-def test_readmes_default_all_four_videos_to_closed(filename):
+def test_readmes_keep_details_balanced_and_featured_previews_visible(filename):
     body = (ROOT / filename).read_text()
-    assert body.count('<details>') == body.count('</details>') == 4
+    assert body.count('<details>') == body.count('</details>')
+    featured = body.split('<!-- FUSION_FEATURED:BEGIN -->')[1].split('<!-- FUSION_FEATURED:END -->')[0]
+    assert '<details' not in featured and featured.count('.gif') == 2
     assert '<details open' not in body
 
 

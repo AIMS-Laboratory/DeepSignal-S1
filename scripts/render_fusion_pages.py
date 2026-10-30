@@ -169,10 +169,10 @@ def improvement_percent(group: dict[str, Any], baseline: str, records: list[dict
 
 
 def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
-    lines = []
+    lines = [render_summary(data, chinese, records), '']
     for key, title in (('normal', '正常视觉：三方比较' if chinese else 'Clean views: three controllers'),
                        ('extreme', '特殊视觉：S1与YOLO+MP' if chinese else 'Perturbed views: S1 vs YOLO+MP')):
-        lines += [f'### {title}', '']
+        lines += ['<details>', f'<summary>{title} — ' + ('完整数值与三指标图' if chinese else 'full values and three-metric chart') + '</summary>', '']
         if chinese:
             headers = ('场景', '条件', '案例数', '控制方法', '平均等待（秒/车）', '平均排队长度（辆）', '平均行程（秒/车）')
         else:
@@ -196,12 +196,12 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
         alt = ('正常视觉三种控制方法的等待、排队和行程比较' if key == 'normal' else '特殊视觉下S1与YOLO+MP的等待、排队和行程比较') if chinese else (
             'Clean-view comparison of waiting time, queue length and journey time for three controllers'
             if key == 'normal' else 'Perturbed-view comparison of S1 and YOLO+MP across all three traffic metrics')
-        lines += [f'<img width="1280" src="assets/results-fusion/{figure}-{language}.png" alt="{alt}"/>', '']
+        lines += [f'<img width="1280" src="assets/results-fusion/{figure}-{language}.png" alt="{alt}"/>', '', '</details>', '']
     if chinese:
         lines += ['**指标说明：** 三项指标均越低越好。平均等待包括停车等待和入网等待；平均排队长度以停车车辆数计；平均行程从计划出发计时，未完成车辆计入评估截止时的已耗时。[详细指标定义](docs/traffic-metrics.md)。']
     else:
         lines += ['**Metrics:** lower is better for all three. Mean wait includes stopped and insertion waiting; mean queue counts halted vehicles; journey time starts at planned departure, with unfinished vehicles contributing elapsed time at the evaluation cutoff. [Detailed definitions](docs/traffic-metrics.md).']
-    lines += ['', render_discussion(data, chinese, records)]
+    lines += ['', '<details>', '<summary>' + ('详细结果解读与现实场景对应' if chinese else 'Detailed interpretation and real-world context') + '</summary>', '', render_discussion(data, chinese, records), '', '</details>']
     return '\n'.join(lines)
 
 
@@ -264,29 +264,45 @@ def render_discussion(data: dict[str, Any], chinese: bool, records: list[dict[st
     ])
 
 
-def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
-    normal = {row["scene"]: traffic_means(row) for row in data["normal"]}
-    nansha = next(row for row in data['normal'] if row['scene'] == 'nansha')
-    mp_ns = improvement_percent(nansha, 'mp', records)
-    extreme = {(row["scene"], row["condition"]): traffic_means(row) for row in data["extreme"]}
-    latency = data["latency"]["all_calls"]
+def render_summary(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
+    groups = {row['scene']: row for row in data['normal']}
+    ns = improvement_percent(groups['nansha'], 'fixed', records)
+    town = improvement_percent(groups['town'], 'fixed', records)
+    mp = improvement_percent(groups['nansha'], 'mp', records)
     if chinese:
-        return "\n".join(
-            [
-                f"- **正常控制有效：** 相对固定配时方案，平均行程时间在南沙72案例降低 **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%**，在Town五类车流降低 **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%**。",
-                f"- **正常视觉对标YOLO+MP：** 南沙平均行程进一步降低 **{mp_ns:.2f}%**，Town10HD基本持平，无需独立车辆检测环节。",
-                f"- **特殊视觉稳健：** 固定机位偏移下，Town平均行程比YOLO+MP降低 **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%**；31像素运动模糊下，南沙降低 **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**。",
-                f"- **未量化本地推理：** RTX 5090共{latency['count']}次模型请求，平均 **{latency['mean_ms']:.0f}毫秒**，中位数{latency['median_ms']:.0f}毫秒。",
-            ]
-        )
-    return "\n".join(
-        [
-            f"- **Effective clean control:** versus the fixed-time plan, S1 reduces vehicle-weighted mean journey time by **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%** across 72 Nansha cases and **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%** across five Town regimes.",
-            f"- **Competitive with YOLO+MP in clean views:** Nansha mean journey time is a further **{mp_ns:.2f}%** lower, while Town10HD is essentially tied, without a separate detector.",
-            f"- **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**.",
-            f"- **Unquantized local inference:** {latency['count']} RTX 5090 model calls average **{latency['mean_ms']:.0f} ms**, with a {latency['median_ms']:.0f} ms median.",
-        ]
-    )
+        return f"""### 正常画面：优于固定配时，与YOLO+MP保持竞争力
+
+相对冻结的工程固定配时，南沙72案例与Town10HD五类车流的平均行程分别降低 **{ns:.2f}%** 和 **{town:.2f}%**。相对YOLO+MP，南沙降低 **{mp:.2f}%**，Town10HD基本持平。
+
+### 画面受干扰：更鲜明的优势
+
+在两个场景、四种已测试干扰下，S1的平均等待、排队和行程均低于YOLO+MP。下图展示全部八组平均行程改善，避免只看最大值。
+
+<img width="1000" src="assets/results-fusion/journey-summary-zh.png" alt="全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示"/>
+
+特殊视觉每个条件覆盖南沙9案例、Town10HD 5案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。"""
+    return f"""### Clean views: better than fixed timing, competitive with YOLO+MP
+
+Mean journey time falls by **{ns:.2f}%** across 72 Nansha cases and **{town:.2f}%** across five Town10HD regimes versus frozen engineering fixed timing. Against YOLO+MP, Nansha improves by **{mp:.2f}%**, while Town10HD is essentially tied.
+
+### Visual disruption: the more distinctive advantage
+
+S1 has lower mean waiting, queue length and journey time than YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions, rather than only the largest gain.
+
+<img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
+
+Each perturbation covers nine Nansha cases and five Town10HD cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance."""
+
+
+def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
+    latency = data['latency']['all_calls']
+    if chinese:
+        return f"""- **直接决策：** 连续路口画面与信号状态进入同一个模型，直接输出控制动作，无需独立的车辆检测与计数环节。
+- **视觉干扰下更稳健：** 在已测试的失焦、运动模糊、机位偏移和抖动条件下，两个场景的等待、排队和行程指标均优于YOLO+MP。
+- **快速响应：** 未量化模型在RTX 5090上的 **{latency['count']:,}** 次请求平均 **{latency['mean_ms']:.0f}毫秒**，**{100*latency['under_1s_fraction']:.2f}%** 低于一秒。"""
+    return f"""- **Direct decisions:** one model maps temporal intersection views and signal state to control actions, without a separate vehicle-detection and counting stage.
+- **Robust under visual disruption:** lower waiting, queues and journey times than YOLO+MP in both evaluated scenes under defocus, motion blur, camera shifts and shake.
+- **Fast response:** **{latency['mean_ms']:.0f} ms** average over **{latency['count']:,}** unquantized RTX 5090 requests; **{100*latency['under_1s_fraction']:.2f}%** finish in under one second."""
 
 
 def render_latency(data: dict[str, Any], chinese: bool) -> str:
@@ -333,26 +349,42 @@ def render_video(scene: str, condition: str, chinese: bool) -> str:
     return f'<details>\n<summary>{escape(summary)}</summary>\n\n{video_tag(scene, condition, chinese)}\n\n</details>'
 
 
-def render_gallery(chinese: bool) -> str:
+def render_demo(scene: str, condition: str, chinese: bool) -> str:
     language = 'zh' if chinese else 'en'
-    base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{language}'
+    label = 'Town10HD' if scene == 'town' else ('南沙' if chinese else 'Nansha')
+    title = f'{label} · {condition_label(condition, chinese)}'
+    base = f'assets/previews/{language}/{scene}-{condition}'
+    video = video_tag(scene, condition, chinese)
+    links = (f'[观看视频]({video}) · [静态封面]({base}.jpg)' if chinese else
+             f'[Watch video]({video}) · [Static cover]({base}.jpg)')
+    return f'### {title}\n\n<img width="800" src="{base}.gif" alt="{title}">\n\n{links}'
+
+
+def render_featured(chinese: bool) -> str:
+    return '\n\n'.join(render_demo(scene, condition, chinese) for scene, condition in
+                         (('town', 'angle15'), ('nansha', 'mb31')))
+
+
+def render_gallery(chinese: bool) -> str:
     lines = []
-    for scene, label in (('town', 'Town10HD'), ('nansha', '南沙' if chinese else 'Nansha')):
-        lines += [f'### {label}', '']
-        for condition in ('angle15', 'df9', 'mb31', 'shake5'):
-            title = f'{label} · {condition_label(condition, chinese)}'
-            preview = f'{base}/{scene}-{condition}.gif'
-            lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '']
+    for condition in ('df9', 'mb31', 'angle15', 'shake5'):
+        title = condition_label(condition, chinese)
+        lines += ['<details>', f'<summary>{title}</summary>', '']
+        for scene in ('nansha', 'town'):
             if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
-                lines += [render_video(scene, condition, chinese), '']
+                label = 'Town10HD' if scene == 'town' else ('南沙' if chinese else 'Nansha')
+                lines += [f"{label}: " + ('见上方代表演示。' if chinese else 'see the featured demos above.'), '']
+            else:
+                lines += [render_demo(scene, condition, chinese), '']
+        lines += ['</details>', '']
     return '\n'.join(lines).rstrip()
 
 
 def render_hf_card(english: str, chinese: str, homepage: str) -> str:
     body = (english.replace('](README.zh-CN.md)', '](#简体中文)').rstrip()
-            + '\n\n## 简体中文\n\n' + chinese.removeprefix('# DeepSignal-S1-1.0\n').lstrip())
+            + '\n\n## 简体中文\n\n' + chinese.removeprefix('# DeepSignal S1\n').lstrip())
     media_headings = {
-        '## Eight Perturbation Views', '## 八组特殊视觉',
+        '## Eight Perturbation Views', '## 八组特殊视觉', '## Featured Demos', '## 代表演示',
         '## Junctions at a Glance', '## 展示路口鸟瞰',
     }
     lines = []
@@ -419,6 +451,7 @@ def main() -> None:
     replace_block(readme_zh, "FUSION_LATENCY", render_latency(data, True))
     replace_block(readme_zh, 'FUSION_GALLERY', render_gallery(True))
     for path, chinese in ((readme, False), (readme_zh, True)):
+        replace_block(path, 'FUSION_FEATURED', render_featured(chinese))
         replace_block(path, 'TOWN_DEMAND', render_town_demand(chinese))
         replace_block(path, 'FUSION_CLEAN_VIDEOS', '\n\n'.join(
             render_video(scene, 'clean', chinese)

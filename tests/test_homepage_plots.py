@@ -19,6 +19,29 @@ def rows():
     return PLOTS.load_rows(ROOT / "results/fusion-2026-10-30-traffic.csv")
 
 
+@pytest.mark.parametrize('language', ['en', 'zh'])
+def test_journey_summary_keeps_all_eight_comparisons_and_labels_in_bounds(monkeypatch, language):
+    import importlib
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    summary = importlib.import_module('plot_journey_summary')
+    fig = summary.plot(language)
+    try:
+        values = rows()
+        expected = [100 * (1 - values[(scene, condition, 's1')]['mean_journey_s_per_vehicle'] /
+                           values[(scene, condition, 'mp')]['mean_journey_s_per_vehicle'])
+                    for scene in ('nansha', 'town') for condition in PLOTS.CONDITIONS]
+        assert [p.get_width() for p in fig.axes[0].patches] == pytest.approx(expected)
+        assert [t.get_text() for t in fig.axes[0].texts] == [f'{v:.2f}%' for v in expected]
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        for t in [*fig.texts, *fig.axes[0].texts, *fig.axes[0].get_yticklabels()]:
+            bounds = t.get_window_extent(renderer)
+            assert bounds.x0 >= 0 and bounds.y0 >= 0
+            assert bounds.x1 <= fig.bbox.x1 and bounds.y1 <= fig.bbox.y1
+    finally:
+        PLOTS.plt.close(fig)
+
+
 def test_chart_source_matches_all_published_table_metrics():
     data = json.loads((ROOT / "results/fusion-2026-10-30.json").read_text())
     records = json.loads((ROOT / "results/fusion-2026-10-30-traffic.json").read_text())["records"]
