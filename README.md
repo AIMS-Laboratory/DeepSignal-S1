@@ -68,6 +68,8 @@ Results compare **mean waiting time per vehicle, mean queue length and mean jour
 </tbody>
 </table>
 
+<img width="1280" src="assets/results-fusion/clean-comparison-en.png" alt="Clean-view comparison of waiting time, queue length and journey time for three controllers"/>
+
 ### Perturbed views: S1 vs YOLO+MP
 
 <table>
@@ -93,6 +95,8 @@ Results compare **mean waiting time per vehicle, mean queue length and mean jour
 <tr><td>YOLO+MP</td><td align="right">21.49</td><td align="right">3.53</td><td align="right">39.88</td></tr>
 </tbody>
 </table>
+
+<img width="1280" src="assets/results-fusion/perturbed-comparison-en.png" alt="Perturbed-view comparison of S1 and YOLO+MP across all three traffic metrics"/>
 
 **Metrics:** lower is better for all three. Mean wait includes stopped and insertion waiting; mean queue counts halted vehicles; journey time starts at planned departure, with unfinished vehicles contributing elapsed time at the evaluation cutoff. [Detailed definitions](docs/traffic-metrics.md).
 

@@ -191,6 +191,12 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
                                  for value in (scene_label(group, chinese), condition, group['cases'])) if index == 0 else ''
                 lines.append('<tr>' + shared + f'<td>{label}</td>' + ''.join(f'<td align="right">{value}</td>' for value in cells) + '</tr>')
         lines += ['</tbody>', '</table>', '']
+        language = 'zh' if chinese else 'en'
+        figure = 'clean-comparison' if key == 'normal' else 'perturbed-comparison'
+        alt = ('正常视觉三种控制方法的等待、排队和行程比较' if key == 'normal' else '特殊视觉下S1与YOLO+MP的等待、排队和行程比较') if chinese else (
+            'Clean-view comparison of waiting time, queue length and journey time for three controllers'
+            if key == 'normal' else 'Perturbed-view comparison of S1 and YOLO+MP across all three traffic metrics')
+        lines += [f'<img width="1280" src="assets/results-fusion/{figure}-{language}.png" alt="{alt}"/>', '']
     if chinese:
         lines += ['**指标说明：** 三项指标均越低越好。平均等待包括停车等待和入网等待；平均排队长度以停车车辆数计；平均行程从计划出发计时，未完成车辆计入评估截止时的已耗时。[详细指标定义](docs/traffic-metrics.md)。']
     else:
@@ -356,7 +362,7 @@ def render_hf_card(english: str, chinese: str, homepage: str) -> str:
             skip = line in media_headings
         if skip and line.startswith(('Lane regions are calibrated', 'YOLO车道画线')):
             lines += ['', line, '']
-        if not skip and not line.startswith(('Recorded cases show', '录制案例展示')):
+        if not skip and not line.startswith(('Recorded cases show', '录制案例展示', '<img ')):
             lines.append(line)
     body = '\n'.join(lines).rstrip() + '\n'
     github = 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main'

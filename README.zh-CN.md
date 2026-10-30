@@ -68,6 +68,8 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 </tbody>
 </table>
 
+<img width="1280" src="assets/results-fusion/clean-comparison-zh.png" alt="正常视觉三种控制方法的等待、排队和行程比较"/>
+
 ### 特殊视觉：S1与YOLO+MP
 
 <table>
@@ -93,6 +95,8 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 <tr><td>YOLO+MP</td><td align="right">21.49</td><td align="right">3.53</td><td align="right">39.88</td></tr>
 </tbody>
 </table>
+
+<img width="1280" src="assets/results-fusion/perturbed-comparison-zh.png" alt="特殊视觉下S1与YOLO+MP的等待、排队和行程比较"/>
 
 **指标说明：** 三项指标均越低越好。平均等待包括停车等待和入网等待；平均排队长度以停车车辆数计；平均行程从计划出发计时，未完成车辆计入评估截止时的已耗时。[详细指标定义](docs/traffic-metrics.md)。
 

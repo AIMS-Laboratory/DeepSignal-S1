@@ -158,9 +158,11 @@ Town正常视觉使用 `town10hd-fusion-pilot`，同样分别运行`fixed`、`s1
 ```bash
 python scripts/export_fusion_results.py --help
 .venv-nansha/bin/pip install -e '.[plots]'
-.venv-nansha/bin/python scripts/plot_fusion_results.py --language zh --pdf
-.venv-nansha/bin/python scripts/plot_fusion_results.py --language en --pdf
 python scripts/render_fusion_pages.py
+.venv-nansha/bin/python scripts/plot_homepage_results.py --language zh
+.venv-nansha/bin/python scripts/plot_homepage_results.py --language en
 ```
 
-表格和中英文图都只读取 `results/fusion-2026-10-30.json`。`plots` extra安装Matplotlib 3.9或更高版本。中文图需要系统字体Noto Sans CJK SC；英文图不依赖中文字体。英文图使用`-en`后缀，中文图使用无后缀文件。历史candidate与历史Town专用权重的旧入口见[历史复现说明](historical-reproduction.md)，不得与融合1.0混算。
+表格由 `results/fusion-2026-10-30.json` 和对应的 `fusion-2026-10-30-traffic.json` 生成。`plots` extra安装Matplotlib 3.9或更高版本。中文图需要系统字体Noto Sans CJK；英文图不依赖中文字体。历史candidate与历史Town专用权重的旧入口见[历史复现说明](historical-reproduction.md)，不得与融合1.0混算。
+
+主页两张三指标比较图由 `plot_homepage_results.py` 单独生成，直接读取表格生成器输出的 `results/fusion-2026-10-30-traffic.csv`，保留同一批次的等待、排队和行程，不读取历史归一化成绩。正常视觉比较 S1、冻结工程固定配时和 YOLO+MP；特殊视觉仅比较 S1 与 YOLO+MP，百分比为 `(YOLO+MP - S1) / YOLO+MP × 100%`。中英文分别保存为 `*-zh` 和 `*-en` 的 PNG 与可编辑 SVG，插入各自表格下方。图示为已公开的汇总均值，不添加置信区间。
