@@ -1,6 +1,6 @@
 # DeepSignal-S1-1.0
 
-**面向交通信号控制的多模态 System One（系统一）模型：从路口视觉直接作出快速、结构化的控制决策。**
+**面向交通信号控制的多模态 System One（端到端快思考）模型：从路口视觉直接作出快速、结构化的控制决策。**
 
 [English](README.md) | 简体中文
 
@@ -12,7 +12,7 @@ DeepSignal-S1 采用 **Jev 式结构化概率决策**路线：读取连续路口
 
 ## 为什么是 System One
 
-System One（系统一）强调快速、直接、可被软件调用的决策。[Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)与开源[OneJev](https://github.com/OmniJev/OneJev)体现了这一模型范式。DeepSignal-S1 将这种决策方式用于交通信号控制，当前推理接口直接返回动作及其概率，不逐字生成解释或推理过程；它不是调用商业Jev服务，也不把其他模型的性能归给本模型。
+System One（端到端快思考）强调快速、直接、可被软件调用的决策。[Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)与开源[OneJev](https://github.com/OmniJev/OneJev)体现了这一模型范式。DeepSignal-S1 将这种决策方式用于交通信号控制，当前推理接口直接返回动作及其概率，不逐字生成解释或推理过程；它不是调用商业Jev服务，也不把其他模型的性能归给本模型。
 
 - **从视觉到控制：** 时序路口画面与当前信号上下文共同决定动作，无需人工提供实时车辆计数。
 - **结构化输出：** 在当前合法动作中直接决策，信号执行器负责既定的绿灯尾段、黄灯和全红转换。
