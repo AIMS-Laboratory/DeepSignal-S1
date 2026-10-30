@@ -8,7 +8,7 @@
 
 DeepSignal-S1 采用 **Jev 式结构化概率决策**路线：读取连续路口画面和信号状态，直接对候选控制动作给出概率并选择合法动作，而不是先生成长篇交通分析，再由外部程序解析文字。视觉理解与动作选择在同一个模型中完成，不依赖额外的YOLO车辆检测环节。
 
-**DeepSignal-S1-1.0** 的训练覆盖**南沙9个路口的仿真场景**（包括丁字与十字交叉口），以及 **CARLA 官方 Town10HD 地图中1个十字交叉口的5类交通需求场景**，涵盖均衡、不均衡和时变车流。项目围绕两个实际问题展开：正常视觉下，能否比已经冻结的工程固定配时更有效；摄像头失焦、运动模糊或机位变化后，能否比“目标检测＋最大压力控制”更稳健。
+**DeepSignal-S1-1.0** 的训练覆盖**南沙9个路口的仿真场景**（包括丁字与十字交叉口），以及 **CARLA 官方 Town10HD 地图中1个十字交叉口的5类交通需求场景**，涵盖均衡、不均衡和时变车流。项目围绕两个实际问题展开：正常视觉下，能否比固定配时方案更有效；摄像头失焦、运动模糊或机位变化后，能否比“目标检测＋最大压力控制”更稳健。
 
 ## 为什么是 System One
 
@@ -20,7 +20,7 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 - **面向本地部署：** 使用未量化模型验证消费级GPU上的决策延迟，量化与边缘部署仍是后续工作。
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **正常控制有效：** 相对冻结工程固定配时，平均行程时间在南沙72案例降低 **18.17%**，在Town五类车流降低 **33.77%**。
+- **正常控制有效：** 相对固定配时方案，平均行程时间在南沙72案例降低 **18.17%**，在Town五类车流降低 **33.77%**。
 - **特殊视觉稳健：** 固定机位偏移下，Town平均行程比YOLO+MP降低 **82.93%**；31像素运动模糊下，南沙降低 **30.14%**。
 - **未量化本地推理：** RTX 5090共6823次模型请求，平均 **485毫秒**，中位数479毫秒。
 <!-- FUSION_HIGHLIGHTS:END -->
@@ -33,7 +33,7 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 ## 评测结果
 
-以下使用交通领域常用的**平均行程时间（秒/车，越低越好）**。正常视觉比较S1、冻结工程固定配时和YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。
+以下使用交通领域常用的**平均行程时间（秒/车，越低越好）**。正常视觉比较S1、固定配时方案和YOLO+MP三方；特殊视觉只比较S1与YOLO+MP。
 
 <!-- FUSION_RESULTS:BEGIN -->
 ### 正常视觉：三方比较
@@ -44,10 +44,10 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 </thead>
 <tbody>
 <tr><td rowspan="3" align="center" valign="middle">南沙</td><td rowspan="3" align="center" valign="middle">正常</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
-<tr><td>工程固定</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
+<tr><td>固定配时方案</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
 <tr><td>YOLO+MP</td><td align="right">46.89</td><td align="right">10.56</td><td align="right">108.79</td></tr>
 <tr><td rowspan="3" align="center" valign="middle">Town10HD</td><td rowspan="3" align="center" valign="middle">正常</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
-<tr><td>工程固定</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
+<tr><td>固定配时方案</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
 <tr><td>YOLO+MP</td><td align="right">20.22</td><td align="right">3.59</td><td align="right">38.22</td></tr>
 </tbody>
 </table>
@@ -82,7 +82,7 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入。
 
-南沙正常视觉YOLO+MP已独立补跑同一组72案例，等待、排队、行程整行采用该补跑批次；S1与工程固定记录不变。原先缺日志的历史YOLO+MP成绩保留，不与新统计混拼。
+南沙正常视觉YOLO+MP已独立补跑同一组72案例，等待、排队、行程整行采用该补跑批次；S1与固定配时方案的记录不变。原先缺日志的历史YOLO+MP成绩保留，不与新统计混拼。
 <!-- FUSION_RESULTS:END -->
 
 南沙正常主表覆盖九个路口、预先确定的全部 **72** 个案例。特殊视觉小批范围更窄：南沙为种子97001的九个高流量均衡案例，Town10HD为种子18040的五类车流。这些是受控仿真结果，不代表统计显著、全面领先或任意真实道路都能复现。
@@ -184,7 +184,7 @@ python3.10 -m venv .venv
 
 ## 评测边界
 
-- **唯一固定基线：** 冻结工程固定配时，南沙使用各路口工程表，Town10HD使用`31/6/31/6秒`。
+- **唯一固定基线：** 固定配时方案，评测期间保持配时参数不变；南沙使用已发布的各路口配时表，Town10HD使用`31/6/31/6秒`。
 - **信号转换：** 适用时保留5秒绿灯尾段，再执行3秒黄灯和2秒全红。
 - **有限时域：** 未完成车辆仍计入，不能称为完整行程平均值。
 - **南沙已知限制：** 首次立即切相后，旧红龄记账可能多算一个最小绿灯时段。双方沿用相同协议，但本小批不能视为控制协议已全面验收。

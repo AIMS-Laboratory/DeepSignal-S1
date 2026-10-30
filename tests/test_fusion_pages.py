@@ -57,6 +57,8 @@ def test_comparison_groups_share_three_cells_without_merging_controller_metrics(
                     assert len(cells) == 4
                     assert all(cell.get('rowspan') is None for cell in cells)
                 stats = PAGES.traffic_stats(group, controller, records)
+                expected_label = {'s1': 'S1', 'fixed': '固定配时方案' if chinese else 'Fixed-time plan', 'mp': 'YOLO+MP'}[controller]
+                assert ''.join(cells[-4].itertext()) == expected_label
                 assert [cell.text for cell in cells[-3:]] == [f'{stats[name]:.2f}' for name in
                     ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
 

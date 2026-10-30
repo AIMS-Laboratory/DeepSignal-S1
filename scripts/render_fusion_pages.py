@@ -118,7 +118,7 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
             condition = ('正常' if chinese else 'Clean') if key == 'normal' else condition_label(group['condition'], chinese)
             for index, controller in enumerate(controllers):
                 values = traffic_stats(group, controller, records)
-                label = {'s1': '<strong>S1</strong>', 'fixed': '工程固定' if chinese else 'Engineering fixed', 'mp': 'YOLO+MP'}[controller]
+                label = {'s1': '<strong>S1</strong>', 'fixed': '固定配时方案' if chinese else 'Fixed-time plan', 'mp': 'YOLO+MP'}[controller]
                 cells = [f"{values[name]:.2f}" if values[name] is not None else ('未记录' if chinese else 'Not recorded')
                          for name in ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
                 shared = ''.join(f'<td rowspan="{len(controllers)}" align="center" valign="middle">{escape(str(value))}</td>'
@@ -131,13 +131,13 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
                   '',
                   '南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入。',
                   '',
-                  ('南沙正常视觉YOLO+MP已独立补跑同一组72案例，等待、排队、行程整行采用该补跑批次；S1与工程固定记录不变。原先缺日志的历史YOLO+MP成绩保留，不与新统计混拼。' if supplemented else '南沙正常视觉YOLO+MP的72回合正在补跑完整日志；完成前这两项仍显示“未记录”，不推测或拿录像单例替代整批统计。')]
+                  ('南沙正常视觉YOLO+MP已独立补跑同一组72案例，等待、排队、行程整行采用该补跑批次；S1与固定配时方案的记录不变。原先缺日志的历史YOLO+MP成绩保留，不与新统计混拼。' if supplemented else '南沙正常视觉YOLO+MP的72回合正在补跑完整日志；完成前这两项仍显示“未记录”，不推测或拿录像单例替代整批统计。')]
     else:
         lines += ['**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.',
                   '',
                   'Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff.',
                   '',
-                  ('Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and engineering-fixed records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.' if supplemented else 'The 72 clean Nansha YOLO+MP cases are being rerun with full logs. Until completion, waiting and queue remain "Not recorded", not inferred or replaced with selected recording cases.')]
+                  ('Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and fixed-time plan records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.' if supplemented else 'The 72 clean Nansha YOLO+MP cases are being rerun with full logs. Until completion, waiting and queue remain "Not recorded", not inferred or replaced with selected recording cases.')]
     return '\n'.join(lines)
 
 
@@ -148,14 +148,14 @@ def render_highlights(data: dict[str, Any], chinese: bool) -> str:
     if chinese:
         return "\n".join(
             [
-                f"- **正常控制有效：** 相对冻结工程固定配时，平均行程时间在南沙72案例降低 **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%**，在Town五类车流降低 **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%**。",
+                f"- **正常控制有效：** 相对固定配时方案，平均行程时间在南沙72案例降低 **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%**，在Town五类车流降低 **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%**。",
                 f"- **特殊视觉稳健：** 固定机位偏移下，Town平均行程比YOLO+MP降低 **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%**；31像素运动模糊下，南沙降低 **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**。",
                 f"- **未量化本地推理：** RTX 5090共{latency['count']}次模型请求，平均 **{latency['mean_ms']:.0f}毫秒**，中位数{latency['median_ms']:.0f}毫秒。",
             ]
         )
     return "\n".join(
         [
-            f"- **Effective clean control:** versus frozen engineering timing, S1 reduces vehicle-weighted mean journey time by **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%** across 72 Nansha cases and **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%** across five Town regimes.",
+            f"- **Effective clean control:** versus the fixed-time plan, S1 reduces vehicle-weighted mean journey time by **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%** across 72 Nansha cases and **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%** across five Town regimes.",
             f"- **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**.",
             f"- **Unquantized local inference:** {latency['count']} RTX 5090 model calls average **{latency['mean_ms']:.0f} ms**, with a {latency['median_ms']:.0f} ms median.",
         ]

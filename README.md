@@ -8,7 +8,7 @@ English | [简体中文](README.zh-CN.md)
 
 DeepSignal-S1 follows a **Jev-style structured probabilistic decision** approach. It reads temporal intersection views and signal context, scores candidate actions, and selects a legal control action directly. It does not generate a traffic-analysis essay for another program to parse, and does not require a separate YOLO detection stage.
 
-**DeepSignal-S1-1.0** is trained on **simulation scenes from nine Nansha intersections**, including T-junctions and four-arm intersections, and **five traffic-demand scenarios at one four-arm intersection in CARLA's official Town10HD map**, covering balanced, uneven and time-varying flows. Its development addresses two practical questions: can visual control improve on frozen engineering timing in clean conditions, and can it remain more robust than detection plus Max Pressure when the camera feed degrades?
+**DeepSignal-S1-1.0** is trained on **simulation scenes from nine Nansha intersections**, including T-junctions and four-arm intersections, and **five traffic-demand scenarios at one four-arm intersection in CARLA's official Town10HD map**, covering balanced, uneven and time-varying flows. Its development addresses two practical questions: can visual control improve on the fixed-time plan in clean conditions, and can it remain more robust than detection plus Max Pressure when the camera feed degrades?
 
 ## Why System One
 
@@ -20,7 +20,7 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 - **Local deployment:** unquantized consumer-GPU inference is measured; quantization and edge deployment remain future work.
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **Effective clean control:** versus frozen engineering timing, S1 reduces vehicle-weighted mean journey time by **18.17%** across 72 Nansha cases and **33.77%** across five Town regimes.
+- **Effective clean control:** versus the fixed-time plan, S1 reduces vehicle-weighted mean journey time by **18.17%** across 72 Nansha cases and **33.77%** across five Town regimes.
 - **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **82.93%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **30.14%**.
 - **Unquantized local inference:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
 <!-- FUSION_HIGHLIGHTS:END -->
@@ -33,7 +33,7 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 
 ## Results
 
-Results use **mean journey time in seconds per vehicle; lower is better**. Clean views compare S1, frozen engineering fixed timing and YOLO+MP. Perturbed views compare S1 with YOLO+MP only.
+Results use **mean journey time in seconds per vehicle; lower is better**. Clean views compare S1, the fixed-time plan and YOLO+MP. Perturbed views compare S1 with YOLO+MP only.
 
 <!-- FUSION_RESULTS:BEGIN -->
 ### Clean views: three controllers
@@ -44,10 +44,10 @@ Results use **mean journey time in seconds per vehicle; lower is better**. Clean
 </thead>
 <tbody>
 <tr><td rowspan="3" align="center" valign="middle">Nansha</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
-<tr><td>Engineering fixed</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
+<tr><td>Fixed-time plan</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
 <tr><td>YOLO+MP</td><td align="right">46.89</td><td align="right">10.56</td><td align="right">108.79</td></tr>
 <tr><td rowspan="3" align="center" valign="middle">Town10HD</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
-<tr><td>Engineering fixed</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
+<tr><td>Fixed-time plan</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
 <tr><td>YOLO+MP</td><td align="right">20.22</td><td align="right">3.59</td><td align="right">38.22</td></tr>
 </tbody>
 </table>
@@ -82,7 +82,7 @@ Results use **mean journey time in seconds per vehicle; lower is better**. Clean
 
 Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff.
 
-Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and engineering-fixed records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.
+Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and fixed-time plan records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.
 <!-- FUSION_RESULTS:END -->
 
 The clean Nansha main table covers all **72** predefined cases across nine intersections. The perturbation pilot is narrower: Nansha uses nine high-flow balanced cases at seed 97001; Town10HD uses five demand regimes at seed 18040. These are controlled simulation results, not claims of universal superiority or statistical significance.
@@ -184,7 +184,7 @@ The model server, a real three-frame request that needs no simulator, and closed
 
 ## Evaluation Scope
 
-- **Sole fixed baseline:** frozen engineering timing, with Nansha per-intersection plans and Town10HD `31/6/31/6 s`.
+- **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; Nansha uses the published per-intersection plans and Town10HD uses `31/6/31/6 s`.
 - **Signal transitions:** decisions retain a 5 s green tail, followed by 3 s yellow and 2 s all-red where applicable.
 - **Finite horizon:** unfinished journeys remain counted; results are not complete-trip averages.
 - **Known Nansha limitation:** the retained red-age accounting protocol can over-count one phase's red age after an immediate first switch. Both arms use the same protocol, but this pilot is not a full correctness certification.
