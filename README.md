@@ -87,7 +87,7 @@ Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire w
 
 The clean Nansha main table covers all **72** predefined cases across nine intersections. The perturbation pilot is narrower: Nansha uses nine high-flow balanced cases at seed 97001; Town10HD uses five demand regimes at seed 18040. These are controlled simulation results, not claims of universal superiority or statistical significance.
 
-Recorded cases show the actual visual condition and controller behavior; the on-screen score belongs to that recording. Overall effects are defined by the paired tables above, not by requiring every GIF case to be an S1 win.
+Recorded cases show the actual visual condition and controller behavior; the on-screen score belongs to that recording. Overall effects are defined by the paired tables above.
 
 ## Eight Perturbation Views
 
