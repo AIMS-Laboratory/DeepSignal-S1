@@ -4,7 +4,9 @@
 
 [English](README.md) | 简体中文
 
-[模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [场景](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [结果数据](results/fusion-2026-10-30.json) · [复现说明](docs/reproduction.md)
+[DeepSignal 模型家族](https://github.com/AIMS-Laboratory/DeepSignal/blob/main/README_zh.md) · [模型](https://huggingface.co/AIMS2025/DeepSignal-S1) · [场景](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [结果数据](results/fusion-2026-10-30.json) · [复现说明](docs/reproduction.md)
+
+**DeepSignal S1** 是 [DeepSignal 交通信号控制模型家族](https://github.com/AIMS-Laboratory/DeepSignal/blob/main/README_zh.md)中的视觉决策系列，通过路口摄像头画面与当前信号状态直接选择信号动作。本仓库提供 S1 的发布页、代码、评测结果与复现说明。
 
 DeepSignal-S1 采用 **Jev 式结构化概率决策**路线：读取连续路口画面和信号状态，直接对候选控制动作给出概率并选择合法动作，而不是先生成长篇交通分析，再由外部程序解析文字。视觉理解与动作选择在同一个模型中完成，不依赖额外的YOLO车辆检测环节。
 
