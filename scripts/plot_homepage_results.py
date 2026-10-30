@@ -100,7 +100,7 @@ def legend(fig: plt.Figure, language: str, clean: bool) -> None:
     ]
     if clean:
         handles = [Patch(facecolor=S1, label="S1"), Patch(facecolor=MP, label="YOLO+MP"),
-                   Patch(facecolor=FIXED, label="冻结工程固定配时" if language == "zh" else "Engineering fixed")]
+                   Patch(facecolor=FIXED, label="固定配时方案" if language == "zh" else "Fixed-time plan")]
     fig.legend(handles=handles, loc="upper right", bbox_to_anchor=(0.99, 0.995),
                ncol=len(handles), frameon=False, handletextpad=0.4, columnspacing=1.3,
                fontsize=10)
@@ -114,7 +114,7 @@ def plot_clean(rows: dict, language: str) -> plt.Figure:
     heading(fig, "正常视觉 · 三种控制方法" if chinese else "Clean views · Three controllers")
     legend(fig, language, clean=True)
     controllers = ("s1", "mp", "fixed")
-    labels = ["S1", "YOLO+MP", "冻结工程固定配时" if chinese else "Engineering fixed"]
+    labels = ["S1", "YOLO+MP", "固定配时方案" if chinese else "Fixed-time plan"]
     for col, (metric, english, mandarin, unit, zh_unit) in enumerate(METRICS):
         limit = max(rows[(scene, "clean", c)][metric]
                     for scene in ("nansha", "town") for c in controllers) * 1.26
@@ -142,8 +142,8 @@ def plot_clean(rows: dict, language: str) -> plt.Figure:
                 ax.set_title(f"{mandarin if chinese else english} ({zh_unit if chinese else unit})",
                              loc="left", pad=10, fontsize=12, weight="bold")
             decorate_axis(ax)
-    fig.text(0.02, 0.02, "三项指标均越低越好；数值与上表一致，无置信区间；固定方案保持冻结。" if chinese
-             else "Lower is better. Same aggregate means as the table; no confidence intervals. The engineering plan is held fixed.",
+    fig.text(0.02, 0.02, "三项指标均越低越好；数值与上表一致，无置信区间。" if chinese
+             else "Lower is better. Same aggregate means as the table; no confidence intervals.",
              fontsize=9, color=MUTED)
     return fig
 

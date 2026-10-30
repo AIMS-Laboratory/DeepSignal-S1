@@ -40,6 +40,9 @@ def test_clean_bars_show_actual_means_on_shared_zero_based_axes(language):
     values = rows()
     fig = PLOTS.plot_clean(values, language)
     try:
+        label = "固定配时方案" if language == "zh" else "Fixed-time plan"
+        assert [text.get_text() for text in fig.legends[0].get_texts()] == ["S1", "YOLO+MP", label]
+        assert [text.get_text() for text in fig.axes[0].get_yticklabels()] == ["S1", "YOLO+MP", label]
         for index, ax in enumerate(fig.axes):
             scene = ("nansha", "town")[index // 3]
             metric = PLOTS.METRICS[index % 3][0]
