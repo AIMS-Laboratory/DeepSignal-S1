@@ -24,7 +24,7 @@ Results are from controlled simulations. Latency measures model requests only, e
 
 ## Featured Demos
 
-Watch the visual disturbance, signal actions and queue behavior. These are the existing standard-simulation camera-shift and multi-intersection motion-blur recordings, played at **5× speed**. On-screen scores describe that recording; aggregate claims use the paired evaluations. GIFs and static covers are served directly by GitHub without login.
+Watch the visual disturbance, signal actions and queue behavior. These are the existing standard-simulation camera-shift and nine-junction motion-blur recordings, played at **5× speed**. On-screen scores describe that recording; aggregate claims use the paired evaluations. GIFs and static covers are served directly by GitHub without login.
 
 <!-- FUSION_FEATURED:BEGIN -->
 ### Standard simulation · Fixed yaw ±15° / pitch ±8°
@@ -33,9 +33,9 @@ Watch the visual disturbance, signal actions and queue behavior. These are the e
 
 [Watch video](https://github.com/user-attachments/assets/e7b4a406-1474-4d24-9514-ff6d6a2d8e91) · [Static cover](assets/previews/en/town-angle15.jpg)
 
-### Multi-intersection · 31 px motion blur
+### Nine-junction test · 31 px motion blur
 
-<img width="800" src="assets/previews/en/nansha-mb31.gif" alt="Multi-intersection · 31 px motion blur">
+<img width="800" src="assets/previews/en/nansha-mb31.gif" alt="Nine-junction test · 31 px motion blur">
 
 [Watch video](https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a) · [Static cover](assets/previews/en/nansha-mb31.jpg)
 <!-- FUSION_FEATURED:END -->
@@ -44,15 +44,17 @@ Watch the visual disturbance, signal actions and queue behavior. These are the e
 
 **Two evaluation settings, reported separately:**
 
-- **Multi-intersection:** nine simulated intersections, including T-junctions and four-arm intersections, covering different junction layouts.
+- **Nine-junction test:** the same model is evaluated separately at nine simulated intersections, including T-junctions and four-arm intersections. Each run controls one junction; these tests do not evaluate coordination between junctions.
 - **Standard simulation:** the **Town10HD virtual-city map in CARLA**, with five traffic regimes at one four-arm intersection. Town10HD names the map.
 
 <!-- FUSION_RESULTS:BEGIN -->
-### Clean views: better than fixed timing, competitive with YOLO+MP
+### Clean views: better than engineering-optimized fixed timing, competitive with YOLO+MP
 
 > [!TIP]
 > **Control gains in clean views**
-> Mean journey time falls by **18.17%** across 72 multi-intersection cases and **33.77%** across five standard simulation regimes versus frozen engineering fixed timing. Against YOLO+MP, the multi-intersection setting improves by **1.36%**, while standard simulation is essentially tied.
+> The baseline is a **reasonable fixed-time plan optimized through engineering design**, with parameters determined and frozen before evaluation and held unchanged throughout.
+>
+> Against this plan, mean journey time falls by **18.17%** across 72 cases at the nine junctions and **33.77%** across five standard simulation regimes. Against YOLO+MP, the nine-junction evaluation improves by **1.36%**, while standard simulation is essentially tied.
 
 ### Visual disruption: the more distinctive advantage
 
@@ -62,7 +64,7 @@ Watch the visual disturbance, signal actions and queue behavior. These are the e
 
 <img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
 
-Each perturbation covers nine multi-intersection cases and five standard simulation cases, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance.
+Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance.
 
 <details>
 <summary>Clean views: three controllers — full values and three-metric chart</summary>
@@ -72,7 +74,7 @@ Each perturbation covers nine multi-intersection cases and five standard simulat
 <tr><th scope="col">Scene</th><th scope="col">Condition</th><th scope="col">Cases</th><th scope="col">Controller</th><th scope="col">Mean wait (s/veh)</th><th scope="col">Mean queue (veh)</th><th scope="col">Mean journey (s/veh)</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="3" align="center" valign="middle">Multi-intersection</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
+<tr><td rowspan="3" align="center" valign="middle">Nine-junction test</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
 <tr><td>Fixed-time plan</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
 <tr><td>YOLO+MP</td><td align="right">46.89</td><td align="right">10.56</td><td align="right">108.79</td></tr>
 <tr><td rowspan="3" align="center" valign="middle">Standard simulation</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
@@ -93,13 +95,13 @@ Each perturbation covers nine multi-intersection cases and five standard simulat
 <tr><th scope="col">Scene</th><th scope="col">Condition</th><th scope="col">Cases</th><th scope="col">Controller</th><th scope="col">Mean wait (s/veh)</th><th scope="col">Mean queue (veh)</th><th scope="col">Mean journey (s/veh)</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nine-junction test</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
 <tr><td>YOLO+MP</td><td align="right">104.86</td><td align="right">31.04</td><td align="right">167.48</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nine-junction test</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
 <tr><td>YOLO+MP</td><td align="right">124.59</td><td align="right">30.18</td><td align="right">188.34</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nine-junction test</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
 <tr><td>YOLO+MP</td><td align="right">87.01</td><td align="right">21.18</td><td align="right">154.36</td></tr>
-<tr><td rowspan="2" align="center" valign="middle">Multi-intersection</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nine-junction test</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
 <tr><td>YOLO+MP</td><td align="right">72.15</td><td align="right">17.91</td><td align="right">137.61</td></tr>
 <tr><td rowspan="2" align="center" valign="middle">Standard simulation</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">27.51</td><td align="right">4.10</td><td align="right">44.43</td></tr>
 <tr><td>YOLO+MP</td><td align="right">92.97</td><td align="right">9.75</td><td align="right">109.15</td></tr>
@@ -125,18 +127,18 @@ Each perturbation covers nine multi-intersection cases and five standard simulat
 
 #### Clean Views: Competitive Control Without a Separate Detector
 
-Against the fixed-time plan, S1 reduces mean journey time by **18.17%** in the multi-intersection setting and **33.77%** in the standard simulation setting, while mean waiting falls by **33.15%** and **49.45%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.
+Against the fixed-time plan, S1 reduces mean journey time by **18.17%** in the nine-junction evaluation and **33.77%** in the standard simulation setting, while mean waiting falls by **33.15%** and **49.45%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.
 
-Against YOLO+MP, S1 further reduces multi-intersection mean journey time by **1.36%** and mean waiting by **2.28%**; standard-simulation mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in the multi-intersection setting.
+Against YOLO+MP, S1 further reduces nine-junction mean journey time by **1.36%** and mean waiting by **2.28%**; standard-simulation mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in the nine-junction evaluation.
 
 #### Visual Disruption: A More Distinctive Deployment Advantage
 
 Traffic demand may stay the same while camera input changes because of lighting, maintenance or vibration. The four tests target distinct imaging problems: can S1 continue making effective signal decisions when images lose sharpness or stability, or no longer match the original viewpoint?
 
-- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in the multi-intersection setting and **59.29%** lower in the standard simulation setting.
-- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **30.14%** lower in the multi-intersection setting and **70.16%** lower in the standard simulation setting.
-- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **16.40%** lower in the multi-intersection setting and **82.93%** lower in the standard simulation setting; standard-simulation mean waiting is **90.63%** lower.
-- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **6.80%** in the multi-intersection setting and **6.72%** in the standard simulation setting. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.
+- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in the nine-junction evaluation and **59.29%** lower in the standard simulation setting.
+- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **30.14%** lower in the nine-junction evaluation and **70.16%** lower in the standard simulation setting.
+- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **16.40%** lower in the nine-junction evaluation and **82.93%** lower in the standard simulation setting; standard-simulation mean waiting is **90.63%** lower.
+- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **6.80%** in the nine-junction evaluation and **6.72%** in the standard simulation setting. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.
 
 These changes can affect vehicle detection and counting or misalign the image with calibrated lane regions, with downstream consequences for count-based signal control. S1 decides directly from temporal images and signal state, without that separate detection-and-counting pipeline. Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP: robustness translates into less waiting, shorter queues and shorter average journeys.
 
@@ -157,7 +159,7 @@ The model receives three temporal frames (a four-second window sampled every two
 
 System One emphasizes fast, structured decisions without generating a token-by-token reasoning narrative. S1 draws on the decision paradigm illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and [OneJev](https://github.com/OmniJev/OneJev). It runs locally and does not call the commercial Jev service.
 
-One 1.0 checkpoint covers simulations of nine junctions in the multi-intersection setting (T-junctions and four-arm intersections) and five traffic regimes at one junction in the standard simulation setting. Training includes these scenes; using one checkpoint across them is not evidence of generalization to unseen intersections.
+One 1.0 checkpoint covers simulations of nine junctions in the nine-junction evaluation (T-junctions and four-arm intersections) and five traffic regimes at one junction in the standard simulation setting. Training includes these scenes; using one checkpoint across them is not evidence of generalization to unseen intersections.
 
 ## Inference Performance
 
@@ -184,6 +186,14 @@ Statistics cover 133 S1 evaluation cases and 6823 decision requests with the unq
 | Full simulation | Python 3.10, SUMO 1.18.0 and the matching CARLA environment; see reproduction instructions |
 
 A verified minimum-VRAM configuration has not been published; the tested hardware is not a minimum requirement.
+
+## Future Potential and Research Directions
+
+The current results demonstrate direct visual decisions in controlled simulations. The following are directions for further research; **complex traffic-event handling and multi-junction coordination have not yet been validated**.
+
+- **Understand and respond to more complex traffic events.** With additional scenario data, traffic rules and safety constraints, explore reasoning about roadworks, incident blockages, emergency vehicles, and concentrated pedestrian or cyclist flows, so signal decisions can account for events and their effects on traffic.
+- **Extend single-junction decisions to coordinated control.** Explore sharing queues, signal states and incoming-flow information between adjacent junctions to coordinate release timing, support arterial green waves, limit downstream queue spillback and improve network traffic flow. This requires new communication mechanisms and network-level evaluation.
+- **Evaluate broader applicability and reduce deployment costs.** Run independent evaluations at previously unseen junctions, at night and in adverse weather, and explore quantization and edge deployment to assess transferability, response times and compute requirements.
 
 ## Download and Quickstart
 
@@ -216,7 +226,7 @@ The server should report `DeepSignal-S1-1.0` and return a selected action with c
 
 ## Evaluation Scope
 
-- **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; the multi-intersection setting uses the published per-intersection plans and the standard simulation setting uses `31/6/31/6 s`.
+- **Engineering-optimized fixed baseline:** a reasonable fixed-time plan optimized through engineering design, with parameters determined and frozen before evaluation and held unchanged throughout. The nine-junction evaluation uses the published per-intersection plans and the standard simulation setting uses `31/6/31/6 s`.
 - **Visual comparison:** clean views compare all three controllers; perturbations compare S1 with YOLO+MP. Camera shifts occur after YOLO lane-region calibration, without recalibration.
 - **Scope:** results come from the two controlled simulation settings; deployment on real roads and under real weather remains to be validated.
 
@@ -253,15 +263,15 @@ Flows are expected arrival rates **per approach**, not per lane or exact hourly 
 <details>
 <summary>Expand intersection views and case locations</summary>
 
-### Multi-intersection · J03 Four-Way Junction
+### Nine-junction test · Four-Way Junction Example
 
-<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="Bird's-eye view of Multi-intersection J03 showing all four approaches, stop lines and the junction center">
+<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="Bird's-eye view of one of the nine independently tested junctions, showing all four approaches, stop lines and the junction center">
 
 ### Standard simulation · Four-Way Junction
 
 <img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="Bird's-eye view of the CARLA Standard simulation junction showing all four approaches, stop lines and surrounding city blocks">
 
-The Multi-intersection camera-shift example uses J03; defocus, motion blur and shake examples use J08, J05 and J07, respectively. All four Standard simulation examples use the same junction shown above.
+The first aerial view shows the junction used for the camera-shift demo; the defocus, motion-blur and shake demos use other four-way junctions. All four standard-simulation demos use the junction in the second aerial view. See [media notes](docs/media-delivery.md) for the exact case mapping.
 
 </details>
 
@@ -273,9 +283,9 @@ Two cases are featured above. Expand each disturbance below for the other six, w
 <details>
 <summary>Defocus σ=9</summary>
 
-### Multi-intersection · Defocus σ=9
+### Nine-junction test · Defocus σ=9
 
-<img width="800" src="assets/previews/en/nansha-df9.gif" alt="Multi-intersection · Defocus σ=9">
+<img width="800" src="assets/previews/en/nansha-df9.gif" alt="Nine-junction test · Defocus σ=9">
 
 [Watch video](https://github.com/user-attachments/assets/3230897e-9a4c-4493-9d12-263f16cf9647) · [Static cover](assets/previews/en/nansha-df9.jpg)
 
@@ -290,7 +300,7 @@ Two cases are featured above. Expand each disturbance below for the other six, w
 <details>
 <summary>31 px motion blur</summary>
 
-Multi-intersection: see the featured demos above.
+Nine-junction test: see the featured demos above.
 
 ### Standard simulation · 31 px motion blur
 
@@ -303,9 +313,9 @@ Multi-intersection: see the featured demos above.
 <details>
 <summary>Fixed yaw ±15° / pitch ±8°</summary>
 
-### Multi-intersection · Fixed yaw ±15° / pitch ±8°
+### Nine-junction test · Fixed yaw ±15° / pitch ±8°
 
-<img width="800" src="assets/previews/en/nansha-angle15.gif" alt="Multi-intersection · Fixed yaw ±15° / pitch ±8°">
+<img width="800" src="assets/previews/en/nansha-angle15.gif" alt="Nine-junction test · Fixed yaw ±15° / pitch ±8°">
 
 [Watch video](https://github.com/user-attachments/assets/fbeec8fa-af75-47da-9196-966038e1ad18) · [Static cover](assets/previews/en/nansha-angle15.jpg)
 
@@ -316,9 +326,9 @@ Standard simulation: see the featured demos above.
 <details>
 <summary>Dynamic shake 5°</summary>
 
-### Multi-intersection · Dynamic shake 5°
+### Nine-junction test · Dynamic shake 5°
 
-<img width="800" src="assets/previews/en/nansha-shake5.gif" alt="Multi-intersection · Dynamic shake 5°">
+<img width="800" src="assets/previews/en/nansha-shake5.gif" alt="Nine-junction test · Dynamic shake 5°">
 
 [Watch video](https://github.com/user-attachments/assets/28dfbfd5-ae9c-478e-8272-9e9c840242bc) · [Static cover](assets/previews/en/nansha-shake5.jpg)
 
@@ -331,7 +341,7 @@ Standard simulation: see the featured demos above.
 </details>
 <!-- FUSION_GALLERY:END -->
 
-Recorded scores belong to their individual episodes. In the Multi-intersection J08 defocus recording, S1 journey time is slightly longer than YOLO+MP; the recording is retained. See [media notes](docs/media-delivery.md) for dynamic versus formal metrics.
+Recorded scores belong to their individual episodes. In the defocus demo from the nine-junction evaluation, S1 journey time is slightly longer than YOLO+MP; the recording is retained. See [media notes](docs/media-delivery.md) for dynamic versus formal metrics.
 
 Lane regions are calibrated on clean views and frozen; fixed shifts are not recalibrated. Dynamic shake peaks at 5° yaw/pitch and 2.5° roll.
 
@@ -341,9 +351,9 @@ The GIF previews preserve the recordings' original 5× playback speed. Full MP4 
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
-<summary>Video: Clean Multi-intersection: Three Controllers</summary>
+<summary>Video: Clean Nine-junction test: Three Controllers</summary>
 
-<img width="800" src="assets/videos/s1-multi-intersection-clean-en.gif" alt="Clean Multi-intersection: Three Controllers"/>
+<img width="800" src="assets/videos/s1-multi-intersection-clean-en.gif" alt="Clean Nine-junction test: Three Controllers"/>
 
 [Open / download MP4](https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/assets/videos/s1-multi-intersection-clean-en.mp4)
 

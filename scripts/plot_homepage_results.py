@@ -75,7 +75,7 @@ def load_rows(path: Path) -> dict:
 
 
 def scene_name(scene: str, language: str) -> str:
-    return (("多路口场景" if language == "zh" else "Multi-intersection") if scene == "nansha"
+    return (("9个路口独立测试" if language == "zh" else "Nine-junction test") if scene == "nansha"
             else ("标准仿真场景" if language == "zh" else "Standard simulation"))
 
 
@@ -149,8 +149,8 @@ def plot_clean(rows: dict, language: str) -> plt.Figure:
                 ax.set_title(f"{mandarin if chinese else english} ({zh_unit if chinese else unit})",
                              loc="left", pad=10, fontsize=12, weight="bold")
             decorate_axis(ax)
-    fig.text(0.02, 0.02, "三项指标均越低越好；数值与上表一致，无置信区间。" if chinese
-             else "Lower is better. Same aggregate means as the table; no confidence intervals.",
+    fig.text(0.02, 0.02, "固定配时经工程优化、评测前冻结；指标越低越好。与表格使用同一均值，无置信区间。" if chinese
+             else "Engineering-optimized fixed timing, frozen before evaluation. Lower is better. Same table means; no confidence intervals.",
              fontsize=9, color=MUTED)
     return fig
 

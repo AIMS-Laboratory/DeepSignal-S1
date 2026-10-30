@@ -33,7 +33,7 @@ def plot(language):
     conditions=('df9','mb31','angle15','shake5')
     labels=(['失焦 σ=9','运动模糊 31像素','固定偏角\n偏航±15° / 俯仰±8°','动态抖动 峰值5°'] if zh else
             ['Defocus σ=9','Motion blur 31 px','Fixed camera shift\nyaw ±15° / pitch ±8°','Dynamic shake peak 5°'])
-    for scene,offset,color,label in [('nansha',.18,'#147D78','多路口场景 · 9案例/条件' if zh else 'Multi-intersection · 9 cases/condition'),
+    for scene,offset,color,label in [('nansha',.18,'#147D78','9个路口独立测试 · 9案例/条件' if zh else 'Nine-junction test · 9 cases/condition'),
                                      ('town',-.18,'#6486A9','标准仿真场景 · 5案例/条件' if zh else 'Standard simulation · 5 cases/condition')]:
         vals=[100*(1-rows[(scene,c,'s1')]['mean_journey_s_per_vehicle']/rows[(scene,c,'mp')]['mean_journey_s_per_vehicle']) for c in conditions]
         ys=[3-i+offset for i in range(4)]

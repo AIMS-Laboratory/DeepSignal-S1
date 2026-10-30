@@ -6,6 +6,8 @@
 
 只采用**已冻结的工程固定配时**：南沙使用各路口既有工程表，J02为35/14/10/17秒；Town为31/6/31/6秒。配置在 `reproduction/configs/junctions/` 与对应 `scenarios/*/scene.json` 中，已完成固定记录为 `results/engineering-fixed-2026-10-26.json`。
 
+该固定方案经过工程优化，作为合理固定配时对照；参数在评测前确定并冻结，评测期间保持不变。这里的工程优化指既有工程方案的设计与优化，不表示针对本次最终测试重新搜索参数，也不声称全局最优。
+
 不重新搜索、不替换固定表，也不根据模型成绩调整固定方案。其他历史固定参考和对应视频退出当前复现入口，原始材料保留内部归档，不改名冒充工程方案。
 
 ## 比较范围与开发目标
@@ -16,7 +18,7 @@
 - 上述数值门槛由用户于2026-10-29明确，用于后续开发，不改写历史结果。先小批检查再决定扩量；未达目标时检查模型和实验，不改变基线保证获胜。
 - 发布专用权重与融合权重分别标注，不能把一种权重或执行器的成绩归给另一版本。
 
-The sole fixed baseline is frozen engineering timing. Clean views compare S1, engineering fixed timing and YOLO+MP; perturbed views compare S1 with YOLO+MP only. Development targets set on October 29 are at most 5% slower than YOLO+MP for clean views and at least 10% faster for each predefined extreme condition, separately within each scene. These are targets, not presumed outcomes or every-intersection guarantees. Historical results retain their original checkpoint and protocol scope.
+The sole fixed baseline is a reasonable engineering-optimized timing plan, determined and frozen before evaluation. This refers to the design and optimization of the existing engineering plan, without a new parameter search on the final tests or a claim of global optimality. Clean views compare S1, engineering fixed timing and YOLO+MP; perturbed views compare S1 with YOLO+MP only. Development targets set on October 29 are at most 5% slower than YOLO+MP for clean views and at least 10% faster for each predefined extreme condition, separately within each scene. These are targets, not presumed outcomes or every-intersection guarantees. Historical results retain their original checkpoint and protocol scope.
 
 ## 指标与汇总
 

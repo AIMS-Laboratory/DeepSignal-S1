@@ -60,7 +60,9 @@ def test_real_junction_overviews_precede_the_gallery_in_both_languages(filename,
         assert body.count(f'src="{path}"') == 1
         assert body.index(f'src="{path}"') < gallery_start
     introduction = body[:gallery_start]
-    assert all(junction in introduction for junction in ('J03', 'J08', 'J05', 'J07'))
+    assert all(junction not in introduction for junction in ('J03', 'J08', 'J05', 'J07'))
+    media_notes = (ROOT / 'docs/media-delivery.md').read_text()
+    assert all(junction in media_notes for junction in ('J03', 'J08', 'J05', 'J07'))
 
 
 @pytest.mark.parametrize('chinese,filename', [(True, 'README.zh-CN.md'), (False, 'README.md')])

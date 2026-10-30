@@ -169,4 +169,4 @@ python scripts/render_fusion_pages.py
 
 主页两张三指标比较图由 `plot_homepage_results.py` 单独生成，直接读取表格生成器输出的 `results/fusion-2026-10-30-traffic.csv`，保留同一批次的等待、排队和行程，不读取历史归一化成绩。正常视觉比较 S1、冻结工程固定配时和 YOLO+MP；特殊视觉仅比较 S1 与 YOLO+MP，百分比为 `(YOLO+MP - S1) / YOLO+MP × 100%`。中英文分别保存为 `*-zh` 和 `*-en` 的 PNG 与可编辑 SVG，保留在可展开的完整结果区域。首页另用 `plot_journey_summary.py` 展示全部八组平均行程降幅，使用同一CSV，不混合两个场景的绝对值。图示为已公开的汇总均值，不添加置信区间。
 
-首页使用易读展示名：“多路口场景 / Multi-intersection”对应原始 `nansha` 标识，“标准仿真场景 / Standard simulation”对应 `town` 标识及CARLA Town10HD地图。数据键、文件路径、模型权重与案例编号均保持原样。首屏特色图由 `scripts/render_feature_panel.py` 生成，运行 `render_fusion_pages.py` 时同步更新。
+首页使用易读展示名：“9个路口独立测试 / Nine-junction test”对应原始 `nansha` 标识，“标准仿真场景 / Standard simulation”对应 `town` 标识及CARLA Town10HD地图。数据键、文件路径、模型权重与案例编号均保持原样。首屏特色图由 `scripts/render_feature_panel.py` 生成，运行 `render_fusion_pages.py` 时同步更新。
