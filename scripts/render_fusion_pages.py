@@ -279,6 +279,7 @@ def render_hf_card(english: str, chinese: str, homepage: str) -> str:
     media_headings = {
         '## Town10HD: Decisions After Camera Repositioning', '## Eight Perturbation Views',
         '## Town10HD：机位改变后仍直接决策', '## 八组特殊视觉',
+        '## Junctions at a Glance', '## 展示路口鸟瞰',
     }
     lines = []
     skip = False

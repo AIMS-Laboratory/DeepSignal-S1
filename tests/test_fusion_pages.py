@@ -33,6 +33,22 @@ def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     assert body.count('https://github.com/user-attachments/assets/') == 2
 
 
+@pytest.mark.parametrize('filename,heading', [
+    ('README.md', '## Eight Perturbation Views'),
+    ('README.zh-CN.md', '## 八组特殊视觉'),
+])
+def test_real_junction_overviews_precede_the_gallery_in_both_languages(filename, heading):
+    body = (ROOT / filename).read_text()
+    gallery_start = body.index(heading)
+    for name in ('nansha-j03-aerial.jpg', 'town10hd-189-aerial.jpg'):
+        path = f'assets/junctions/{name}'
+        assert (ROOT / path).is_file()
+        assert body.count(f'src="{path}"') == 1
+        assert body.index(f'src="{path}"') < gallery_start
+    introduction = body[:gallery_start]
+    assert all(junction in introduction for junction in ('J03', 'J08', 'J05', 'J07'))
+
+
 @pytest.mark.parametrize('chinese', [False, True])
 def test_comparison_groups_share_three_cells_without_merging_controller_metrics(chinese):
     data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())

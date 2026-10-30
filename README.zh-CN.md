@@ -111,6 +111,18 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 
 录制案例展示真实视觉条件和控制行为，画面中的分数只属于该次录制；整体效果以以上配对表为准。
 
+## 展示路口鸟瞰
+
+### 南沙 · J03十字路口
+
+<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="南沙J03十字路口鸟瞰，展示四向车道、停车线和中央交叉区域">
+
+### Town10HD · 十字路口
+
+<img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="CARLA Town10HD十字路口鸟瞰，展示四向道路、停车线和周边街区">
+
+南沙固定偏角示例使用J03，失焦、运动模糊和动态抖动示例分别使用J08、J05和J07；Town10HD四组示例均来自上图同一十字路口。
+
 ## 八组特殊视觉
 
 <!-- FUSION_GALLERY:BEGIN -->

@@ -111,6 +111,18 @@ Across **6823** unquantized RTX 5090 decision requests, latency averages **485 m
 
 Recorded cases show the actual visual condition and controller behavior; the on-screen score belongs to that recording. Overall effects are defined by the paired tables above.
 
+## Junctions at a Glance
+
+### Nansha · J03 Four-Way Junction
+
+<img width="1280" src="assets/junctions/nansha-j03-aerial.jpg" alt="Bird's-eye view of Nansha J03 showing all four approaches, stop lines and the junction center">
+
+### Town10HD · Four-Way Junction
+
+<img width="1280" src="assets/junctions/town10hd-189-aerial.jpg" alt="Bird's-eye view of the CARLA Town10HD junction showing all four approaches, stop lines and surrounding city blocks">
+
+The Nansha camera-shift example uses J03; defocus, motion blur and shake examples use J08, J05 and J07, respectively. All four Town10HD examples use the same junction shown above.
+
 ## Eight Perturbation Views
 
 <!-- FUSION_GALLERY:BEGIN -->
