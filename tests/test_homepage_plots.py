@@ -90,3 +90,29 @@ def test_each_table_is_followed_by_its_own_local_chart(language, filename):
         assert text.count(f'src="{path}"') == 1
         assert (ROOT / path).is_file()
         assert (ROOT / path).with_suffix(".svg").is_file()
+
+
+@pytest.mark.parametrize("language", ["en", "zh"])
+@pytest.mark.parametrize("plot,height", [(PLOTS.plot_clean, 4.2), (PLOTS.plot_perturbed, 5.5)])
+def test_compact_figures_preserve_readable_labels_without_clipping(language, plot, height):
+    PLOTS.style(language)
+    fig = plot(rows(), language)
+    try:
+        assert fig.get_size_inches() == pytest.approx([13.8, height])
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        texts = list(fig.texts)
+        for ax in fig.axes:
+            texts += list(ax.texts) + ax.get_yticklabels() + [ax._left_title]
+            texts += [label for value, label in zip(ax.get_xticks(), ax.get_xticklabels())
+                      if ax.get_xlim()[0] <= value <= ax.get_xlim()[1]]
+        for text in texts:
+            if not text.get_text():
+                continue
+            assert text.get_fontsize() >= 9
+            bounds = text.get_window_extent(renderer)
+            assert bounds.x0 >= 0 and bounds.y0 >= 0, text.get_text()
+            assert bounds.x1 <= fig.bbox.x1 and bounds.y1 <= fig.bbox.y1, text.get_text()
+        assert not fig.texts[0].get_window_extent(renderer).overlaps(fig.legends[0].get_window_extent(renderer))
+    finally:
+        PLOTS.plt.close(fig)

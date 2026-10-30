@@ -86,11 +86,9 @@ def decorate_axis(ax: plt.Axes) -> None:
     ax.spines["bottom"].set_visible(False)
 
 
-def heading(fig: plt.Figure, title: str, subtitle: str) -> None:
-    fig.text(0.035, 0.965, "DeepSignal-S1", fontsize=10, color=S1, weight="bold", va="top")
-    fig.text(0.035, 0.920, title, fontsize=23, weight="bold", va="top")
-    fig.text(0.035, 0.862, subtitle, fontsize=11, color=MUTED, va="top")
-    fig.add_artist(Line2D([0.035, 0.975], [0.805, 0.805], transform=fig.transFigure,
+def heading(fig: plt.Figure, title: str) -> None:
+    fig.text(0.02, 0.975, title, fontsize=16, weight="bold", va="top")
+    fig.add_artist(Line2D([0.02, 0.985], [0.885, 0.885], transform=fig.transFigure,
                           color=GRID, linewidth=1))
 
 
@@ -103,19 +101,17 @@ def legend(fig: plt.Figure, language: str, clean: bool) -> None:
     if clean:
         handles = [Patch(facecolor=S1, label="S1"), Patch(facecolor=MP, label="YOLO+MP"),
                    Patch(facecolor=FIXED, label="冻结工程固定配时" if language == "zh" else "Engineering fixed")]
-    fig.legend(handles=handles, loc="upper right", bbox_to_anchor=(0.98, 0.985),
+    fig.legend(handles=handles, loc="upper right", bbox_to_anchor=(0.99, 0.995),
                ncol=len(handles), frameon=False, handletextpad=0.4, columnspacing=1.3,
                fontsize=10)
 
 
 def plot_clean(rows: dict, language: str) -> plt.Figure:
     chinese = language == "zh"
-    fig, axes = plt.subplots(2, 3, figsize=(13.8, 7.7))
-    fig.subplots_adjust(left=0.17, right=0.965, bottom=0.14, top=0.70,
-                        hspace=1.05, wspace=0.32)
-    heading(fig, "正常视觉 · 三种控制方法" if chinese else "Clean views · Three controllers",
-            "三项指标均越低越好；条形末端为实际均值。" if chinese
-            else "Three traffic metrics. Lower is better; labels show the measured means.")
+    fig, axes = plt.subplots(2, 3, figsize=(13.8, 4.2))
+    fig.subplots_adjust(left=0.17, right=0.975, bottom=0.115, top=0.78,
+                        hspace=0.48, wspace=0.28)
+    heading(fig, "正常视觉 · 三种控制方法" if chinese else "Clean views · Three controllers")
     legend(fig, language, clean=True)
     controllers = ("s1", "mp", "fixed")
     labels = ["S1", "YOLO+MP", "冻结工程固定配时" if chinese else "Engineering fixed"]
@@ -132,23 +128,22 @@ def plot_clean(rows: dict, language: str) -> plt.Figure:
                             xytext=(6, 0), textcoords="offset points", va="center",
                             fontsize=11, color=color, weight="bold" if color == S1 else "normal")
             ax.set_xlim(0, limit)
-            ax.set_ylim(-0.65, 2.65)
+            ax.set_ylim(-0.55, 2.55)
             ax.set_yticks([2, 1, 0], labels if col == 0 else ["", "", ""])
             if col == 0:
                 ax.get_yticklabels()[0].set_color(S1)
                 ax.get_yticklabels()[0].set_weight("bold")
                 count = rows[(scene, "clean", "s1")]["cases"]
                 name = scene_name(scene, language)
-                fig.text(0.035, 0.747 if row == 0 else 0.418,
-                         f"{name}  /  {count} {'案例' if chinese else 'cases'}",
-                         fontsize=12, weight="bold")
-            ax.set_xlabel(zh_unit if chinese else unit, fontsize=10, labelpad=8)
+                fig.text(0.02, ax.get_position().y1 + 0.014,
+                         f"{name}\n{count} {'案例' if chinese else 'cases'}",
+                         fontsize=11, weight="bold", va="bottom", linespacing=1.25)
             if row == 0:
-                ax.set_title(mandarin if chinese else english, loc="left", pad=33,
-                             fontsize=13, weight="bold")
+                ax.set_title(f"{mandarin if chinese else english} ({zh_unit if chinese else unit})",
+                             loc="left", pad=10, fontsize=12, weight="bold")
             decorate_axis(ax)
-    fig.text(0.035, 0.045, "与上表采用相同汇总口径；不显示置信区间。固定方案保持冻结。" if chinese
-             else "Same aggregate means as the table; no confidence intervals shown. The engineering plan is held fixed.",
+    fig.text(0.02, 0.02, "三项指标均越低越好；数值与上表一致，无置信区间；固定方案保持冻结。" if chinese
+             else "Lower is better. Same aggregate means as the table; no confidence intervals. The engineering plan is held fixed.",
              fontsize=9, color=MUTED)
     return fig
 
@@ -159,12 +154,10 @@ def reduction(s1: float, baseline: float) -> float:
 
 def plot_perturbed(rows: dict, language: str) -> plt.Figure:
     chinese = language == "zh"
-    fig, axes = plt.subplots(2, 3, figsize=(13.8, 9.7))
-    fig.subplots_adjust(left=0.195, right=0.925, bottom=0.135, top=0.705,
-                        hspace=0.65, wspace=0.50)
-    heading(fig, "特殊视觉 · 扰动下的控制效果" if chinese else "Perturbed views · Control under disruption",
-            "点位越靠左，交通表现越好；右侧百分比为 S1 相对 YOLO+MP 的降幅。" if chinese
-            else "Further left is better. Percentages show S1 reductions relative to YOLO+MP.")
+    fig, axes = plt.subplots(2, 3, figsize=(13.8, 5.5))
+    fig.subplots_adjust(left=0.195, right=0.93, bottom=0.105, top=0.78,
+                        hspace=0.34, wspace=0.38)
+    heading(fig, "特殊视觉 · S1 与 YOLO+MP" if chinese else "Perturbed views · S1 vs YOLO+MP")
     legend(fig, language, clean=False)
     for col, (metric, english, mandarin, unit, zh_unit) in enumerate(METRICS):
         limit = max(rows[(scene, condition, controller)][metric]
@@ -187,22 +180,21 @@ def plot_perturbed(rows: dict, language: str) -> plt.Figure:
                         ha="left", va="center", fontsize=11, weight="bold",
                         color=S1 if gain >= 0 else "#B54747")
             ax.set_xlim(0, limit)
-            ax.set_ylim(-0.55, 3.65)
+            ax.set_ylim(-0.45, 3.45)
             ax.set_yticks([3, 2, 1, 0], condition_names(language) if col == 0 else ["", "", "", ""])
             if col == 0:
                 count = rows[(scene, "df9", "s1")]["cases"]
-                fig.text(0.035, 0.782 if row == 0 else 0.435,
-                         f"{scene_name(scene, language)}  /  {count} {'案例/条件' if chinese else 'cases per condition'}",
-                         fontsize=12, weight="bold")
-            ax.set_xlabel(zh_unit if chinese else unit, fontsize=10, labelpad=8)
+                fig.text(0.02, ax.get_position().y1 + 0.014,
+                         f"{scene_name(scene, language)}\n{count} {'案例/条件' if chinese else 'cases / condition'}",
+                         fontsize=11, weight="bold", va="bottom", linespacing=1.25)
             if row == 0:
-                ax.set_title(mandarin if chinese else english, loc="left", pad=29,
-                             fontsize=13, weight="bold")
+                ax.set_title(f"{mandarin if chinese else english} ({zh_unit if chinese else unit})",
+                             loc="left", pad=10, fontsize=12, weight="bold")
                 ax.text(1.04, 1.08, "降幅" if chinese else "Reduction", transform=ax.transAxes,
                         fontsize=9, color=MUTED, ha="left", va="bottom")
             decorate_axis(ax)
-    fig.text(0.035, 0.051, "降幅 = (YOLO+MP − S1) / YOLO+MP × 100%；每个场景使用一个交通种子，无置信区间。" if chinese
-             else "Reduction = (YOLO+MP − S1) / YOLO+MP × 100%. One traffic seed per scene; no confidence intervals shown.",
+    fig.text(0.02, 0.02, "越靠左越好。降幅 = (YOLO+MP − S1) / YOLO+MP × 100%；每场景一个交通种子，无置信区间。" if chinese
+             else "Further left is better. Reduction = (YOLO+MP − S1) / YOLO+MP × 100%; one traffic seed per scene, no confidence intervals.",
              fontsize=9, color=MUTED)
     return fig
 
