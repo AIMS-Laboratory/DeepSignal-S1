@@ -23,7 +23,8 @@ def test_mean_journey_is_vehicle_weighted_not_mean_of_case_means():
 def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     body = PAGES.render_gallery(chinese)
     assert '<details' not in body
-    assert body.count('.gif)') == 8
+    assert body.count('.gif') == 8
+    assert body.count('shake5.gif?v=2') == 2
     assert body.count('/town-') == 4
     assert body.count('/nansha-') == 4
     assert f'/fusion-1.0/{language}/town-angle15.gif' in body

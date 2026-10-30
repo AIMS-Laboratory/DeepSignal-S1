@@ -202,7 +202,8 @@ def render_gallery(chinese: bool, github: bool = True) -> str:
         lines += [f'### {label}', '']
         for condition in ('angle15', 'df9', 'mb31', 'shake5'):
             title = f'{label} · {condition_label(condition, chinese)}'
-            lines += [f'#### {title}', '', f'![{title}]({base}/{scene}-{condition}.gif)', '',
+            preview = f'{base}/{scene}-{condition}.gif' + ('?v=2' if condition == 'shake5' else '')
+            lines += [f'#### {title}', '', f'![{title}]({preview})', '',
                       video_tag(scene, condition, chinese, github), '']
     return '\n'.join(lines).rstrip()
 

@@ -104,7 +104,7 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 #### Town10HD · Dynamic shake 5°
 
-![Town10HD · Dynamic shake 5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-shake5.gif)
+![Town10HD · Dynamic shake 5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-shake5.gif?v=2)
 
 <video controls="controls" width="960" src="https://github.com/user-attachments/assets/47eadb76-f495-4bc4-86bb-fe094b42f36f"></video>
 
@@ -130,7 +130,7 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 #### Nansha · Dynamic shake 5°
 
-![Nansha · Dynamic shake 5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/nansha-shake5.gif)
+![Nansha · Dynamic shake 5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/nansha-shake5.gif?v=2)
 
 <video controls="controls" width="960" src="https://github.com/user-attachments/assets/10e26d79-4e18-40f6-82b7-61829d215da3"></video>
 <!-- FUSION_GALLERY:END -->

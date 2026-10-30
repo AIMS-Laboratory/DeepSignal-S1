@@ -104,7 +104,7 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 
 #### Town10HD · 动态抖动峰值5°
 
-![Town10HD · 动态抖动峰值5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/zh/town-shake5.gif)
+![Town10HD · 动态抖动峰值5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/zh/town-shake5.gif?v=2)
 
 <video controls="controls" width="960" src="https://github.com/user-attachments/assets/d5473739-c0ab-4249-906a-5e0f941e47b2"></video>
 
@@ -130,7 +130,7 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 
 #### 南沙 · 动态抖动峰值5°
 
-![南沙 · 动态抖动峰值5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/zh/nansha-shake5.gif)
+![南沙 · 动态抖动峰值5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/zh/nansha-shake5.gif?v=2)
 
 <video controls="controls" width="960" src="https://github.com/user-attachments/assets/f6d1b3de-98e1-4584-b6a7-4558d85c83f9"></video>
 <!-- FUSION_GALLERY:END -->
