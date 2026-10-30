@@ -96,23 +96,17 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-df9.gif" alt="Town10HD · Defocus σ=9">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/84d65a84-5b20-4515-9fdd-f8ff73003a56"></video>
-
 [Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-df9.mp4)
 
 #### Town10HD · 31 px motion blur
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-mb31.gif" alt="Town10HD · 31 px motion blur">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/b3b3a927-a5a5-4e43-9710-b94102f15bc4"></video>
-
 [Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-mb31.mp4)
 
 #### Town10HD · Dynamic shake 5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-shake5.gif" alt="Town10HD · Dynamic shake 5°">
-
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/9c9d2ac9-cc58-4959-8008-93ad5de7ca18"></video>
 
 [Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/town-shake5.mp4)
 
@@ -122,15 +116,11 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-angle15.gif" alt="Nansha · Fixed yaw ±15° / pitch ±8°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/fbeec8fa-af75-47da-9196-966038e1ad18"></video>
-
 [Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-angle15.mp4)
 
 #### Nansha · Defocus σ=9
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-df9.gif" alt="Nansha · Defocus σ=9">
-
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/3230897e-9a4c-4493-9d12-263f16cf9647"></video>
 
 [Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-df9.mp4)
 
@@ -145,8 +135,6 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 #### Nansha · Dynamic shake 5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
-
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/28dfbfd5-ae9c-478e-8272-9e9c840242bc"></video>
 
 [Large-screen / alternate player](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/en/nansha-shake5.mp4)
 <!-- FUSION_GALLERY:END -->

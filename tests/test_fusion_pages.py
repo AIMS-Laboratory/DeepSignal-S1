@@ -28,14 +28,14 @@ def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     assert body.count('/nansha-') == 8
     assert f'/fusion-1.0/v4/{language}/town-angle15.gif' in body
     assert '<video controls=' in body
-    assert body.count('https://github.com/user-attachments/assets/') == 8
+    assert body.count('https://github.com/user-attachments/assets/') == 2
 
 
 def test_hf_gallery_uses_its_own_public_videos():
     body = PAGES.render_gallery(True, github=False)
     assert 'github.com/user-attachments' not in body
     assert '/zh/town-clean.mp4' in PAGES.video_tag('town', 'clean', True, github=False)
-    assert body.count('.mp4"') == 8
+    assert body.count('.mp4"') == 2
 
 
 def test_missing_control_history_is_not_silently_replaced_with_partial_mean():
@@ -62,7 +62,7 @@ def test_wait_includes_measured_insertion_wait_not_only_inserted_vehicles():
 def test_large_gallery_does_not_reduce_shake_to_a_narrow_preview():
     body = PAGES.render_gallery(True)
     assert body.count('<img width="1280"') == 8
-    assert body.count('<video controls="controls" width="1280"') == 8
+    assert body.count('<video controls="controls" width="1280"') == 2
     assert '/fusion-1.0/v4/zh/town-shake5.gif' in body
     assert '备用播放' in body
 

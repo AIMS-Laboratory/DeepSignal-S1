@@ -207,8 +207,13 @@ def render_gallery(chinese: bool, github: bool = True) -> str:
         for condition in ('angle15', 'df9', 'mb31', 'shake5'):
             title = f'{label} · {condition_label(condition, chinese)}'
             preview = f'{base}/{scene}-{condition}.gif'
+            if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
+                movie = video_tag(scene, condition, chinese, github)
+            else:
+                mirror = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/{language}/{scene}-{condition}.mp4'
+                movie = f"[{'大屏 / 备用播放' if chinese else 'Large-screen / alternate player'}]({mirror})"
             lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '',
-                      video_tag(scene, condition, chinese, github), '']
+                      movie, '']
     return '\n'.join(lines).rstrip()
 
 

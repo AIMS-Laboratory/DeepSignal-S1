@@ -96,23 +96,17 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-df9.gif" alt="Town10HD · 失焦σ=9">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/dc64bac6-001d-42fd-ae0f-e58bbb6070af"></video>
-
 [大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-df9.mp4)
 
 #### Town10HD · 31像素运动模糊
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-mb31.gif" alt="Town10HD · 31像素运动模糊">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/f697bbca-f885-4a95-adab-412699c88de9"></video>
-
 [大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-mb31.mp4)
 
 #### Town10HD · 动态抖动峰值5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-shake5.gif" alt="Town10HD · 动态抖动峰值5°">
-
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/658a8f96-ed06-44b4-b398-a1ca49b15ed7"></video>
 
 [大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/town-shake5.mp4)
 
@@ -122,15 +116,11 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-angle15.gif" alt="南沙 · 固定偏航±15° / 俯仰±8°">
 
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/199bbd0f-da7d-4d16-968d-89b0bf5de5fe"></video>
-
 [大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-angle15.mp4)
 
 #### 南沙 · 失焦σ=9
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-df9.gif" alt="南沙 · 失焦σ=9">
-
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/f87f3efe-5ffd-483d-8a59-0ac73a578493"></video>
 
 [大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-df9.mp4)
 
@@ -145,8 +135,6 @@ System One（系统一）强调快速、直接、可被软件调用的决策。[
 #### 南沙 · 动态抖动峰值5°
 
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/nansha-shake5.gif" alt="南沙 · 动态抖动峰值5°">
-
-<video controls="controls" width="1280" playsinline="playsinline" src="https://github.com/user-attachments/assets/8b6caf1c-393c-4668-95a8-3a62e980d1b7"></video>
 
 [大屏 / 备用播放](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/blob/main/media/fusion-1.0/v4/zh/nansha-shake5.mp4)
 <!-- FUSION_GALLERY:END -->
