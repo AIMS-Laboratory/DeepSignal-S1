@@ -159,7 +159,7 @@ https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
 
 The unquantized BF16 checkpoint reads temporal intersection views; sampling details are in the reproduction guide. Statistics cover 133 S1 cases: 72 Nansha clean cases and 61 fusion-pilot S1 cases. Camera capture, rendering and control execution are excluded. First calls include initialization effects; subsequent calls characterize steady state.
 
-**Deployment direction:** sub-second steady-state decisions on a consumer RTX 5090 make signal-control workstations a practical target. A colleague also reported approximately **900 ms on an RTX 4090** with the unquantized model; its measurement conditions remain unverified, so it is not included in the benchmark. Quantization and edge-device deployment are future work, not demonstrated capabilities. A universal sub-second guarantee has not been established.
+**Deployment direction:** sub-second steady-state decisions on a consumer RTX 5090 make signal-control workstations a practical target. We also tested the unquantized model's inference speed on an **RTX 4090**, observing approximately **900 ms per decision**; its measurement conditions remain unverified, so it is not included in the benchmark. Quantization and edge-device deployment are future work, not demonstrated capabilities. A universal sub-second guarantee has not been established.
 
 ## Download and Quickstart
 
