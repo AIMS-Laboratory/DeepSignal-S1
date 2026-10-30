@@ -244,7 +244,7 @@ def main() -> None:
     traffic_records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
     validate(data)
     with (ROOT / 'results/fusion-2026-10-30-traffic.csv').open('w', newline='') as stream:
-        writer = csv.DictWriter(stream, fieldnames=['scene', 'condition', 'cases', 'vehicles', 'controller', 'mean_journey_s_per_vehicle', 'mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'complete_cases'])
+        writer = csv.DictWriter(stream, fieldnames=['scene', 'condition', 'cases', 'vehicles', 'controller', 'mean_journey_s_per_vehicle', 'mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'complete_cases'], lineterminator='\n')
         writer.writeheader()
         for group in [*data['normal'], *data['extreme']]:
             for controller, mean in traffic_means(group).items():

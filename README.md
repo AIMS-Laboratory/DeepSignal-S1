@@ -42,7 +42,7 @@ Results use **mean journey time in seconds per vehicle; lower is better**. Clean
 |---|---|---:|---|---:|---:|---:|
 | Nansha | Clean | 72 | **S1** | 45.82 | 10.47 | 107.32 |
 | Nansha | Clean | 72 | Engineering fixed | 68.55 | 15.52 | 131.15 |
-| Nansha | Clean | 72 | YOLO+MP | Not recorded | Not recorded | 109.36 |
+| Nansha | Clean | 72 | YOLO+MP | 46.89 | 10.56 | 108.79 |
 | Town10HD | Clean | 5 | **S1** | 20.45 | 3.56 | 38.22 |
 | Town10HD | Clean | 5 | Engineering fixed | 40.46 | 5.40 | 57.70 |
 | Town10HD | Clean | 5 | YOLO+MP | 20.22 | 3.59 | 38.22 |
@@ -72,7 +72,7 @@ Results use **mean journey time in seconds per vehicle; lower is better**. Clean
 
 Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff. Original records are unchanged; waiting and queue statistics come from recorded-action/signal SUMO replay checked against each original journey score.
 
-The 72 clean Nansha YOLO+MP cases are being rerun with full logs. Until completion, waiting and queue remain "Not recorded", not inferred or replaced with selected recording cases.
+Clean Nansha YOLO+MP was rerun on the same 72 cases with full logs. Its entire waiting/queue/journey row comes from that supplementary batch; S1 and engineering-fixed records are unchanged. The original unlogged MP results remain archived, not spliced into the new row.
 <!-- FUSION_RESULTS:END -->
 
 The clean Nansha main table covers all **72** predefined cases across nine intersections. The perturbation pilot is narrower: Nansha uses nine high-flow balanced cases at seed 97001; Town10HD uses five demand regimes at seed 18040. These are controlled simulation results, not claims of universal superiority or statistical significance.
