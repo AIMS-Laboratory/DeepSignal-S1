@@ -77,6 +77,27 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media():
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/reproduction.md' in body
     assert f'[English]({homepage})' in body and '[简体中文](#简体中文)' in body
     assert '/blob/main/README.zh-CN.md' not in body
+    assert '### 结果解读' in body and '### What the Results Show' in body
+
+
+@pytest.mark.parametrize('chinese', [False, True])
+def test_discussion_uses_current_comparisons_and_keeps_clean_town_tied(chinese):
+    data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())
+    records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
+    body = PAGES.render_discussion(data, chinese, records)
+    for percentage in ('18.17', '33.77', '1.36', '2.28', '15.79', '59.29', '30.14',
+                       '70.16', '16.40', '82.93', '90.63', '6.80', '6.72'):
+        assert f'**{percentage}%**' in body
+    assert ('基本持平' if chinese else 'essentially tied') in body
+    assert ('真实恶劣天气验证' if chinese else 'real-world adverse-weather validation') in body
+    assert '**485' in body and '**477' in body and '**99.08%**' in body
+    highlights = PAGES.render_highlights(data, chinese, records)
+    assert '**1.36%**' in highlights
+    for group in data['extreme']:
+        s1 = PAGES.traffic_stats(group, 's1', records)
+        mp = PAGES.traffic_stats(group, 'mp', records)
+        for metric in ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle'):
+            assert s1[metric] < mp[metric]
 
 
 def test_missing_control_history_is_not_silently_replaced_with_partial_mean():
@@ -130,3 +151,4 @@ def test_fresh_mp_row_uses_all_three_metrics_from_the_same_supplement():
     assert stats['mean_journey_s_per_vehicle'] == 25
     assert stats['mean_wait_s_per_vehicle'] == 7
     assert stats['mean_queue_vehicles'] == 3
+    assert PAGES.improvement_percent(group, 'mp', [fresh]) == pytest.approx(60)

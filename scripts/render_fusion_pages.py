@@ -102,6 +102,13 @@ def traffic_stats(group: dict[str, Any], controller: str, records: list[dict[str
     }
 
 
+def improvement_percent(group: dict[str, Any], baseline: str, records: list[dict[str, Any]],
+                        metric: str = 'mean_journey_s_per_vehicle') -> float:
+    s1 = traffic_stats(group, 's1', records)[metric]
+    reference = traffic_stats(group, baseline, records)[metric]
+    return 100 * (1 - s1 / reference)
+
+
 def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
     lines = []
     for key, title in (('normal', '正常视觉：三方比较' if chinese else 'Clean views: three controllers'),
@@ -126,24 +133,79 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
                 lines.append('<tr>' + shared + f'<td>{label}</td>' + ''.join(f'<td align="right">{value}</td>' for value in cells) + '</tr>')
         lines += ['</tbody>', '</table>', '']
     if chinese:
-        lines += ['**指标定义：** 平均等待包括正式评测车辆的停车等待和拥堵造成的入网等待；平均排队长度是共同发车窗口98—398秒内，受控进口车道停车车辆总数的时间平均，单位为辆，不是米；平均行程从计划出发计时。行程与等待按车辆数加权，排队按相同窗口的案例均值汇总。',
-                  '',
-                  '南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入。']
+        lines += ['**指标说明：** 三项指标均越低越好。平均等待包括停车等待和入网等待；平均排队长度以停车车辆数计；平均行程从计划出发计时，未完成车辆计入评估截止时的已耗时。[详细指标定义](docs/traffic-metrics.md)。']
     else:
-        lines += ['**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.',
-                  '',
-                  'Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff.']
+        lines += ['**Metrics:** lower is better for all three. Mean wait includes stopped and insertion waiting; mean queue counts halted vehicles; journey time starts at planned departure, with unfinished vehicles contributing elapsed time at the evaluation cutoff. [Detailed definitions](docs/traffic-metrics.md).']
+    lines += ['', render_discussion(data, chinese, records)]
     return '\n'.join(lines)
 
 
-def render_highlights(data: dict[str, Any], chinese: bool) -> str:
+def render_discussion(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
+    normal = {row['scene']: row for row in data['normal']}
+    extreme = {(row['scene'], row['condition']): row for row in data['extreme']}
+    fixed_ns = improvement_percent(normal['nansha'], 'fixed', records)
+    fixed_town = improvement_percent(normal['town'], 'fixed', records)
+    wait_ns = improvement_percent(normal['nansha'], 'fixed', records, 'mean_wait_s_per_vehicle')
+    wait_town = improvement_percent(normal['town'], 'fixed', records, 'mean_wait_s_per_vehicle')
+    mp_ns = improvement_percent(normal['nansha'], 'mp', records)
+    mp_wait_ns = improvement_percent(normal['nansha'], 'mp', records, 'mean_wait_s_per_vehicle')
+    df_ns = improvement_percent(extreme[('nansha', 'df9')], 'mp', records)
+    df_town = improvement_percent(extreme[('town', 'df9')], 'mp', records)
+    mb_ns = improvement_percent(extreme[('nansha', 'mb31')], 'mp', records)
+    mb_town = improvement_percent(extreme[('town', 'mb31')], 'mp', records)
+    angle_ns = improvement_percent(extreme[('nansha', 'angle15')], 'mp', records)
+    angle_town = improvement_percent(extreme[('town', 'angle15')], 'mp', records)
+    angle_wait = improvement_percent(extreme[('town', 'angle15')], 'mp', records, 'mean_wait_s_per_vehicle')
+    shake_ns = improvement_percent(extreme[('nansha', 'shake5')], 'mp', records)
+    shake_town = improvement_percent(extreme[('town', 'shake5')], 'mp', records)
+    latency = data['latency']['all_calls']
+    steady = data['latency']['subsequent_calls']
+    if chinese:
+        return '\n\n'.join([
+            '### 结果解读',
+            '#### 正常视觉：高水平控制，不依赖独立车辆检测',
+            f"与固定配时方案相比，S1在南沙和Town10HD的平均行程分别降低 **{fixed_ns:.2f}%** 和 **{fixed_town:.2f}%**，平均等待分别降低 **{wait_ns:.2f}%** 和 **{wait_town:.2f}%**。收益不仅是车辆更早到达，也体现在更少的停车等待与更短的排队。",
+            f"与YOLO+MP相比，S1在南沙的平均行程再降低 **{mp_ns:.2f}%**、平均等待降低 **{mp_wait_ns:.2f}%**；Town10HD的平均行程基本持平。这说明，直接从视觉作出信号决策，可以在省去独立检测环节的同时达到有竞争力的交通控制效果，并在南沙取得小幅领先。",
+            '#### 特殊视觉：更值得关注的部署优势',
+            '户外摄像头可能受到风振、支架扰动或人工维护的影响，出现抖动、角度偏移或成像质量下降。我们通过可控的模糊、失焦、固定偏角和动态抖动，考察输入不再理想时的交通控制效果，而不仅是清晰画面下的表现。',
+            '\n'.join([
+                f"- **模糊与失焦：** 失焦条件下，S1相对YOLO+MP的平均行程在南沙、Town分别降低 **{df_ns:.2f}%**、**{df_town:.2f}%**；运动模糊下分别降低 **{mb_ns:.2f}%**、**{mb_town:.2f}%**。",
+                f"- **摄像头角度偏移：** 在正常机位完成YOLO画线后改变相机角度，S1的平均行程在南沙降低 **{angle_ns:.2f}%**，在Town降低 **{angle_town:.2f}%**；Town的平均等待同时降低 **{angle_wait:.2f}%**。",
+                f"- **动态抖动：** S1仍保持优势，南沙、Town的平均行程分别降低 **{shake_ns:.2f}%**、**{shake_town:.2f}%**。抖动下的收益较小，模糊和机位偏移下的优势更突出。",
+            ]),
+            '在本次两个场景、四种特殊视觉条件的对比中，S1的平均等待、平均排队长度和平均行程均低于YOLO+MP。其实际价值是：不仅在正常画面下保持高水平控制，也在视觉输入退化后减少交通效果的损失。上述测试模拟视觉输入变化，不等同于已经完成真实恶劣天气验证。',
+            '#### 亚秒级决策：视觉模型也能快速响应',
+            f"未量化模型在RTX 5090上的 **{latency['count']}** 次决策请求平均耗时 **{latency['mean_ms']:.0f}毫秒**，**{100*latency['under_1s_fraction']:.2f}%** 的请求低于1秒；稳态请求平均 **{steady['mean_ms']:.0f}毫秒**。System One直接输出结构化控制动作，无需等待长篇文字生成，让视觉理解、交通控制效果与快速响应能够同时兼顾。",
+        ])
+    return '\n\n'.join([
+        '### What the Results Show',
+        '#### Clean Views: Competitive Control Without a Separate Detector',
+        f"Against the fixed-time plan, S1 reduces mean journey time by **{fixed_ns:.2f}%** in Nansha and **{fixed_town:.2f}%** in Town10HD, while mean waiting falls by **{wait_ns:.2f}%** and **{wait_town:.2f}%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.",
+        f"Against YOLO+MP, S1 further reduces Nansha mean journey time by **{mp_ns:.2f}%** and mean waiting by **{mp_wait_ns:.2f}%**; Town10HD mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in Nansha.",
+        '#### Visual Disruption: A More Distinctive Deployment Advantage',
+        'Outdoor cameras can experience vibration, mounting disturbances or maintenance-related changes that affect image stability, viewing angle or image quality. Controlled blur, defocus, fixed camera shifts and dynamic shake test traffic control beyond ideal, clear camera feeds.',
+        '\n'.join([
+            f"- **Blur and defocus:** under defocus, S1 mean journey time is **{df_ns:.2f}%** lower than YOLO+MP in Nansha and **{df_town:.2f}%** lower in Town; under motion blur, the reductions are **{mb_ns:.2f}%** and **{mb_town:.2f}%**, respectively.",
+            f"- **Camera-angle changes:** when the camera shifts after YOLO lane-region calibration, S1 mean journey time is **{angle_ns:.2f}%** lower in Nansha and **{angle_town:.2f}%** lower in Town. Town mean waiting also falls by **{angle_wait:.2f}%**.",
+            f"- **Dynamic shake:** S1 retains a mean-journey advantage of **{shake_ns:.2f}%** in Nansha and **{shake_town:.2f}%** in Town. Shake gains are smaller; blur and camera shifts show the more pronounced advantages.",
+        ]),
+        'Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP. The practical value is competitive clean-view control combined with reduced traffic-performance loss when visual input degrades. These are simulated input changes, not completed real-world adverse-weather validation.',
+        '#### Sub-Second Decisions From a Visual Model',
+        f"Across **{latency['count']}** unquantized RTX 5090 decision requests, latency averages **{latency['mean_ms']:.0f} ms**, with **{100*latency['under_1s_fraction']:.2f}%** below one second; steady-state requests average **{steady['mean_ms']:.0f} ms**. System One emits structured control actions directly, without waiting for a long textual response, combining visual understanding, traffic-control performance and fast decisions.",
+    ])
+
+
+def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
     normal = {row["scene"]: traffic_means(row) for row in data["normal"]}
+    nansha = next(row for row in data['normal'] if row['scene'] == 'nansha')
+    mp_ns = improvement_percent(nansha, 'mp', records)
     extreme = {(row["scene"], row["condition"]): traffic_means(row) for row in data["extreme"]}
     latency = data["latency"]["all_calls"]
     if chinese:
         return "\n".join(
             [
                 f"- **正常控制有效：** 相对固定配时方案，平均行程时间在南沙72案例降低 **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%**，在Town五类车流降低 **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%**。",
+                f"- **正常视觉对标YOLO+MP：** 南沙平均行程进一步降低 **{mp_ns:.2f}%**，Town10HD基本持平，无需独立车辆检测环节。",
                 f"- **特殊视觉稳健：** 固定机位偏移下，Town平均行程比YOLO+MP降低 **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%**；31像素运动模糊下，南沙降低 **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**。",
                 f"- **未量化本地推理：** RTX 5090共{latency['count']}次模型请求，平均 **{latency['mean_ms']:.0f}毫秒**，中位数{latency['median_ms']:.0f}毫秒。",
             ]
@@ -151,6 +213,7 @@ def render_highlights(data: dict[str, Any], chinese: bool) -> str:
     return "\n".join(
         [
             f"- **Effective clean control:** versus the fixed-time plan, S1 reduces vehicle-weighted mean journey time by **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%** across 72 Nansha cases and **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%** across five Town regimes.",
+            f"- **Competitive with YOLO+MP in clean views:** Nansha mean journey time is a further **{mp_ns:.2f}%** lower, while Town10HD is essentially tied, without a separate detector.",
             f"- **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**.",
             f"- **Unquantized local inference:** {latency['count']} RTX 5090 model calls average **{latency['mean_ms']:.0f} ms**, with a {latency['median_ms']:.0f} ms median.",
         ]
@@ -268,11 +331,11 @@ def main() -> None:
                                      controller=controller, **traffic_stats(group, controller, traffic_records)))
     readme = ROOT / "README.md"
     readme_zh = ROOT / "README.zh-CN.md"
-    replace_block(readme, "FUSION_HIGHLIGHTS", render_highlights(data, False))
+    replace_block(readme, "FUSION_HIGHLIGHTS", render_highlights(data, False, traffic_records))
     replace_block(readme, "FUSION_RESULTS", render(data, False, traffic_records))
     replace_block(readme, "FUSION_LATENCY", render_latency(data, False))
     replace_block(readme, 'FUSION_GALLERY', render_gallery(False))
-    replace_block(readme_zh, "FUSION_HIGHLIGHTS", render_highlights(data, True))
+    replace_block(readme_zh, "FUSION_HIGHLIGHTS", render_highlights(data, True, traffic_records))
     replace_block(readme_zh, "FUSION_RESULTS", render(data, True, traffic_records))
     replace_block(readme_zh, "FUSION_LATENCY", render_latency(data, True))
     replace_block(readme_zh, 'FUSION_GALLERY', render_gallery(True))

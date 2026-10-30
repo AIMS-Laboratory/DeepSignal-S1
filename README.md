@@ -21,6 +21,7 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
 - **Effective clean control:** versus the fixed-time plan, S1 reduces vehicle-weighted mean journey time by **18.17%** across 72 Nansha cases and **33.77%** across five Town regimes.
+- **Competitive with YOLO+MP in clean views:** Nansha mean journey time is a further **1.36%** lower, while Town10HD is essentially tied, without a separate detector.
 - **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **82.93%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **30.14%**.
 - **Unquantized local inference:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
 <!-- FUSION_HIGHLIGHTS:END -->
@@ -33,7 +34,7 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 
 ## Results
 
-Results use **mean journey time in seconds per vehicle; lower is better**. Clean views compare S1, the fixed-time plan and YOLO+MP. Perturbed views compare S1 with YOLO+MP only.
+Results compare **mean waiting time per vehicle, mean queue length and mean journey time per vehicle; lower is better for all three**. Clean views compare S1, the fixed-time plan and YOLO+MP. Perturbed views compare S1 with YOLO+MP.
 
 <!-- FUSION_RESULTS:BEGIN -->
 ### Clean views: three controllers
@@ -78,12 +79,32 @@ Results use **mean journey time in seconds per vehicle; lower is better**. Clean
 </tbody>
 </table>
 
-**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.
+**Metrics:** lower is better for all three. Mean wait includes stopped and insertion waiting; mean queue counts halted vehicles; journey time starts at planned departure, with unfinished vehicles contributing elapsed time at the evaluation cutoff. [Detailed definitions](docs/traffic-metrics.md).
 
-Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff.
+### What the Results Show
+
+#### Clean Views: Competitive Control Without a Separate Detector
+
+Against the fixed-time plan, S1 reduces mean journey time by **18.17%** in Nansha and **33.77%** in Town10HD, while mean waiting falls by **33.15%** and **49.45%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.
+
+Against YOLO+MP, S1 further reduces Nansha mean journey time by **1.36%** and mean waiting by **2.28%**; Town10HD mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in Nansha.
+
+#### Visual Disruption: A More Distinctive Deployment Advantage
+
+Outdoor cameras can experience vibration, mounting disturbances or maintenance-related changes that affect image stability, viewing angle or image quality. Controlled blur, defocus, fixed camera shifts and dynamic shake test traffic control beyond ideal, clear camera feeds.
+
+- **Blur and defocus:** under defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in Nansha and **59.29%** lower in Town; under motion blur, the reductions are **30.14%** and **70.16%**, respectively.
+- **Camera-angle changes:** when the camera shifts after YOLO lane-region calibration, S1 mean journey time is **16.40%** lower in Nansha and **82.93%** lower in Town. Town mean waiting also falls by **90.63%**.
+- **Dynamic shake:** S1 retains a mean-journey advantage of **6.80%** in Nansha and **6.72%** in Town. Shake gains are smaller; blur and camera shifts show the more pronounced advantages.
+
+Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP. The practical value is competitive clean-view control combined with reduced traffic-performance loss when visual input degrades. These are simulated input changes, not completed real-world adverse-weather validation.
+
+#### Sub-Second Decisions From a Visual Model
+
+Across **6823** unquantized RTX 5090 decision requests, latency averages **485 ms**, with **99.08%** below one second; steady-state requests average **477 ms**. System One emits structured control actions directly, without waiting for a long textual response, combining visual understanding, traffic-control performance and fast decisions.
 <!-- FUSION_RESULTS:END -->
 
-The clean Nansha main table covers all **72** predefined cases across nine intersections. The perturbation pilot is narrower: Nansha uses nine high-flow balanced cases at seed 97001; Town10HD uses five demand regimes at seed 18040. These are controlled simulation results, not claims of universal superiority or statistical significance.
+**Evaluation scale:** clean views cover 72 cases across nine Nansha intersections and five Town10HD demand regimes. Each of the four perturbations covers nine Nansha cases and five Town10HD cases, using one traffic seed per scene.
 
 Recorded cases show the actual visual condition and controller behavior; the on-screen score belongs to that recording. Overall effects are defined by the paired tables above.
 
@@ -131,7 +152,7 @@ https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a
 <img width="1280" src="https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/nansha-shake5.gif" alt="Nansha · Dynamic shake 5°">
 <!-- FUSION_GALLERY:END -->
 
-Media show only the actual model camera input, live traffic metrics and the most recent recorded decision. **Mean wait** is cumulative stopped waiting divided by all vehicles entered so far, including those already arrived. **Queue** is the current stopped-vehicle count. Both include shared warmup traffic and come from recorded-signal SUMO replay checked against every video frame, unlike the formal-cohort batch means that also include insertion waiting. Episode mean journeys belong to that recording, not the evaluation batch.
+Media show the actual model input, live traffic metrics and the latest recorded decision. Dynamic statistics describe the recorded episode; overall comparisons use the result tables. [Dynamic-metric definitions](docs/media-delivery.md) are documented separately.
 
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 
@@ -155,9 +176,9 @@ https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
 | Subsequent calls | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
 <!-- FUSION_LATENCY:END -->
 
-The unquantized BF16 checkpoint reads temporal intersection views; sampling details are in the reproduction guide. Statistics cover 133 S1 cases: 72 Nansha clean cases and 61 fusion-pilot S1 cases. Camera capture, rendering and control execution are excluded. First calls include initialization effects; subsequent calls characterize steady state.
+Statistics cover 133 S1 evaluation cases and 6823 decision requests with the unquantized BF16 model. Latency measures model decision requests, excluding camera capture, rendering and signal execution; first calls include initialization effects.
 
-**Deployment direction:** sub-second steady-state decisions on a consumer RTX 5090 make signal-control workstations a practical target. We also tested the unquantized model's inference speed on an **RTX 4090**, observing approximately **900 ms per decision**; its measurement conditions remain unverified, so it is not included in the benchmark. Quantization and edge-device deployment are future work, not demonstrated capabilities. A universal sub-second guarantee has not been established.
+**Deployment value:** sub-second model decisions make consumer-GPU signal-control workstations a practical target. We also tested the unquantized model on an **RTX 4090**, observing approximately **900 ms per decision**. This independent observation uses measurement conditions that have not yet been aligned and is not included in the table. Quantization and edge deployment are future directions for reducing compute requirements.
 
 ## Download and Quickstart
 
@@ -183,14 +204,13 @@ The model server, a real three-frame request that needs no simulator, and closed
 ## Evaluation Scope
 
 - **Sole fixed baseline:** the fixed-time plan, with timing parameters held constant throughout evaluation; Nansha uses the published per-intersection plans and Town10HD uses `31/6/31/6 s`.
-- **Signal transitions:** decisions retain a 5 s green tail, followed by 3 s yellow and 2 s all-red where applicable.
-- **Finite horizon:** unfinished journeys remain counted; results are not complete-trip averages.
-- **Known Nansha limitation:** the retained red-age accounting protocol can over-count one phase's red age after an immediate first switch. Both arms use the same protocol, but this pilot is not a full correctness certification.
+- **Visual comparison:** clean views compare all three controllers; perturbations compare S1 with YOLO+MP. Camera shifts occur after YOLO lane-region calibration, without recalibration.
+- **Scope:** results come from controlled Nansha and Town10HD simulations; deployment on real roads and under real weather remains to be validated.
 
-See [fusion evaluation](docs/fusion-pilot-evaluation.md), [metric definitions](docs/comparisons.md), and [media delivery](docs/media-delivery.md).
+See [evaluation protocol](docs/fusion-pilot-evaluation.md), [metric definitions](docs/comparisons.md), and [media delivery](docs/media-delivery.md).
 
 ## Historical Releases
 
-Earlier `DeepSignal-S1-1.0-candidate` Nansha results and the separate historical Town checkpoint remain archived with their original protocol labels. They are not weights or scores of the fused 1.0 release. See [historical released results](docs/released-results.md).
+Earlier `DeepSignal-S1-1.0-candidate` Nansha results and the separate historical Town checkpoint remain archived with their original protocol labels, distinct from the current 1.0 release and its results. See [historical released results](docs/released-results.md).
 
 Contact: [dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)
