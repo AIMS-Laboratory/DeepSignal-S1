@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from html import escape
 import json
 from pathlib import Path
 from typing import Any
@@ -107,21 +108,23 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
                        ('extreme', '特殊视觉：S1与YOLO+MP' if chinese else 'Perturbed views: S1 vs YOLO+MP')):
         lines += [f'### {title}', '']
         if chinese:
-            lines += ['| 场景 | 条件 | 案例数 | 控制方法 | 平均等待（秒/车） | 平均排队长度（辆） | 平均行程（秒/车） |',
-                      '|---|---|---:|---|---:|---:|---:|']
+            headers = ('场景', '条件', '案例数', '控制方法', '平均等待（秒/车）', '平均排队长度（辆）', '平均行程（秒/车）')
         else:
-            lines += ['| Scene | Condition | Cases | Controller | Mean wait (s/veh) | Mean queue (veh) | Mean journey (s/veh) |',
-                      '|---|---|---:|---|---:|---:|---:|']
+            headers = ('Scene', 'Condition', 'Cases', 'Controller', 'Mean wait (s/veh)', 'Mean queue (veh)', 'Mean journey (s/veh)')
+        lines += ['<table>', '<thead>', '<tr>' + ''.join(f'<th scope="col">{escape(label)}</th>' for label in headers) + '</tr>',
+                  '</thead>', '<tbody>']
         for group in data[key]:
             controllers = ('s1', 'fixed', 'mp') if key == 'normal' else ('s1', 'mp')
             condition = ('正常' if chinese else 'Clean') if key == 'normal' else condition_label(group['condition'], chinese)
-            for controller in controllers:
+            for index, controller in enumerate(controllers):
                 values = traffic_stats(group, controller, records)
-                label = {'s1': '**S1**', 'fixed': '工程固定' if chinese else 'Engineering fixed', 'mp': 'YOLO+MP'}[controller]
+                label = {'s1': '<strong>S1</strong>', 'fixed': '工程固定' if chinese else 'Engineering fixed', 'mp': 'YOLO+MP'}[controller]
                 cells = [f"{values[name]:.2f}" if values[name] is not None else ('未记录' if chinese else 'Not recorded')
                          for name in ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
-                lines.append(f"| {scene_label(group,chinese)} | {condition} | {group['cases']} | {label} | {' | '.join(cells)} |")
-        lines.append('')
+                shared = ''.join(f'<td rowspan="{len(controllers)}" align="center" valign="middle">{escape(str(value))}</td>'
+                                 for value in (scene_label(group, chinese), condition, group['cases'])) if index == 0 else ''
+                lines.append('<tr>' + shared + f'<td>{label}</td>' + ''.join(f'<td align="right">{value}</td>' for value in cells) + '</tr>')
+        lines += ['</tbody>', '</table>', '']
     supplemented = sum(row.get('evaluation_batch') == 'nansha-mp-metrics-20261030' and row['status'] == 'complete' for row in records) == 72
     if chinese:
         lines += ['**指标定义：** 平均等待包括正式评测车辆的停车等待和拥堵造成的入网等待；平均排队长度是共同发车窗口98—398秒内，受控进口车道停车车辆总数的时间平均，单位为辆，不是米；平均行程从计划出发计时。行程与等待按车辆数加权，排队按相同窗口的案例均值汇总。',
@@ -186,17 +189,14 @@ def render_latency(data: dict[str, Any], chinese: bool) -> str:
     return "\n".join(lines)
 
 
-def video_tag(scene: str, condition: str, chinese: bool, github: bool = True) -> str:
+def video_tag(scene: str, condition: str, chinese: bool) -> str:
     language = 'zh' if chinese else 'en'
     key = f'{language}/{scene}-{condition}.mp4'
-    if github:
-        # Bare attachment URLs activate GitHub's signed-in media URL rewriting.
-        return json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
-    source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{key}'
-    return f'<video controls="controls" width="1280" playsinline="playsinline" src="{source}"></video>'
+    # Bare attachment URLs activate GitHub's signed-in media URL rewriting.
+    return json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
 
 
-def render_gallery(chinese: bool, github: bool = True) -> str:
+def render_gallery(chinese: bool) -> str:
     language = 'zh' if chinese else 'en'
     base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/{language}'
     lines = []
@@ -207,8 +207,34 @@ def render_gallery(chinese: bool, github: bool = True) -> str:
             preview = f'{base}/{scene}-{condition}.gif'
             lines += [f'#### {title}', '', f'<img width="1280" src="{preview}" alt="{title}">', '']
             if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
-                lines += [video_tag(scene, condition, chinese, github), '']
+                lines += [video_tag(scene, condition, chinese), '']
     return '\n'.join(lines).rstrip()
+
+
+def render_hf_card(english: str, chinese: str, homepage: str) -> str:
+    body = (english.replace('](README.zh-CN.md)', '](#简体中文)').rstrip()
+            + '\n\n## 简体中文\n\n' + chinese.removeprefix('# DeepSignal-S1-1.0\n').lstrip())
+    media_headings = {
+        '## Town10HD: Decisions After Camera Repositioning', '## Eight Perturbation Views',
+        '## Town10HD：机位改变后仍直接决策', '## 八组特殊视觉',
+    }
+    lines = []
+    skip = False
+    for line in body.splitlines():
+        if line.startswith('## '):
+            skip = line in media_headings
+        if skip and line.startswith(('Lane regions are calibrated', 'YOLO车道画线')):
+            lines += ['', line, '']
+        if not skip and not line.startswith(('Recorded cases show', '录制案例展示')):
+            lines.append(line)
+    body = '\n'.join(lines).rstrip() + '\n'
+    github = 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main'
+    for directory in ('docs', 'results'):
+        body = body.replace(f']({directory}/', f']({github}/{directory}/')
+    body = body.replace('](README.zh-CN.md)', f']({homepage}/blob/main/README.zh-CN.md)')
+    body = body.replace('](README.md)', f']({homepage})')
+    header = '---\nlanguage:\n- en\n- zh\ntags:\n- traffic-signal-control\n- system-one\n- multimodal\n- simulation\n---\n\n'
+    return header + body
 
 
 def replace_block(path: Path, marker: str, body: str) -> None:
@@ -261,10 +287,8 @@ def main() -> None:
             for scene in ('nansha', 'town')))
     if args.model_card is not None:
         card = args.model_card.resolve()
-        replace_block(card, "FUSION_HIGHLIGHTS", render_highlights(data, False))
-        replace_block(card, "FUSION_RESULTS", render(data, False, traffic_records))
-        replace_block(card, "FUSION_LATENCY", render_latency(data, False))
-        replace_block(card, 'FUSION_GALLERY', render_gallery(False, github=False))
+        card.write_text(render_hf_card(readme.read_text(encoding='utf-8'), readme_zh.read_text(encoding='utf-8'),
+                                       'https://huggingface.co/AIMS2025/DeepSignal-S1'), encoding='utf-8')
         local_card = (ROOT / ".local" / "HF_MODEL_CARD.md").resolve()
         if card == local_card:
             public_card = ROOT / ".local" / "hf-public" / "DeepSignal-S1" / "README.md"

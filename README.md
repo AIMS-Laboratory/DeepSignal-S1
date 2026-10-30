@@ -38,35 +38,45 @@ Results use **mean journey time in seconds per vehicle; lower is better**. Clean
 <!-- FUSION_RESULTS:BEGIN -->
 ### Clean views: three controllers
 
-| Scene | Condition | Cases | Controller | Mean wait (s/veh) | Mean queue (veh) | Mean journey (s/veh) |
-|---|---|---:|---|---:|---:|---:|
-| Nansha | Clean | 72 | **S1** | 45.82 | 10.47 | 107.32 |
-| Nansha | Clean | 72 | Engineering fixed | 68.55 | 15.52 | 131.15 |
-| Nansha | Clean | 72 | YOLO+MP | 46.89 | 10.56 | 108.79 |
-| Town10HD | Clean | 5 | **S1** | 20.45 | 3.56 | 38.22 |
-| Town10HD | Clean | 5 | Engineering fixed | 40.46 | 5.40 | 57.70 |
-| Town10HD | Clean | 5 | YOLO+MP | 20.22 | 3.59 | 38.22 |
+<table>
+<thead>
+<tr><th scope="col">Scene</th><th scope="col">Condition</th><th scope="col">Cases</th><th scope="col">Controller</th><th scope="col">Mean wait (s/veh)</th><th scope="col">Mean queue (veh)</th><th scope="col">Mean journey (s/veh)</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="3" align="center" valign="middle">Nansha</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">72</td><td><strong>S1</strong></td><td align="right">45.82</td><td align="right">10.47</td><td align="right">107.32</td></tr>
+<tr><td>Engineering fixed</td><td align="right">68.55</td><td align="right">15.52</td><td align="right">131.15</td></tr>
+<tr><td>YOLO+MP</td><td align="right">46.89</td><td align="right">10.56</td><td align="right">108.79</td></tr>
+<tr><td rowspan="3" align="center" valign="middle">Town10HD</td><td rowspan="3" align="center" valign="middle">Clean</td><td rowspan="3" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.45</td><td align="right">3.56</td><td align="right">38.22</td></tr>
+<tr><td>Engineering fixed</td><td align="right">40.46</td><td align="right">5.40</td><td align="right">57.70</td></tr>
+<tr><td>YOLO+MP</td><td align="right">20.22</td><td align="right">3.59</td><td align="right">38.22</td></tr>
+</tbody>
+</table>
 
 ### Perturbed views: S1 vs YOLO+MP
 
-| Scene | Condition | Cases | Controller | Mean wait (s/veh) | Mean queue (veh) | Mean journey (s/veh) |
-|---|---|---:|---|---:|---:|---:|
-| Nansha | Defocus σ=9 | 9 | **S1** | 76.08 | 15.79 | 141.03 |
-| Nansha | Defocus σ=9 | 9 | YOLO+MP | 104.86 | 31.04 | 167.48 |
-| Nansha | 31 px motion blur | 9 | **S1** | 67.38 | 17.23 | 131.57 |
-| Nansha | 31 px motion blur | 9 | YOLO+MP | 124.59 | 30.18 | 188.34 |
-| Nansha | Fixed yaw ±15° / pitch ±8° | 9 | **S1** | 63.68 | 15.44 | 129.04 |
-| Nansha | Fixed yaw ±15° / pitch ±8° | 9 | YOLO+MP | 87.01 | 21.18 | 154.36 |
-| Nansha | Dynamic shake 5° | 9 | **S1** | 63.40 | 16.17 | 128.25 |
-| Nansha | Dynamic shake 5° | 9 | YOLO+MP | 72.15 | 17.91 | 137.61 |
-| Town10HD | Defocus σ=9 | 5 | **S1** | 27.51 | 4.10 | 44.43 |
-| Town10HD | Defocus σ=9 | 5 | YOLO+MP | 92.97 | 9.75 | 109.15 |
-| Town10HD | 31 px motion blur | 5 | **S1** | 20.28 | 3.58 | 38.10 |
-| Town10HD | 31 px motion blur | 5 | YOLO+MP | 111.26 | 10.24 | 127.71 |
-| Town10HD | Fixed yaw ±15° / pitch ±8° | 5 | **S1** | 19.23 | 3.45 | 37.11 |
-| Town10HD | Fixed yaw ±15° / pitch ±8° | 5 | YOLO+MP | 205.09 | 13.67 | 217.40 |
-| Town10HD | Dynamic shake 5° | 5 | **S1** | 19.13 | 3.32 | 37.20 |
-| Town10HD | Dynamic shake 5° | 5 | YOLO+MP | 21.49 | 3.53 | 39.88 |
+<table>
+<thead>
+<tr><th scope="col">Scene</th><th scope="col">Condition</th><th scope="col">Cases</th><th scope="col">Controller</th><th scope="col">Mean wait (s/veh)</th><th scope="col">Mean queue (veh)</th><th scope="col">Mean journey (s/veh)</th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">76.08</td><td align="right">15.79</td><td align="right">141.03</td></tr>
+<tr><td>YOLO+MP</td><td align="right">104.86</td><td align="right">31.04</td><td align="right">167.48</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">67.38</td><td align="right">17.23</td><td align="right">131.57</td></tr>
+<tr><td>YOLO+MP</td><td align="right">124.59</td><td align="right">30.18</td><td align="right">188.34</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.68</td><td align="right">15.44</td><td align="right">129.04</td></tr>
+<tr><td>YOLO+MP</td><td align="right">87.01</td><td align="right">21.18</td><td align="right">154.36</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Nansha</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">9</td><td><strong>S1</strong></td><td align="right">63.40</td><td align="right">16.17</td><td align="right">128.25</td></tr>
+<tr><td>YOLO+MP</td><td align="right">72.15</td><td align="right">17.91</td><td align="right">137.61</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">Defocus σ=9</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">27.51</td><td align="right">4.10</td><td align="right">44.43</td></tr>
+<tr><td>YOLO+MP</td><td align="right">92.97</td><td align="right">9.75</td><td align="right">109.15</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">31 px motion blur</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">20.28</td><td align="right">3.58</td><td align="right">38.10</td></tr>
+<tr><td>YOLO+MP</td><td align="right">111.26</td><td align="right">10.24</td><td align="right">127.71</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">Fixed yaw ±15° / pitch ±8°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.23</td><td align="right">3.45</td><td align="right">37.11</td></tr>
+<tr><td>YOLO+MP</td><td align="right">205.09</td><td align="right">13.67</td><td align="right">217.40</td></tr>
+<tr><td rowspan="2" align="center" valign="middle">Town10HD</td><td rowspan="2" align="center" valign="middle">Dynamic shake 5°</td><td rowspan="2" align="center" valign="middle">5</td><td><strong>S1</strong></td><td align="right">19.13</td><td align="right">3.32</td><td align="right">37.20</td></tr>
+<tr><td>YOLO+MP</td><td align="right">21.49</td><td align="right">3.53</td><td align="right">39.88</td></tr>
+</tbody>
+</table>
 
 **Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.
 
@@ -125,7 +135,7 @@ https://github.com/user-attachments/assets/931d0d1f-338f-497d-ab87-d883c54ab54a
 
 Media show only the actual model camera input, live traffic metrics and the most recent recorded decision. **Mean wait** is cumulative stopped waiting divided by all vehicles entered so far, including those already arrived. **Queue** is the current stopped-vehicle count. Both include shared warmup traffic and come from recorded-signal SUMO replay checked against every video frame, unlike the formal-cohort batch means that also include insertion waiting. Episode mean journeys belong to that recording, not the evaluation batch.
 
-All displayed cases are four-arm intersections. Video previews use a large 4:3 dashboard with one controller per row, adapted to GitHub's player-height limit. Each 12-second preview covers the same 60 simulation seconds at 5x speed, using original recorded frames at 25 fps and H.264 Constrained Baseline. Complete recordings remain in the media archive. Shake GIFs retain 960-pixel width and show a 24-second simulation excerpt rather than shrinking the entire interface. Each video also has an alternate large-screen player.
+All displayed cases are four-arm intersections. Video previews use a large 4:3 dashboard with one controller per row, adapted to GitHub's player-height limit. Each 12-second preview covers the same 60 simulation seconds at 5x speed, using original recorded frames at 25 fps and H.264 Constrained Baseline. Complete recordings remain in the media archive. Shake GIFs retain 960-pixel width and show a 24-second simulation excerpt rather than shrinking the entire interface.
 
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 

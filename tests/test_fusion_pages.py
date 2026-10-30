@@ -1,5 +1,7 @@
 import importlib.util
+import json
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -31,11 +33,48 @@ def test_gallery_shows_both_scenes_without_collapsed_content(chinese, language):
     assert body.count('https://github.com/user-attachments/assets/') == 2
 
 
-def test_hf_gallery_uses_its_own_public_videos():
-    body = PAGES.render_gallery(True, github=False)
-    assert 'github.com/user-attachments' not in body
-    assert '/zh/town-clean.mp4' in PAGES.video_tag('town', 'clean', True, github=False)
-    assert body.count('.mp4"') == 2
+@pytest.mark.parametrize('chinese', [False, True])
+def test_comparison_groups_share_three_cells_without_merging_controller_metrics(chinese):
+    data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())
+    records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
+    tables = ET.fromstring('<root>' + PAGES.render(data, chinese, records) + '</root>').findall('table')
+    assert len(tables) == 2
+    for table, key, controllers in zip(tables, ('normal', 'extreme'), (('s1', 'fixed', 'mp'), ('s1', 'mp'))):
+        assert len(table.findall('./thead/tr/th')) == 7
+        rows = table.findall('./tbody/tr')
+        assert len(rows) == len(data[key]) * len(controllers)
+        for group_index, group in enumerate(data[key]):
+            for controller_index, controller in enumerate(controllers):
+                cells = rows[group_index * len(controllers) + controller_index].findall('td')
+                if controller_index == 0:
+                    assert len(cells) == 7
+                    assert [cell.get('rowspan') for cell in cells[:3]] == [str(len(controllers))] * 3
+                    assert cells[0].text == PAGES.scene_label(group, chinese)
+                    assert cells[2].text == str(group['cases'])
+                    expected_condition = ('正常' if chinese else 'Clean') if key == 'normal' else PAGES.condition_label(group['condition'], chinese)
+                    assert cells[1].text == expected_condition
+                else:
+                    assert len(cells) == 4
+                    assert all(cell.get('rowspan') is None for cell in cells)
+                stats = PAGES.traffic_stats(group, controller, records)
+                assert [cell.text for cell in cells[-3:]] == [f'{stats[name]:.2f}' for name in
+                    ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
+
+
+def test_hf_card_retains_public_bilingual_results_without_embedded_media():
+    homepage = 'https://huggingface.co/AIMS2025/DeepSignal-S1'
+    body = PAGES.render_hf_card((ROOT / 'README.md').read_text(), (ROOT / 'README.zh-CN.md').read_text(), homepage)
+    assert '<video' not in body and '<img' not in body
+    assert '.gif' not in body and 'github.com/user-attachments/' not in body
+    assert 'FUSION_RESULTS:BEGIN' in body and 'FUSION_LATENCY:BEGIN' in body
+    assert 'FUSION_GALLERY' not in body and 'FUSION_CLEAN_VIDEOS' not in body
+    assert '## 评测结果' in body and '## Results' in body
+    assert body.count('<table>') == 4
+    assert 'System One（端到端快思考）' in body and 'System One（系统一）' not in body
+    assert 'Lane regions are calibrated' in body and 'YOLO车道画线' in body
+    assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/reproduction.md' in body
+    assert f'[English]({homepage})' in body and '[简体中文](#简体中文)' in body
+    assert '/blob/main/README.zh-CN.md' not in body
 
 
 def test_missing_control_history_is_not_silently_replaced_with_partial_mean():
