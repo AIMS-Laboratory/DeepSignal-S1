@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from pathlib import Path
 from typing import Any
@@ -73,78 +74,85 @@ def condition_label(code: str, chinese: bool) -> str:
     return labels[code][1 if chinese else 0]
 
 
-def render(data: dict[str, Any], chinese: bool) -> str:
+def traffic_means(group: dict[str, Any]) -> dict[str, float]:
+    cases = group['case_results']
+    vehicles = sum(row['source_records']['s1']['vehicles'] for row in cases)
+    controllers = ('s1', 'fixed', 'mp') if 'fixed' in cases[0] else ('s1', 'mp')
+    return {
+        controller: sum(
+            row[controller] * row['source_records']['s1']['vehicles']
+            if group['scene'] == 'nansha' else row[controller]
+            for row in cases
+        ) / vehicles for controller in controllers
+    }
+
+
+def traffic_stats(group: dict[str, Any], controller: str, records: list[dict[str, Any]]) -> dict[str, Any]:
+    matched = [row for row in records if row['scene'] == group['scene']
+               and row['condition'] == group.get('condition', 'clean') and row['controller'] == controller]
+    complete = len(matched) == group['cases'] and all(row['status'] == 'complete' for row in matched)
+    vehicles = sum(row['vehicles'] for row in matched) if complete else 0
+    return {
+        'mean_journey_s_per_vehicle': traffic_means(group)[controller],
+        'mean_wait_s_per_vehicle': sum(row['sum_observed_stopped_time_s'] + row['mean_insertion_wait_s'] * row['vehicles'] for row in matched) / vehicles if complete else None,
+        'mean_queue_vehicles': sum(row['mean_queue_vehicles'] for row in matched) / len(matched) if complete else None,
+        'complete_cases': sum(row['status'] == 'complete' for row in matched),
+    }
+
+
+def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
+    lines = []
+    for key, title in (('normal', '正常视觉：三方比较' if chinese else 'Clean views: three controllers'),
+                       ('extreme', '特殊视觉：S1与YOLO+MP' if chinese else 'Perturbed views: S1 vs YOLO+MP')):
+        lines += [f'### {title}', '']
+        if chinese:
+            lines += ['| 场景 | 条件 | 案例数 | 控制方法 | 平均等待（秒/车） | 平均排队长度（辆） | 平均行程（秒/车） |',
+                      '|---|---|---:|---|---:|---:|---:|']
+        else:
+            lines += ['| Scene | Condition | Cases | Controller | Mean wait (s/veh) | Mean queue (veh) | Mean journey (s/veh) |',
+                      '|---|---|---:|---|---:|---:|---:|']
+        for group in data[key]:
+            controllers = ('s1', 'fixed', 'mp') if key == 'normal' else ('s1', 'mp')
+            condition = ('正常' if chinese else 'Clean') if key == 'normal' else condition_label(group['condition'], chinese)
+            for controller in controllers:
+                values = traffic_stats(group, controller, records)
+                label = {'s1': '**S1**', 'fixed': '工程固定' if chinese else 'Engineering fixed', 'mp': 'YOLO+MP'}[controller]
+                cells = [f"{values[name]:.2f}" if values[name] is not None else ('未记录' if chinese else 'Not recorded')
+                         for name in ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
+                lines.append(f"| {scene_label(group,chinese)} | {condition} | {group['cases']} | {label} | {' | '.join(cells)} |")
+        lines.append('')
     if chinese:
-        lines = [
-            "### 正常视觉：三方比较",
-            "",
-            "| 场景 | n | S1 | 工程固定 | YOLO+MP | S1比固定改善 | MP比固定改善 | S1比MP改善 |",
-            "|---|---:|---:|---:|---:|---:|---:|---:|",
-        ]
+        lines += ['**指标定义：** 平均等待包括正式评测车辆的停车等待和拥堵造成的入网等待；平均排队长度是共同发车窗口98—398秒内，受控进口车道停车车辆总数的时间平均，单位为辆，不是米；平均行程从计划出发计时。行程与等待按车辆数加权，排队按相同窗口的案例均值汇总。',
+                  '',
+                  '南沙评估截止1298秒，Town截止518秒，未完成车辆的已耗时也计入，不能删除拥堵车辆后只报告已完成者。原始记录不变；等待和排队由原动作/灯态的SUMO重放补算，逐案例行程已核对。',
+                  '',
+                  '南沙正常视觉YOLO+MP的72回合缺少原始动作/灯态历史，因此这两项显示“未记录”，不推测或拿录像单例替代整批统计。']
     else:
-        lines = [
-            "### Clean views: three-way comparison",
-            "",
-            "| Scene | n | S1 | Fixed | YOLO+MP | S1 vs fixed | MP vs fixed | S1 vs MP |",
-            "|---|---:|---:|---:|---:|---:|---:|---:|",
-        ]
-    for row in data["normal"]:
-        sums = row["sums"]
-        mp_vs_fixed = 100.0 * (1.0 - sums["mp"] / sums["fixed"])
-        lines.append(
-            f"| {scene_label(row, chinese)} | {row['cases']} | {sums['s1']:.2f} | {sums['fixed']:.2f} | "
-            f"{sums['mp']:.2f} | **{row['s1_vs_fixed_improvement_percent']:.2f}%** | "
-            f"**{mp_vs_fixed:.2f}%** | **{row['s1_vs_mp_improvement_percent']:.2f}%** |"
-        )
-    if chinese:
-        lines += [
-            "",
-            "### 特殊视觉：仅与YOLO+MP比较",
-            "",
-            "| 场景 | 条件 | n | S1 | YOLO+MP | S1改善 |",
-            "|---|---|---:|---:|---:|---:|",
-        ]
-    else:
-        lines += [
-            "",
-            "### Perturbed views: S1 vs. YOLO+MP only",
-            "",
-            "| Scene | Condition | n | S1 | YOLO+MP | S1 reduction |",
-            "|---|---|---:|---:|---:|---:|",
-        ]
-    labels = {row["scene"]: row.get("scene_label", row["scene"]) for row in data["normal"]}
-    for row in data["extreme"]:
-        sums = row["sums"]
-        display_scene = labels[row["scene"]] if chinese else ("Nansha" if row["scene"] == "nansha" else "Town10HD")
-        lines.append(
-            f"| {display_scene} | {condition_label(row['condition'], chinese)} | {row['cases']} | "
-            f"{sums['s1']:.2f} | {sums['mp']:.2f} | **{row['improvement_percent']:.2f}%** |"
-        )
-    lines += ["", (
-        "表内耗时是配对案例指标之和（秒），不是一辆车的平均耗时。南沙每案例使用1298秒时域的截断平均行程；Town每案例使用518秒时域的截断总行程。改善率按同场景、同条件的指标和计算。"
-        if chinese else
-        "Time entries are sums of matched-case metrics (seconds), not one vehicle's mean travel time. Nansha sums capped per-case means at H=1298 s; Town sums capped per-case totals at H=518 s. Reductions use matched metric sums within each scene and condition."
-    )]
-    return "\n".join(lines)
+        lines += ['**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.',
+                  '',
+                  'Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff. Original records are unchanged; waiting and queue statistics come from recorded-action/signal SUMO replay checked against each original journey score.',
+                  '',
+                  'The 72 clean Nansha YOLO+MP runs did not save their control history, so waiting and queue are marked "Not recorded", not inferred or replaced with selected recording cases.']
+    return '\n'.join(lines)
 
 
 def render_highlights(data: dict[str, Any], chinese: bool) -> str:
-    normal = {row["scene"]: row for row in data["normal"]}
-    extreme = {(row["scene"], row["condition"]): row for row in data["extreme"]}
+    normal = {row["scene"]: traffic_means(row) for row in data["normal"]}
+    extreme = {(row["scene"], row["condition"]): traffic_means(row) for row in data["extreme"]}
     latency = data["latency"]["all_calls"]
     if chinese:
         return "\n".join(
             [
-                f"- **正常控制有效：** 相对冻结工程固定配时，南沙72案例改善 **{normal['nansha']['s1_vs_fixed_improvement_percent']:.2f}%**，Town五类车流改善 **{normal['town']['s1_vs_fixed_improvement_percent']:.2f}%**。",
-                f"- **特殊视觉稳健：** 单独的固定机位偏移条件下，Town相对YOLO+MP改善 **{extreme[('town', 'angle15')]['improvement_percent']:.2f}%**；31像素运动模糊条件下，南沙改善 **{extreme[('nansha', 'mb31')]['improvement_percent']:.2f}%**。",
-                f"- **三帧BF16决策：** RTX 5090共{latency['count']}次模型请求，平均 **{latency['mean_ms']:.0f}毫秒**，中位数{latency['median_ms']:.0f}毫秒。",
+                f"- **正常控制有效：** 相对冻结工程固定配时，平均行程时间在南沙72案例降低 **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%**，在Town五类车流降低 **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%**。",
+                f"- **特殊视觉稳健：** 固定机位偏移下，Town平均行程比YOLO+MP降低 **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%**；31像素运动模糊下，南沙降低 **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**。",
+                f"- **未量化本地推理：** RTX 5090共{latency['count']}次模型请求，平均 **{latency['mean_ms']:.0f}毫秒**，中位数{latency['median_ms']:.0f}毫秒。",
             ]
         )
     return "\n".join(
         [
-            f"- **Effective clean control:** versus frozen engineering timing, S1 reduces the metric by **{normal['nansha']['s1_vs_fixed_improvement_percent']:.2f}%** across 72 Nansha cases and **{normal['town']['s1_vs_fixed_improvement_percent']:.2f}%** across five Town regimes.",
-            f"- **Robust under visual disruption:** in the single fixed-camera-shift condition, Town improves **{extreme[('town', 'angle15')]['improvement_percent']:.2f}%** over YOLO+MP; under 31 px motion blur, Nansha improves **{extreme[('nansha', 'mb31')]['improvement_percent']:.2f}%**.",
-            f"- **Three-frame BF16 decisions:** {latency['count']} RTX 5090 model calls average **{latency['mean_ms']:.0f} ms**, with a {latency['median_ms']:.0f} ms median.",
+            f"- **Effective clean control:** versus frozen engineering timing, S1 reduces vehicle-weighted mean journey time by **{100*(1-normal['nansha']['s1']/normal['nansha']['fixed']):.2f}%** across 72 Nansha cases and **{100*(1-normal['town']['s1']/normal['town']['fixed']):.2f}%** across five Town regimes.",
+            f"- **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **{100*(1-extreme[('town', 'angle15')]['s1']/extreme[('town', 'angle15')]['mp']):.2f}%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **{100*(1-extreme[('nansha', 'mb31')]['s1']/extreme[('nansha', 'mb31')]['mp']):.2f}%**.",
+            f"- **Unquantized local inference:** {latency['count']} RTX 5090 model calls average **{latency['mean_ms']:.0f} ms**, with a {latency['median_ms']:.0f} ms median.",
         ]
     )
 
@@ -176,6 +184,29 @@ def render_latency(data: dict[str, Any], chinese: bool) -> str:
     return "\n".join(lines)
 
 
+def video_tag(scene: str, condition: str, chinese: bool, github: bool = True) -> str:
+    language = 'zh' if chinese else 'en'
+    key = f'{language}/{scene}-{condition}.mp4'
+    if github:
+        source = json.loads((ROOT / 'results/fusion-2026-10-30-github-videos.json').read_text())['videos'][key]
+    else:
+        source = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/{key}'
+    return f'<video controls="controls" width="960" src="{source}"></video>'
+
+
+def render_gallery(chinese: bool, github: bool = True) -> str:
+    language = 'zh' if chinese else 'en'
+    base = f'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/{language}'
+    lines = []
+    for scene, label in (('town', 'Town10HD'), ('nansha', '南沙' if chinese else 'Nansha')):
+        lines += [f'### {label}', '']
+        for condition in ('angle15', 'df9', 'mb31', 'shake5'):
+            title = f'{label} · {condition_label(condition, chinese)}'
+            lines += [f'#### {title}', '', f'![{title}]({base}/{scene}-{condition}.gif)', '',
+                      video_tag(scene, condition, chinese, github), '']
+    return '\n'.join(lines).rstrip()
+
+
 def replace_block(path: Path, marker: str, body: str) -> None:
     text = path.read_text(encoding="utf-8")
     start = f"<!-- {marker}:BEGIN -->"
@@ -200,20 +231,36 @@ def main() -> None:
     )
     args = parser.parse_args()
     data = json.loads(args.results.read_text(encoding="utf-8"))
+    traffic_records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
     validate(data)
+    with (ROOT / 'results/fusion-2026-10-30-traffic.csv').open('w', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=['scene', 'condition', 'cases', 'vehicles', 'controller', 'mean_journey_s_per_vehicle', 'mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'complete_cases'])
+        writer.writeheader()
+        for group in [*data['normal'], *data['extreme']]:
+            for controller, mean in traffic_means(group).items():
+                writer.writerow(dict(scene=group['scene'], condition=group.get('condition', 'clean'),
+                                     cases=group['cases'], vehicles=sum(r['source_records']['s1']['vehicles'] for r in group['case_results']),
+                                     controller=controller, **traffic_stats(group, controller, traffic_records)))
     readme = ROOT / "README.md"
     readme_zh = ROOT / "README.zh-CN.md"
     replace_block(readme, "FUSION_HIGHLIGHTS", render_highlights(data, False))
-    replace_block(readme, "FUSION_RESULTS", render(data, False))
+    replace_block(readme, "FUSION_RESULTS", render(data, False, traffic_records))
     replace_block(readme, "FUSION_LATENCY", render_latency(data, False))
+    replace_block(readme, 'FUSION_GALLERY', render_gallery(False))
     replace_block(readme_zh, "FUSION_HIGHLIGHTS", render_highlights(data, True))
-    replace_block(readme_zh, "FUSION_RESULTS", render(data, True))
+    replace_block(readme_zh, "FUSION_RESULTS", render(data, True, traffic_records))
     replace_block(readme_zh, "FUSION_LATENCY", render_latency(data, True))
+    replace_block(readme_zh, 'FUSION_GALLERY', render_gallery(True))
+    for path, chinese in ((readme, False), (readme_zh, True)):
+        replace_block(path, 'FUSION_CLEAN_VIDEOS', '\n\n'.join(
+            f"### {('正常视觉：南沙三方对比' if scene == 'nansha' else '正常视觉：Town10HD三方对比') if chinese else ('Clean Nansha: Three Controllers' if scene == 'nansha' else 'Clean Town10HD: Three Controllers')}\n\n{video_tag(scene, 'clean', chinese)}"
+            for scene in ('nansha', 'town')))
     if args.model_card is not None:
         card = args.model_card.resolve()
         replace_block(card, "FUSION_HIGHLIGHTS", render_highlights(data, False))
-        replace_block(card, "FUSION_RESULTS", render(data, False))
+        replace_block(card, "FUSION_RESULTS", render(data, False, traffic_records))
         replace_block(card, "FUSION_LATENCY", render_latency(data, False))
+        replace_block(card, 'FUSION_GALLERY', render_gallery(False, github=False))
         local_card = (ROOT / ".local" / "HF_MODEL_CARD.md").resolve()
         if card == local_card:
             public_card = ROOT / ".local" / "hf-public" / "DeepSignal-S1" / "README.md"

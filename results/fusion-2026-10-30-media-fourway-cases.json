@@ -1,0 +1,166 @@
+{
+  "schema_version": "fusion-media-cases-v1",
+  "generated_date": "2026-10-30",
+  "cases": [
+    {
+      "scene": "nansha",
+      "condition": "clean",
+      "case_id": "J03-tv-mid-eq-ramp-base-97001",
+      "group_improvement_percent": 1.4136363874085456,
+      "case_improvement_percent": 1.613357095957224,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景总体改善",
+      "jobs": {
+        "s1": "nansha-full/clean/fusion/J03-tv-mid-eq-ramp-base-97001",
+        "mp": "nansha-full/clean/mp/J03-tv-mid-eq-ramp-base-97001"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/unified-visual-20261028/results/nansha-full/clean/fusion/J03-tv-mid-eq-ramp-base-97001.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/unified-visual-20261028/results/nansha-full/clean/mp/J03-tv-mid-eq-ramp-base-97001.json"
+      }
+    },
+    {
+      "scene": "town",
+      "condition": "clean",
+      "case_id": "varyshuf-18040",
+      "group_improvement_percent": 0.01317622256523654,
+      "case_improvement_percent": 1.0145346545062717,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景总体改善",
+      "jobs": {
+        "s1": "town/clean/fusion/varyshuf-18040",
+        "mp": "town/clean/mp/varyshuf-18040"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/clean/fusion/varyshuf-18040.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/clean/mp/varyshuf-18040.json"
+      }
+    },
+    {
+      "scene": "nansha",
+      "condition": "df9",
+      "case_id": "J08-bal-high-eq-flat-base-97001",
+      "group_improvement_percent": 16.32071767500981,
+      "case_improvement_percent": 17.115629924214016,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景/条件总体改善",
+      "jobs": {
+        "s1": "nansha-pilot/df9/fusion/J08-bal-high-eq-flat-base-97001",
+        "mp": "nansha-pilot/df9/mp/J08-bal-high-eq-flat-base-97001"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/df9/fusion/J08-bal-high-eq-flat-base-97001.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/df9/mp/J08-bal-high-eq-flat-base-97001.json"
+      }
+    },
+    {
+      "scene": "nansha",
+      "condition": "mb31",
+      "case_id": "J05-bal-high-eq-flat-base-97001",
+      "group_improvement_percent": 30.086188424085147,
+      "case_improvement_percent": 33.178082191780824,
+      "selection_basis": "用户要求仅展示十字路口；在十字路口中选择最接近整批改善率的案例，不按新录像胜负换例",
+      "jobs": {
+        "s1": "nansha-pilot/mb31/fusion/J05-bal-high-eq-flat-base-97001",
+        "mp": "nansha-pilot/mb31/mp/J05-bal-high-eq-flat-base-97001"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/mb31/fusion/J05-bal-high-eq-flat-base-97001.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/mb31/mp/J05-bal-high-eq-flat-base-97001.json"
+      }
+    },
+    {
+      "scene": "nansha",
+      "condition": "angle15",
+      "case_id": "J03-bal-high-eq-flat-base-97001",
+      "group_improvement_percent": 16.075598524693902,
+      "case_improvement_percent": 15.19467385808192,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景/条件总体改善",
+      "jobs": {
+        "s1": "nansha-pilot/angle15/fusion/J03-bal-high-eq-flat-base-97001",
+        "mp": "nansha-pilot/angle15/mp/J03-bal-high-eq-flat-base-97001"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/angle15/fusion/J03-bal-high-eq-flat-base-97001.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/angle15/mp/J03-bal-high-eq-flat-base-97001.json"
+      }
+    },
+    {
+      "scene": "nansha",
+      "condition": "shake5",
+      "case_id": "J07-bal-high-eq-flat-base-97001",
+      "group_improvement_percent": 6.8059249859684146,
+      "case_improvement_percent": 6.266595857673929,
+      "selection_basis": "用户要求仅展示十字路口；在十字路口中选择最接近整批改善率的案例，不按新录像胜负换例",
+      "jobs": {
+        "s1": "nansha-pilot/shake5/fusion/J07-bal-high-eq-flat-base-97001",
+        "mp": "nansha-pilot/shake5/mp/J07-bal-high-eq-flat-base-97001"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/shake5/fusion/J07-bal-high-eq-flat-base-97001.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/nansha-pilot/shake5/mp/J07-bal-high-eq-flat-base-97001.json"
+      }
+    },
+    {
+      "scene": "town",
+      "condition": "df9",
+      "case_id": "balanced-18040",
+      "group_improvement_percent": 59.294301419701824,
+      "case_improvement_percent": 62.709929887493885,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景/条件总体改善",
+      "jobs": {
+        "s1": "town/df9/fusion/balanced-18040",
+        "mp": "town/df9/mp/balanced-18040"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/df9/fusion/balanced-18040.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/df9/mp/balanced-18040.json"
+      }
+    },
+    {
+      "scene": "town",
+      "condition": "mb31",
+      "case_id": "uneven125-18040",
+      "group_improvement_percent": 70.16463629321879,
+      "case_improvement_percent": 67.45561030026958,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景/条件总体改善",
+      "jobs": {
+        "s1": "town/mb31/fusion/uneven125-18040",
+        "mp": "town/mb31/mp/uneven125-18040"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/mb31/fusion/uneven125-18040.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/mb31/mp/uneven125-18040.json"
+      }
+    },
+    {
+      "scene": "town",
+      "condition": "angle15",
+      "case_id": "balanced-18040",
+      "group_improvement_percent": 82.9317405296293,
+      "case_improvement_percent": 82.24209188638419,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景/条件总体改善",
+      "jobs": {
+        "s1": "town/angle15/fusion/balanced-18040",
+        "mp": "town/angle15/mp/balanced-18040"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/angle15/fusion/balanced-18040.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/angle15/mp/balanced-18040.json"
+      }
+    },
+    {
+      "scene": "town",
+      "condition": "shake5",
+      "case_id": "uneven125-18040",
+      "group_improvement_percent": 6.716754455588436,
+      "case_improvement_percent": 8.177010854439192,
+      "selection_basis": "S1 相对 YOLO+MP 的案例改善最接近该场景/条件总体改善",
+      "jobs": {
+        "s1": "town/shake5/fusion/uneven125-18040",
+        "mp": "town/shake5/mp/uneven125-18040"
+      },
+      "raw_paths": {
+        "s1": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/shake5/fusion/uneven125-18040.json",
+        "mp": "/mnt/ShareData/projects/DeepSignal_E2E/out/fusion-pilot-20261029/results/town/shake5/mp/uneven125-18040.json"
+      }
+    }
+  ]
+}

@@ -1,62 +1,79 @@
 # DeepSignal-S1-1.0
 
-**One vision-to-signal model. Effective on clean traffic scenes, resilient when cameras are not.**
+**A multimodal System One model for traffic signals: visual observations in, fast structured control decisions out.**
 
 English | [简体中文](README.zh-CN.md)
 
 [Model](https://huggingface.co/AIMS2025/DeepSignal-S1) · [Scenes](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Scenes) · [Results](results/fusion-2026-10-30.json) · [Reproduction](docs/reproduction.md)
 
-DeepSignal-S1 directly maps three chronological intersection views and signal context to a legal signal action. The released **DeepSignal-S1-1.0** is one fused checkpoint for both Nansha and Town10HD; it does not require a separate YOLO perception stage.
+DeepSignal-S1 follows a **Jev-style structured probabilistic decision** approach. It reads temporal intersection views and signal context, scores candidate actions, and selects a legal control action directly. It does not generate a traffic-analysis essay for another program to parse, and does not require a separate YOLO detection stage.
+
+The released **DeepSignal-S1-1.0** uses one fused checkpoint in Nansha and Town10HD. Its development addresses two practical questions: can visual control improve on frozen engineering timing in clean conditions, and can it remain more robust than detection plus Max Pressure when the camera feed degrades?
+
+## Why System One
+
+System One emphasizes fast, directly callable decisions, as illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and the open-source [OneJev](https://github.com/OmniJev/OneJev). DeepSignal-S1 applies this decision paradigm to traffic control: its inference interface returns an action and probabilities without generating a token-by-token reasoning narrative. It is not a wrapper around the commercial Jev service, and does not inherit another model's benchmark claims.
+
+- **Vision to control:** temporal observations and signal context determine actions without operator-supplied live vehicle counts.
+- **Structured decisions:** the model chooses among legal actions; the signal executor implements the committed green tail, yellow and all-red transitions.
+- **One checkpoint across scenes:** the release covers T-junctions and four-arm intersections in Nansha as well as Town10HD.
+- **Local deployment:** unquantized consumer-GPU inference is measured; quantization and edge deployment remain future work.
 
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
-- **Effective clean control:** versus frozen engineering timing, S1 reduces the metric by **17.98%** across 72 Nansha cases and **33.77%** across five Town regimes.
-- **Robust under visual disruption:** in the single fixed-camera-shift condition, Town improves **82.93%** over YOLO+MP; under 31 px motion blur, Nansha improves **30.09%**.
-- **Three-frame BF16 decisions:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
+- **Effective clean control:** versus frozen engineering timing, S1 reduces vehicle-weighted mean journey time by **18.17%** across 72 Nansha cases and **33.77%** across five Town regimes.
+- **Robust under visual disruption:** fixed camera shift reduces Town mean journey time by **82.93%** versus YOLO+MP; 31 px motion blur reduces Nansha mean journey time by **30.14%**.
+- **Unquantized local inference:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
 <!-- FUSION_HIGHLIGHTS:END -->
 
-![Nansha under 31-pixel motion blur](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-mb31.gif)
+## Town10HD: Decisions After Camera Repositioning
 
-*Nansha · 31 px motion blur. S1 and YOLO+MP use the same traffic plan and aligned simulation timestamps; the 60-second simulation window plays at 5× speed.*
-
-![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-angle15.gif)
+![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-angle15.gif)
 
 *Town10HD · fixed yaw ±15° / pitch ±8°. Both arms use the same traffic plan and aligned simulation timestamps; the 60-second simulation window plays at 5× speed.*
 
 ## Results
 
-Lower finite-horizon journey metrics are better. Nansha and Town10HD use different metrics and horizons, so their absolute values are **never pooled**. Clean views compare S1, frozen engineering fixed timing and YOLO+MP. Perturbed views compare S1 with YOLO+MP only.
+Results use **mean journey time in seconds per vehicle; lower is better**. Clean views compare S1, frozen engineering fixed timing and YOLO+MP. Perturbed views compare S1 with YOLO+MP only.
 
 <!-- FUSION_RESULTS:BEGIN -->
-### Clean views: three-way comparison
+### Clean views: three controllers
 
-| Scene | n | S1 | Fixed | YOLO+MP | S1 vs fixed | MP vs fixed | S1 vs MP |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Nansha | 72 | 7540.24 | 9193.32 | 7648.36 | **17.98%** | **16.81%** | **1.41%** |
-| Town10HD | 5 | 10623.80 | 16040.30 | 10625.20 | **33.77%** | **33.76%** | **0.01%** |
+| Scene | Condition | Cases | Controller | Mean wait (s/veh) | Mean queue (veh) | Mean journey (s/veh) |
+|---|---|---:|---|---:|---:|---:|
+| Nansha | Clean | 72 | **S1** | 45.82 | 10.47 | 107.32 |
+| Nansha | Clean | 72 | Engineering fixed | 68.55 | 15.52 | 131.15 |
+| Nansha | Clean | 72 | YOLO+MP | Not recorded | Not recorded | 109.36 |
+| Town10HD | Clean | 5 | **S1** | 20.45 | 3.56 | 38.22 |
+| Town10HD | Clean | 5 | Engineering fixed | 40.46 | 5.40 | 57.70 |
+| Town10HD | Clean | 5 | YOLO+MP | 20.22 | 3.59 | 38.22 |
 
-### Perturbed views: S1 vs. YOLO+MP only
+### Perturbed views: S1 vs YOLO+MP
 
-| Scene | Condition | n | S1 | YOLO+MP | S1 reduction |
-|---|---|---:|---:|---:|---:|
-| Nansha | Defocus σ=9 | 9 | 1257.39 | 1502.63 | **16.32%** |
-| Nansha | 31 px motion blur | 9 | 1174.58 | 1680.04 | **30.09%** |
-| Nansha | Fixed yaw ±15° / pitch ±8° | 9 | 1153.65 | 1374.63 | **16.08%** |
-| Nansha | Dynamic shake 5° | 9 | 1145.70 | 1229.37 | **6.81%** |
-| Town10HD | Defocus σ=9 | 5 | 12351.90 | 30344.40 | **59.29%** |
-| Town10HD | 31 px motion blur | 5 | 10592.30 | 35502.50 | **70.16%** |
-| Town10HD | Fixed yaw ±15° / pitch ±8° | 5 | 10315.80 | 60438.50 | **82.93%** |
-| Town10HD | Dynamic shake 5° | 5 | 10342.50 | 11087.20 | **6.72%** |
+| Scene | Condition | Cases | Controller | Mean wait (s/veh) | Mean queue (veh) | Mean journey (s/veh) |
+|---|---|---:|---|---:|---:|---:|
+| Nansha | Defocus σ=9 | 9 | **S1** | 76.08 | 15.79 | 141.03 |
+| Nansha | Defocus σ=9 | 9 | YOLO+MP | 104.86 | 31.04 | 167.48 |
+| Nansha | 31 px motion blur | 9 | **S1** | 67.38 | 17.23 | 131.57 |
+| Nansha | 31 px motion blur | 9 | YOLO+MP | 124.59 | 30.18 | 188.34 |
+| Nansha | Fixed yaw ±15° / pitch ±8° | 9 | **S1** | 63.68 | 15.44 | 129.04 |
+| Nansha | Fixed yaw ±15° / pitch ±8° | 9 | YOLO+MP | 87.01 | 21.18 | 154.36 |
+| Nansha | Dynamic shake 5° | 9 | **S1** | 63.40 | 16.17 | 128.25 |
+| Nansha | Dynamic shake 5° | 9 | YOLO+MP | 72.15 | 17.91 | 137.61 |
+| Town10HD | Defocus σ=9 | 5 | **S1** | 27.51 | 4.10 | 44.43 |
+| Town10HD | Defocus σ=9 | 5 | YOLO+MP | 92.97 | 9.75 | 109.15 |
+| Town10HD | 31 px motion blur | 5 | **S1** | 20.28 | 3.58 | 38.10 |
+| Town10HD | 31 px motion blur | 5 | YOLO+MP | 111.26 | 10.24 | 127.71 |
+| Town10HD | Fixed yaw ±15° / pitch ±8° | 5 | **S1** | 19.23 | 3.45 | 37.11 |
+| Town10HD | Fixed yaw ±15° / pitch ±8° | 5 | YOLO+MP | 205.09 | 13.67 | 217.40 |
+| Town10HD | Dynamic shake 5° | 5 | **S1** | 19.13 | 3.32 | 37.20 |
+| Town10HD | Dynamic shake 5° | 5 | YOLO+MP | 21.49 | 3.53 | 39.88 |
 
-Time entries are sums of matched-case metrics (seconds), not one vehicle's mean travel time. Nansha sums capped per-case means at H=1298 s; Town sums capped per-case totals at H=518 s. Reductions use matched metric sums within each scene and condition.
+**Definitions:** mean wait includes stopped waiting and insertion waiting for formal evaluation vehicles. Mean queue is the time-averaged total halted vehicles on controlled incoming lanes during the common 98–398 s demand window, in vehicles rather than metres. Journey time starts at planned departure. Wait and journey means are vehicle-weighted; queues average equal-window case means.
+
+Evaluation ends at 1298 s in Nansha and 518 s in Town. Unfinished vehicles contribute their elapsed time at the cutoff. Original records are unchanged; waiting and queue statistics come from recorded-action/signal SUMO replay checked against each original journey score.
+
+The 72 clean Nansha YOLO+MP runs did not save their control history, so waiting and queue are marked "Not recorded", not inferred or replaced with selected recording cases.
 <!-- FUSION_RESULTS:END -->
-
-![Clean three-way results](assets/results-fusion/normal-en.png)
-
-![Extreme-condition results](assets/results-fusion/extreme-en.png)
-
-![Degradation from clean views](assets/results-fusion/degradation-en.png)
-
-The Nansha and Town10HD degradation panels use independent vertical scales. Compare numeric labels across panels, not bar heights.
 
 The clean Nansha main table covers all **72** predefined cases across nine intersections. The perturbation pilot is narrower: Nansha uses nine high-flow balanced cases at seed 97001; Town10HD uses five demand regimes at seed 18040. These are controlled simulation results, not claims of universal superiority or statistical significance.
 
@@ -64,28 +81,77 @@ Recorded cases show the actual visual condition and controller behavior; the on-
 
 ## Eight Perturbation Views
 
-<details>
-<summary>Open the complete Nansha and Town10HD GIF gallery</summary>
+<!-- FUSION_GALLERY:BEGIN -->
+### Town10HD
 
-| Scene | Defocus σ=9 | Motion blur 31 px |
-|---|---|---|
-| Nansha | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-mb31.gif) |
-| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-df9.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-mb31.gif) |
+#### Town10HD · Fixed yaw ±15° / pitch ±8°
 
-| Scene | Fixed yaw ±15° / pitch ±8° | Dynamic shake 5° / roll 2.5° |
-|---|---|---|
-| Nansha | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-shake5.gif) |
-| Town10HD | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-angle15.gif) | ![](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-shake5.gif) |
+![Town10HD · Fixed yaw ±15° / pitch ±8°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-angle15.gif)
 
-</details>
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/4c6f4df4-12e5-41aa-b948-bb496b6d80f6"></video>
+
+#### Town10HD · Defocus σ=9
+
+![Town10HD · Defocus σ=9](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-df9.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/a7a01b90-b5a2-43a4-9970-60b8b1dc0ee0"></video>
+
+#### Town10HD · 31 px motion blur
+
+![Town10HD · 31 px motion blur](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-mb31.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/b682964f-d35f-4619-ac17-e82555c8b4d6"></video>
+
+#### Town10HD · Dynamic shake 5°
+
+![Town10HD · Dynamic shake 5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/town-shake5.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/47eadb76-f495-4bc4-86bb-fe094b42f36f"></video>
+
+### Nansha
+
+#### Nansha · Fixed yaw ±15° / pitch ±8°
+
+![Nansha · Fixed yaw ±15° / pitch ±8°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/nansha-angle15.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/a161b5bd-9916-4138-894a-b9a6a7a5c2a5"></video>
+
+#### Nansha · Defocus σ=9
+
+![Nansha · Defocus σ=9](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/nansha-df9.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/e400ff51-2b74-4e1c-ada6-10e62f80ac67"></video>
+
+#### Nansha · 31 px motion blur
+
+![Nansha · 31 px motion blur](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/nansha-mb31.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/98576ff8-b522-4832-ab91-81823f279be6"></video>
+
+#### Nansha · Dynamic shake 5°
+
+![Nansha · Dynamic shake 5°](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/en/nansha-shake5.gif)
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/10e26d79-4e18-40f6-82b7-61829d215da3"></video>
+<!-- FUSION_GALLERY:END -->
+
+Media show only the actual model camera input, live traffic metrics and the most recent recorded decision. **Mean wait** is cumulative stopped waiting divided by all vehicles entered so far, including those already arrived. **Queue** is the current stopped-vehicle count. Both include shared warmup traffic and come from recorded-signal SUMO replay checked against every video frame, unlike the formal-cohort batch means that also include insertion waiting. Episode mean journeys belong to that recording, not the evaluation batch.
+
+All displayed cases are four-arm intersections. GIFs and MP4s use explicitly labelled 5x simulation-time playback. MP4s present original recorded frames at 25 fps, without fabricated vehicle motion or model decisions.
 
 Lane regions are calibrated on the clean camera pose and then frozen. For `angle15`, the camera is shifted **after calibration**, remains fixed for the episode, and is not recalibrated. `shake5` applies dynamic yaw/pitch peaks of 5° and roll peaks of 2.5°.
 
-Clean videos: [Nansha](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/nansha-clean.mp4) · [Town10HD](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/town-clean.mp4)
+<!-- FUSION_CLEAN_VIDEOS:BEGIN -->
+### Clean Nansha: Three Controllers
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/35aa5192-fd40-48e5-bfff-364428625363"></video>
+
+### Clean Town10HD: Three Controllers
+
+<video controls="controls" width="960" src="https://github.com/user-attachments/assets/225e8c4a-835a-47e8-9eab-20c10c0bee1c"></video>
+<!-- FUSION_CLEAN_VIDEOS:END -->
 
 ## Inference Performance
-
-![Three-frame inference latency](assets/results-fusion/latency-en.png)
 
 <!-- FUSION_LATENCY:BEGIN -->
 | Scope | Count | Mean | Median | P95 | Max | Under 1 s |
@@ -95,7 +161,7 @@ Clean videos: [Nansha](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Me
 | Subsequent calls | 6690 | 476.9 ms | 479.0 ms | 493.0 ms | 675.0 ms | 100.00% |
 <!-- FUSION_LATENCY:END -->
 
-The unquantized BF16 checkpoint takes three frames over a four-second observation window. Statistics cover 133 S1 cases: 72 Nansha clean cases and 61 fusion-pilot S1 cases. Camera capture, rendering and control execution are excluded. First calls include initialization effects; subsequent calls characterize steady state.
+The unquantized BF16 checkpoint reads temporal intersection views; sampling details are in the reproduction guide. Statistics cover 133 S1 cases: 72 Nansha clean cases and 61 fusion-pilot S1 cases. Camera capture, rendering and control execution are excluded. First calls include initialization effects; subsequent calls characterize steady state.
 
 **Deployment direction:** sub-second steady-state decisions on a consumer RTX 5090 make signal-control workstations a practical target. A colleague also reported approximately **900 ms on an RTX 4090** with the unquantized model; its measurement conditions remain unverified, so it is not included in the benchmark. Quantization and edge-device deployment are future work, not demonstrated capabilities. A universal sub-second guarantee has not been established.
 

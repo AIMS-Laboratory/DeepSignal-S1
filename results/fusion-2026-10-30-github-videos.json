@@ -1,0 +1,25 @@
+{
+  "hosting_issue": "https://github.com/AIMS-Laboratory/DeepSignal-S1/issues/1",
+  "videos": {
+    "en/nansha-angle15.mp4": "https://github.com/user-attachments/assets/a161b5bd-9916-4138-894a-b9a6a7a5c2a5",
+    "en/nansha-clean.mp4": "https://github.com/user-attachments/assets/35aa5192-fd40-48e5-bfff-364428625363",
+    "en/nansha-df9.mp4": "https://github.com/user-attachments/assets/e400ff51-2b74-4e1c-ada6-10e62f80ac67",
+    "en/nansha-mb31.mp4": "https://github.com/user-attachments/assets/98576ff8-b522-4832-ab91-81823f279be6",
+    "en/nansha-shake5.mp4": "https://github.com/user-attachments/assets/10e26d79-4e18-40f6-82b7-61829d215da3",
+    "en/town-angle15.mp4": "https://github.com/user-attachments/assets/4c6f4df4-12e5-41aa-b948-bb496b6d80f6",
+    "en/town-clean.mp4": "https://github.com/user-attachments/assets/225e8c4a-835a-47e8-9eab-20c10c0bee1c",
+    "en/town-df9.mp4": "https://github.com/user-attachments/assets/a7a01b90-b5a2-43a4-9970-60b8b1dc0ee0",
+    "en/town-mb31.mp4": "https://github.com/user-attachments/assets/b682964f-d35f-4619-ac17-e82555c8b4d6",
+    "en/town-shake5.mp4": "https://github.com/user-attachments/assets/47eadb76-f495-4bc4-86bb-fe094b42f36f",
+    "zh/nansha-angle15.mp4": "https://github.com/user-attachments/assets/343b6075-3427-4c1f-a4bb-ba322761974a",
+    "zh/nansha-clean.mp4": "https://github.com/user-attachments/assets/47e55de8-f181-44d1-997d-bfd669939949",
+    "zh/nansha-df9.mp4": "https://github.com/user-attachments/assets/954e7abc-6cb8-47ed-af80-add9a051d1ae",
+    "zh/nansha-mb31.mp4": "https://github.com/user-attachments/assets/0944819d-65dd-4ac6-820b-b3f4ddd3f561",
+    "zh/nansha-shake5.mp4": "https://github.com/user-attachments/assets/f6d1b3de-98e1-4584-b6a7-4558d85c83f9",
+    "zh/town-angle15.mp4": "https://github.com/user-attachments/assets/93138ccb-30ff-4b6e-bcd9-f97f169b4da4",
+    "zh/town-clean.mp4": "https://github.com/user-attachments/assets/5d719303-dcf8-49e0-980f-dbd358f9b9de",
+    "zh/town-df9.mp4": "https://github.com/user-attachments/assets/1f2e0e9f-03a8-4263-967d-185c5deca407",
+    "zh/town-mb31.mp4": "https://github.com/user-attachments/assets/19d9efc9-2fc7-45dd-97b8-bdd09f5dcb85",
+    "zh/town-shake5.mp4": "https://github.com/user-attachments/assets/d5473739-c0ab-4249-906a-5e0f941e47b2"
+  }
+}
