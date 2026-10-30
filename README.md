@@ -153,11 +153,7 @@ Across **6823** unquantized RTX 5090 decision requests, latency averages **485 m
 
 The model receives three temporal frames (a four-second window sampled every two seconds), static intersection information, current signal state and legal actions. It returns an action and candidate-action probabilities, without simulator vehicle counts or future arrival plans.
 
-```mermaid
-flowchart LR
-    A["Temporal views + intersection and signal state"] --> B["DeepSignal S1: select a legal action"]
-    B --> C["Signal executor: green tail, yellow and all-red"]
-```
+<img width="1200" src="assets/highlights/s1-workflow-en.png" alt="Three temporal frames, intersection information and signal state enter DeepSignal S1; the model returns a legal action and candidate probabilities; the signal executor handles green-tail, yellow and all-red transitions."/>
 
 System One emphasizes fast, structured decisions without generating a token-by-token reasoning narrative. S1 draws on the decision paradigm illustrated by [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and [OneJev](https://github.com/OmniJev/OneJev). It runs locally and does not call the commercial Jev service.
 
@@ -341,24 +337,26 @@ Lane regions are calibrated on clean views and frozen; fixed shifts are not reca
 
 ### Clean-view videos
 
+The GIF previews preserve the recordings' original 5× playback speed. Full MP4 files can be opened or downloaded.
+
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
 <summary>Video: Clean Multi-intersection: Three Controllers</summary>
 
-https://github.com/user-attachments/assets/c4347efa-b450-4b79-a554-1157ddccb1bf
+<img width="800" src="assets/videos/s1-multi-intersection-clean-en.gif" alt="Clean Multi-intersection: Three Controllers"/>
+
+[Open / download MP4](https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/assets/videos/s1-multi-intersection-clean-en.mp4)
 
 </details>
 
 <details>
 <summary>Video: Clean Standard simulation: Three Controllers</summary>
 
-https://github.com/user-attachments/assets/679fea40-44b6-4954-88fa-c20e329ec29f
+<img width="800" src="assets/videos/s1-standard-simulation-clean-en.gif" alt="Clean Standard simulation: Three Controllers"/>
+
+[Open / download MP4](https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/assets/videos/s1-standard-simulation-clean-en.mp4)
 
 </details>
 <!-- FUSION_CLEAN_VIDEOS:END -->
-
-## Historical Releases
-
-Earlier `DeepSignal-S1-1.0-candidate` Multi-intersection results and the separate historical Town checkpoint remain archived with their original protocol labels, distinct from the current 1.0 release and its results. See [historical released results](docs/released-results.md).
 
 Contact: [dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)

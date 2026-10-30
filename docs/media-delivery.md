@@ -22,7 +22,9 @@ GitHub会将原生视频包装为自己的播放器，忽略传入宽度，并�
 
 已确认的显示问题是播放器改写尺寸与初始化小框，不能把它等同于用户浏览器播放失败的唯一根因。匿名直连附件可返回视频字节；发布检查必须等待真实预览加载，然后点击原生播放按钮，不能仅调用脚本`play()`便宣称用户操作已验证。
 
-首页两组代表动图沿用Town固定偏角和南沙运动模糊，另外六组按四种干扰类型展开。正常视觉保留两个可展开的原生视频。20段中英文视频均保留GitHub附件映射，不删除原素材。
+首页两组代表动图沿用Town固定偏角和南沙运动模糊，另外六组按四种干扰类型展开。正常视觉使用可展开的动图预览与MP4链接，避免GitHub原生附件播放器自动展示旧地名文件名。20段中英文视频均保留GitHub附件映射，不删除原素材。
+
+正常视觉的公开文件名为 `s1-multi-intersection-clean-{en,zh}.mp4` 与 `s1-standard-simulation-clean-{en,zh}.mp4`，存放于 `assets/videos/`。MP4与原附件逐字节一致；GIF保留完整12秒窗口及原有5倍速，以800像素宽、8帧/秒生成。`assets/videos/manifest.json` 保留原附件与新路径的校验对应关系。此处只改变公开展示命名，不改变原始案例或实验数据标识。
 
 当前16份GIF由已发布GitHub视频转码，不改变原有5倍速、布局、模型动作或指标。非抖动预览保留完整12秒视频窗口，宽800像素、8帧/秒；抖动预览取视频中间4.8秒（仿真24秒），宽640像素、6帧/秒，完整12秒视频仍可直接观看。每个GIF低于4.8MB，首次画面另存为JPEG备用。转码不补帧、不合成内容、不按胜负另挑窗口。来源、文件校验值、尺寸与时长见 `assets/previews/manifest.json`。
 
@@ -51,3 +53,5 @@ GitHub会将原生视频包装为自己的播放器，忽略传入宽度，并�
 ## 重新生成GitHub预览
 
 在独立工具环境安装 `Pillow` 和 `imageio-ffmpeg` 后运行 `python scripts/build_homepage_previews.py`。源视频缓存在忽略目录 `.local/media-preview-sources/`；输出到 `assets/previews/`，并生成来源与校验清单。此过程只转码已发布录像，不运行模型或交通实验。
+
+正常视觉的新名称文件和预览由 `python scripts/prepare_clean_videos.py` 生成；可用 `--source-dir` 指定上述已校验视频的本地目录。首页工作原理采用普通PNG图片，避免依赖GitHub的Mermaid富内容渲染组件；运行 `python scripts/render_workflow.py` 可重新生成中英文图。

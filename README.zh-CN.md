@@ -153,11 +153,7 @@ DeepSignal 模型家族的视觉决策系列 · 当前版本 **DeepSignal-S1-1.0
 
 连续三帧画面（4秒观察窗、间隔2秒）、静态路口信息、当前信号状态与合法动作共同输入模型；模型返回动作及候选动作概率。无需提供仿真车辆计数或未来到达计划。
 
-```mermaid
-flowchart LR
-    A["连续路口画面 + 路口与信号状态"] --> B["DeepSignal S1：选择合法动作"]
-    B --> C["信号执行器：绿灯尾段、黄灯、全红转换"]
-```
+<img width="1200" src="assets/highlights/s1-workflow-zh.png" alt="连续三帧画面、路口信息与信号状态输入DeepSignal S1，模型返回合法动作及候选概率，信号执行器完成绿灯尾段、黄灯与全红转换。"/>
 
 System One 强调快速、直接输出结构化决策，不生成逐字展开的长篇推理文字。S1借鉴 [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) 与 [OneJev](https://github.com/OmniJev/OneJev) 所体现的决策范式，在本地运行模型，不调用商业Jev服务。
 
@@ -341,24 +337,26 @@ YOLO车道画线在正常机位完成后冻结；固定偏角测试不重新标�
 
 ### 正常视觉视频
 
+以下动图沿用原视频的5倍速播放，完整MP4可打开或下载。
+
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
 <details>
 <summary>视频：正常视觉：多路口场景三方对比</summary>
 
-https://github.com/user-attachments/assets/de7933ba-fcd9-42a6-befd-48b0e0c51cf8
+<img width="800" src="assets/videos/s1-multi-intersection-clean-zh.gif" alt="正常视觉：多路口场景三方对比"/>
+
+[打开 / 下载 MP4](https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/assets/videos/s1-multi-intersection-clean-zh.mp4)
 
 </details>
 
 <details>
 <summary>视频：正常视觉：标准仿真场景三方对比</summary>
 
-https://github.com/user-attachments/assets/f2e37b49-8b1a-4d2a-83a7-a6e19b0e548a
+<img width="800" src="assets/videos/s1-standard-simulation-clean-zh.gif" alt="正常视觉：标准仿真场景三方对比"/>
+
+[打开 / 下载 MP4](https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/assets/videos/s1-standard-simulation-clean-zh.mp4)
 
 </details>
 <!-- FUSION_CLEAN_VIDEOS:END -->
-
-## 历史版本
-
-此前 `DeepSignal-S1-1.0-candidate` 的多路口场景结果和历史Town专用权重继续按原协议归档，与当前1.0版本及其成绩区分。见[历史发布结果](docs/released-results.md)。
 
 联系：[dalei@scu.edu.cn](mailto:dalei@scu.edu.cn)

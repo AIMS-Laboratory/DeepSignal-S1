@@ -235,12 +235,23 @@ def test_github_video_uses_native_autoembed_not_html_or_navigation(chinese):
 @pytest.mark.parametrize('scene,condition', [
     ('town', 'angle15'), ('nansha', 'mb31'), ('nansha', 'clean'), ('town', 'clean'),
 ])
-def test_video_starts_collapsed_without_changing_the_native_player(chinese, scene, condition):
+def test_video_starts_collapsed_with_valid_public_media(chinese, scene, condition):
     body = PAGES.render_video(scene, condition, chinese)
     details = ET.fromstring(body)
     assert details.tag == 'details' and 'open' not in details.attrib
     summary = details.find('summary')
     assert summary.text.startswith('视频：' if chinese else 'Video: ')
+    if condition == 'clean':
+        import hashlib
+        language = 'zh' if chinese else 'en'
+        manifest = json.loads((ROOT / 'assets/videos/manifest.json').read_text())['files']
+        row = manifest[f'{language}/{scene}-clean.mp4']
+        assert details.find('img').get('src') == row['preview']
+        assert (ROOT / row['preview']).is_file()
+        assert row['video'] in body and 'nansha' not in body and 'town' not in body.lower()
+        assert hashlib.sha256((ROOT / row['video']).read_bytes()).hexdigest() == row['sha256']
+        assert details.find('.//video') is None
+        return
     assert summary.tail.strip() == PAGES.video_tag(scene, condition, chinese)
     assert '\n\n' + PAGES.video_tag(scene, condition, chinese) + '\n\n' in body
     assert details.find('.//img') is None and details.find('.//video') is None

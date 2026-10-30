@@ -366,6 +366,15 @@ def render_video(scene: str, condition: str, chinese: bool) -> str:
     else:
         title = f'{label} · {condition_label(condition, chinese)}'
     summary = ('视频：' if chinese else 'Video: ') + title
+    if condition == 'clean':
+        language = 'zh' if chinese else 'en'
+        public_scene = 'multi-intersection' if scene == 'nansha' else 'standard-simulation'
+        base = f'assets/videos/s1-{public_scene}-clean-{language}'
+        url = f'https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/{base}.mp4'
+        link = '打开 / 下载 MP4' if chinese else 'Open / download MP4'
+        return (f'<details>\n<summary>{escape(summary)}</summary>\n\n'
+                f'<img width="800" src="{base}.gif" alt="{escape(title)}"/>\n\n'
+                f'[{link}]({url})\n\n</details>')
     return f'<details>\n<summary>{escape(summary)}</summary>\n\n{video_tag(scene, condition, chinese)}\n\n</details>'
 
 
