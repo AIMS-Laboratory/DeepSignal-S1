@@ -1,6 +1,7 @@
 import importlib.util
 import json
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 import pytest
@@ -49,6 +50,34 @@ def test_real_junction_overviews_precede_the_gallery_in_both_languages(filename,
     assert all(junction in introduction for junction in ('J03', 'J08', 'J05', 'J07'))
 
 
+@pytest.mark.parametrize('chinese,filename', [(True, 'README.zh-CN.md'), (False, 'README.md')])
+def test_town_demand_table_matches_configs_and_current_evaluation_seed(chinese, filename):
+    body = PAGES.render_town_demand(chinese)
+    rows = [line.split('|')[1:-1] for line in body.splitlines() if line.startswith('| [')]
+    assert len(rows) == 5 and all(len(row) == 4 for row in rows)
+    paths = re.findall(r'\]\((reproduction/[^)]+)\)', body)
+    assert len(paths) == 5
+    configs = [json.loads((ROOT / path).read_text()) for path in paths]
+    for row, config in zip(rows, configs):
+        params = config['regime_params']
+        if config['regime'] == 'balanced':
+            assert f"{params['balanced_rate_vph']:g}" in row[1]
+        elif config['regime'] == 'asymmetric':
+            assert f"{params['asymmetric_heavy_vph']:g}" in row[1]
+            assert f"{params['asymmetric_light_vph']:g}" in row[1]
+            assert params['asymmetric_heavy_vph'] / params['asymmetric_light_vph'] == 5
+        else:
+            assert ' → '.join(f'{rate:g}' for _, rate in params['time_varying_rates_vph']) in row[1]
+            assert '0-60' in row[2] and '60-120' in row[2] and '120' in row[2]
+        assert params['turn_split'] == {'s': 0.7, 'r': 0.15, 'l': 0.15}
+    assert paths[-1].endswith('ood-varyshuf-18040.json')
+    assert '200 → 700 → 200' in rows[3][1]
+    assert '200 → 200 → 700' in rows[4][1]
+    assert '25%' in rows[2][3]
+    readme = (ROOT / filename).read_text()
+    assert readme.split('<!-- TOWN_DEMAND:BEGIN -->\n')[1].split('\n<!-- TOWN_DEMAND:END -->')[0] == body
+
+
 @pytest.mark.parametrize('chinese', [False, True])
 def test_comparison_groups_share_three_cells_without_merging_controller_metrics(chinese):
     data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())
@@ -95,6 +124,9 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media():
     assert '/blob/main/README.zh-CN.md' not in body
     assert '### 结果解读' in body and '### What the Results Show' in body
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/visual-robustness.md' in body
+    assert '## Five Town10HD Traffic-Demand Scenarios' in body and '## Town10HD的5类交通需求' in body
+    assert body.count('200 → 200 → 700') == 2
+    assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json' in body
 
 
 @pytest.mark.parametrize('chinese', [False, True])

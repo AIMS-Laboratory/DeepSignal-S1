@@ -26,6 +26,22 @@ System One emphasizes fast, directly callable decisions, as illustrated by [Jev]
 - **Unquantized local inference:** 6823 RTX 5090 model calls average **485 ms**, with a 479 ms median.
 <!-- FUSION_HIGHLIGHTS:END -->
 
+## Five Town10HD Traffic-Demand Scenarios
+
+<!-- TOWN_DEMAND:BEGIN -->
+All five regimes use **the same four-way junction**, varying directional demand, load and peak timing rather than road geometry. The table gives the settings used in the current evaluation.
+
+| Traffic-demand scenario | Flow per approach (vehicles/hour) | Temporal pattern | Control challenge |
+|---|---|---|---|
+| [Balanced flow](reproduction/configs/vlm-realtime-control/episode-balanced.formal.json) | E, W, N and S: 360 each | Constant throughout | Basic control with similar demand in all directions |
+| [Sustained directional imbalance](reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json) | E and W: 600 each; N and S: 120 each | Constant; major-to-minor demand ratio 5:1 | Allocate green time to persistently busier directions |
+| [Higher-load directional imbalance](reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json) | E and W: 750 each; N and S: 150 each | Constant; still 5:1 | 25% more total demand than the preceding regime |
+| [Time-varying peak](reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json) | All approaches: 200 → 700 → 200 | 0-60 s / 60-120 s / from 120 s | Adapt to rising demand and peak recovery |
+| [Shifted peak timing](reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json) | All approaches: 200 → 200 → 700 | 0-60 s / 60-120 s / from 120 s | Adapt when the peak occurs at a different time |
+
+Flows are expected arrival rates **per approach**, not per lane or exact hourly vehicle counts; arrivals are sampled randomly. All regimes use 70% straight, 15% left and 15% right turns. Time starts at simulation startup, with the final rate held until demand generation ends. Shifted peak timing reorders the time-varying rates by seed; the table shows the configuration behind the current results. Controllers receive identical vehicle plans.
+<!-- TOWN_DEMAND:END -->
+
 ## Town10HD: Decisions After Camera Repositioning
 
 ![Town10HD under fixed camera-angle shift](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/en/town-angle15.gif)

@@ -26,6 +26,22 @@ System One（端到端快思考）强调快速、直接、可被软件调用的�
 - **未量化本地推理：** RTX 5090共6823次模型请求，平均 **485毫秒**，中位数479毫秒。
 <!-- FUSION_HIGHLIGHTS:END -->
 
+## Town10HD的5类交通需求
+
+<!-- TOWN_DEMAND:BEGIN -->
+五类车流均设置在**同一个十字路口**，区别在方向分配、流量大小和高峰出现时点，而不是五个不同路口。下表列出当前评测使用的设置。
+
+| 交通需求场景 | 每个进口方向的流量（辆/小时） | 时间变化 | 考察重点 |
+|---|---|---|---|
+| [均衡车流](reproduction/configs/vlm-realtime-control/episode-balanced.formal.json) | 东、西、南、北各360 | 全程恒定 | 四向需求相近时的基本控制能力 |
+| [持续方向不均衡](reproduction/configs/vlm-realtime-control/episode-sustained-uneven.formal.json) | 东、西各600；南、北各120 | 全程恒定，主次方向流量比5:1 | 持续向高需求方向分配绿灯 |
+| [更高流量的不均衡](reproduction/configs/vlm-realtime-control/ood-uneven125-6001.json) | 东、西各750；南、北各150 | 全程恒定，仍为5:1 | 比上一类总需求增加25%，考察较高负荷 |
+| [时变高峰](reproduction/configs/vlm-realtime-control/episode-time-varying.formal.json) | 四向均为200 → 700 → 200 | 0-60秒 / 60-120秒 / 120秒起 | 适应车流上升及高峰消退 |
+| [高峰时序变化](reproduction/configs/vlm-realtime-control/ood-varyshuf-18040.json) | 四向均为200 → 200 → 700 | 0-60秒 / 60-120秒 / 120秒起 | 改变高峰出现时点，考察时序适应能力 |
+
+流量是**每个进口方向**的期望到达率，不是每车道流量，也不是每小时固定生成的车辆数；车辆按该流率随机到达。五类均采用直行70%、左转15%、右转15%。时间从仿真启动计，末档流量保持至需求生成结束。“高峰时序变化”按种子重排时变流量，上表为当前结果对应的配置。各控制器使用相同的车辆计划。
+<!-- TOWN_DEMAND:END -->
+
 ## Town10HD：机位改变后仍直接决策
 
 ![Town10HD固定机位偏移](https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media/resolve/main/media/fusion-1.0/v4/zh/town-angle15.gif)
