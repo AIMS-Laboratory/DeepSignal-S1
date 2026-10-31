@@ -392,8 +392,12 @@ def render_gallery(chinese: bool) -> str:
 
 
 def render_hf_card(english: str, chinese: str, homepage: str) -> str:
-    body = (english.replace('](README.zh-CN.md)', '](#简体中文)').rstrip()
-            + '\n\n## 简体中文\n\n' + chinese.removeprefix('# DeepSignal S1\n').lstrip())
+    github_url = 'https://github.com/AIMS-Laboratory/DeepSignal-S1'
+    title, _, english_body = english.partition('\n')
+    body = (title + f'\n\n**[GitHub · Source Code & Reproduction]({github_url})**\n\n'
+            + english_body.replace('](README.zh-CN.md)', '](#简体中文)').lstrip().rstrip()
+            + f'\n\n## 简体中文\n\n**[GitHub 主仓库 · 源码与复现]({github_url})**\n\n'
+            + chinese.removeprefix('# DeepSignal S1\n').lstrip())
     media_headings = {
         '## Eight Perturbation Views', '## 八组特殊视觉', '## Featured Demos', '## 代表演示',
         '## Junctions at a Glance', '## 展示路口鸟瞰',
@@ -403,12 +407,14 @@ def render_hf_card(english: str, chinese: str, homepage: str) -> str:
     for line in body.splitlines():
         if line.startswith('## '):
             skip = line in media_headings
-        if skip and line.startswith(('Lane regions are calibrated', 'YOLO车道画线')):
+        if skip and line.startswith(('Lane regions are calibrated', 'YOLO车道画线', 'Contact:', '联系：')):
             lines += ['', line, '']
         if not skip and not line.startswith(('Recorded cases show', '录制案例展示', '<img ')):
             lines.append(line)
     body = '\n'.join(lines).rstrip() + '\n'
     github = 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main'
+    body = body.replace('](#featured-demos)', f']({github_url}#featured-demos)')
+    body = body.replace('](#代表演示)', f']({github}/README.zh-CN.md#代表演示)')
     for directory in ('docs', 'results'):
         body = body.replace(f']({directory}/', f']({github}/{directory}/')
     body = body.replace('](README.zh-CN.md)', f']({homepage}/blob/main/README.zh-CN.md)')

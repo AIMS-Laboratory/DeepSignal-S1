@@ -101,7 +101,12 @@ def test_town_demand_table_matches_configs_and_current_evaluation_seed(chinese, 
 def test_comparison_groups_share_three_cells_without_merging_controller_metrics(chinese):
     data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())
     records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
-    tables = ET.fromstring('<root>' + PAGES.render(data, chinese, records) + '</root>').findall('.//table')
+    root = ET.fromstring('<root>' + PAGES.render(data, chinese, records) + '</root>')
+    details = root.findall('details')
+    assert len(details) == 3
+    assert all('open' in section.attrib for section in details[:2])
+    assert 'open' not in details[2].attrib
+    tables = root.findall('.//table')
     assert len(tables) == 2
     for table, key, controllers in zip(tables, ('normal', 'extreme'), (('s1', 'fixed', 'mp'), ('s1', 'mp'))):
         assert len(table.findall('./thead/tr/th')) == 7
@@ -127,20 +132,31 @@ def test_comparison_groups_share_three_cells_without_merging_controller_metrics(
                     ('mean_wait_s_per_vehicle', 'mean_queue_vehicles', 'mean_journey_s_per_vehicle')]
 
 
-def test_hf_card_retains_public_bilingual_results_without_embedded_media():
-    homepage = 'https://huggingface.co/AIMS2025/DeepSignal-S1'
+@pytest.mark.parametrize('homepage', [
+    'https://huggingface.co/AIMS2025/DeepSignal-S1',
+    'https://huggingface.co/datasets/AIMS2025/DeepSignal-S1-Media',
+])
+def test_hf_card_retains_public_bilingual_results_without_embedded_media(homepage):
     body = PAGES.render_hf_card((ROOT / 'README.md').read_text(), (ROOT / 'README.zh-CN.md').read_text(), homepage)
+    github_url = 'https://github.com/AIMS-Laboratory/DeepSignal-S1'
+    assert f'# DeepSignal S1\n\n**[GitHub · Source Code & Reproduction]({github_url})**\n' in body
+    assert f'## 简体中文\n\n**[GitHub 主仓库 · 源码与复现]({github_url})**\n' in body
     assert '<video' not in body and '<img' not in body
     assert '.gif' not in body and 'github.com/user-attachments/' not in body
     assert 'FUSION_RESULTS:BEGIN' in body and 'FUSION_LATENCY:BEGIN' in body
     assert 'FUSION_GALLERY' not in body and 'FUSION_CLEAN_VIDEOS' not in body
     assert '## 评测结果' in body and '## Results' in body
     assert body.count('<table>') == 6
+    assert body.count('<details open="open">') == 4
+    assert '### What the Results Show' in body and '### 结果解读' in body
+    assert '[Watch demos](https://github.com/AIMS-Laboratory/DeepSignal-S1#featured-demos)' in body
+    assert '[看演示](https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/README.zh-CN.md#代表演示)' in body
+    assert 'Contact: [dalei@scu.edu.cn]' in body and '联系：[dalei@scu.edu.cn]' in body
     assert 'System One' in body and '## 工作原理' in body
     assert 'Lane regions are calibrated' in body and 'YOLO车道画线' in body
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/reproduction.md' in body
     assert f'[English]({homepage})' in body and '[简体中文](#简体中文)' in body
-    assert '/blob/main/README.zh-CN.md' not in body
+    assert f'{homepage}/blob/main/README.zh-CN.md' not in body
     assert '### 结果解读' in body and '### What the Results Show' in body
     assert 'https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/docs/visual-robustness.md' in body
     assert '## Five traffic demand scenarios' in body and '## 5类交通需求场景' in body
