@@ -354,7 +354,7 @@ def render_video(scene: str, condition: str, chinese: bool) -> str:
         base = f'assets/videos/s1-{public_scene}-clean-{language}'
         url = f'https://github.com/AIMS-Laboratory/DeepSignal-S1/raw/refs/heads/main/{base}.mp4'
         link = '打开 / 下载 MP4' if chinese else 'Open / download MP4'
-        return (f'<details>\n<summary>{escape(summary)}</summary>\n\n'
+        return (f'<details open="open">\n<summary>{escape(summary)}</summary>\n\n'
                 f'<img width="800" src="{base}.gif" alt="{escape(title)}"/>\n\n'
                 f'[{link}]({url})\n\n</details>')
     return f'<details>\n<summary>{escape(summary)}</summary>\n\n{video_tag(scene, condition, chinese)}\n\n</details>'
@@ -380,7 +380,7 @@ def render_gallery(chinese: bool) -> str:
     lines = []
     for condition in ('df9', 'mb31', 'angle15', 'shake5'):
         title = condition_label(condition, chinese)
-        lines += ['<details>', f'<summary>{title}</summary>', '']
+        lines += ['<details open="open">', f'<summary>{title}</summary>', '']
         for scene in ('nansha', 'town'):
             if (scene, condition) in (('town', 'angle15'), ('nansha', 'mb31')):
                 label = scene_label({'scene': scene}, chinese)

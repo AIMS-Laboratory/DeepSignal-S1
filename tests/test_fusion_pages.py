@@ -24,7 +24,7 @@ def test_mean_journey_is_vehicle_weighted_not_mean_of_case_means():
 @pytest.mark.parametrize('chinese,language', [(True, 'zh'), (False, 'en')])
 def test_gallery_groups_remaining_cases_and_keeps_public_fallbacks(chinese, language):
     body = PAGES.render_gallery(chinese)
-    assert body.count('<details>') == body.count('</details>') == 4
+    assert body.count('<details open="open">') == body.count('</details>') == 4
     assert body.count('.gif') == 6
     assert body.count('.jpg') == 6
     featured = PAGES.render_featured(chinese)
@@ -147,7 +147,7 @@ def test_hf_card_retains_public_bilingual_results_without_embedded_media(homepag
     assert 'FUSION_GALLERY' not in body and 'FUSION_CLEAN_VIDEOS' not in body
     assert '## 评测结果' in body and '## Results' in body
     assert body.count('<table>') == 6
-    assert body.count('<details open="open">') == 4
+    assert body.count('<details open="open">') == 6
     assert '### What the Results Show' in body and '### 结果解读' in body
     assert '[Watch demos](https://github.com/AIMS-Laboratory/DeepSignal-S1#featured-demos)' in body
     assert '[看演示](https://github.com/AIMS-Laboratory/DeepSignal-S1/blob/main/README.zh-CN.md#代表演示)' in body
@@ -255,10 +255,11 @@ def test_github_video_uses_native_autoembed_not_html_or_navigation(chinese):
 @pytest.mark.parametrize('scene,condition', [
     ('town', 'angle15'), ('nansha', 'mb31'), ('nansha', 'clean'), ('town', 'clean'),
 ])
-def test_video_starts_collapsed_with_valid_public_media(chinese, scene, condition):
+def test_video_uses_expected_default_state_with_valid_public_media(chinese, scene, condition):
     body = PAGES.render_video(scene, condition, chinese)
     details = ET.fromstring(body)
-    assert details.tag == 'details' and 'open' not in details.attrib
+    assert details.tag == 'details'
+    assert ('open' in details.attrib) == (condition == 'clean')
     summary = details.find('summary')
     assert summary.text.startswith('视频：' if chinese else 'Video: ')
     if condition == 'clean':
@@ -287,7 +288,14 @@ def test_readmes_keep_details_balanced_and_featured_previews_visible(filename):
     sections = ET.fromstring('<root>' + results + '</root>').findall('details')
     for section in sections:
         assert ('open' in section.attrib) == (section.find('table') is not None)
-    assert body.count('<details open') == results.count('<details open') == 2
+    assert results.count('<details open') == 2
+    heading = '## 5类交通需求场景' if filename == 'README.zh-CN.md' else '## Five traffic demand scenarios'
+    before, tail = body.split(heading, 1)
+    assert before.count('<details open') == 2
+    assert tail.count('<details open="open">') == tail.count('</details>') == 8
+    assert '<details>' not in tail
+    gallery = tail.split('<!-- FUSION_GALLERY:BEGIN -->\n')[1].split('\n<!-- FUSION_GALLERY:END -->')[0]
+    assert gallery == PAGES.render_gallery(filename == 'README.zh-CN.md')
 
 
 def test_fresh_mp_row_uses_all_three_metrics_from_the_same_supplement():

@@ -234,7 +234,7 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 
 ## 5类交通需求场景
 
-<details>
+<details open="open">
 <summary>展开车流参数和时间设置</summary>
 
 <!-- TOWN_DEMAND:BEGIN -->
@@ -260,7 +260,7 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 
 ## 展示路口鸟瞰
 
-<details>
+<details open="open">
 <summary>展开路口鸟瞰与案例位置</summary>
 
 ### 9个路口独立测试 · 十字路口示例
@@ -280,7 +280,7 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 上方已展示两组代表案例；其余六组按干扰类型展开。每组均提供独立视频与静态封面。
 
 <!-- FUSION_GALLERY:BEGIN -->
-<details>
+<details open="open">
 <summary>失焦σ=9</summary>
 
 ### 9个路口独立测试 · 失焦σ=9
@@ -297,7 +297,7 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 
 </details>
 
-<details>
+<details open="open">
 <summary>31像素运动模糊</summary>
 
 9个路口独立测试: 见上方代表演示。
@@ -310,7 +310,7 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 
 </details>
 
-<details>
+<details open="open">
 <summary>固定偏航±15° / 俯仰±8°</summary>
 
 ### 9个路口独立测试 · 固定偏航±15° / 俯仰±8°
@@ -323,7 +323,7 @@ curl --fail http://127.0.0.1:18404/v1/decide \
 
 </details>
 
-<details>
+<details open="open">
 <summary>动态抖动峰值5°</summary>
 
 ### 9个路口独立测试 · 动态抖动峰值5°
@@ -350,7 +350,7 @@ YOLO车道画线在正常机位完成后冻结；固定偏角测试不重新标�
 以下动图沿用原视频的5倍速播放，完整MP4可打开或下载。
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
-<details>
+<details open="open">
 <summary>视频：正常视觉：9个路口独立测试三方对比</summary>
 
 <img width="800" src="assets/videos/s1-multi-intersection-clean-zh.gif" alt="正常视觉：9个路口独立测试三方对比"/>
@@ -359,7 +359,7 @@ YOLO车道画线在正常机位完成后冻结；固定偏角测试不重新标�
 
 </details>
 
-<details>
+<details open="open">
 <summary>视频：正常视觉：标准仿真场景三方对比</summary>
 
 <img width="800" src="assets/videos/s1-standard-simulation-clean-zh.gif" alt="正常视觉：标准仿真场景三方对比"/>

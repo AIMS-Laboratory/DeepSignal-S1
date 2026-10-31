@@ -234,7 +234,7 @@ See [evaluation protocol](docs/fusion-pilot-evaluation.md), [metric definitions]
 
 ## Five traffic demand scenarios
 
-<details>
+<details open="open">
 <summary>Expand traffic rates and timing</summary>
 
 <!-- TOWN_DEMAND:BEGIN -->
@@ -260,7 +260,7 @@ Flows are expected arrival rates **per approach**, not per lane or exact hourly 
 
 ## Junctions at a Glance
 
-<details>
+<details open="open">
 <summary>Expand intersection views and case locations</summary>
 
 ### Nine-junction test · Four-Way Junction Example
@@ -280,7 +280,7 @@ The first aerial view shows the junction used for the camera-shift demo; the def
 Two cases are featured above. Expand each disturbance below for the other six, with direct video and static-cover links.
 
 <!-- FUSION_GALLERY:BEGIN -->
-<details>
+<details open="open">
 <summary>Defocus σ=9</summary>
 
 ### Nine-junction test · Defocus σ=9
@@ -297,7 +297,7 @@ Two cases are featured above. Expand each disturbance below for the other six, w
 
 </details>
 
-<details>
+<details open="open">
 <summary>31 px motion blur</summary>
 
 Nine-junction test: see the featured demos above.
@@ -310,7 +310,7 @@ Nine-junction test: see the featured demos above.
 
 </details>
 
-<details>
+<details open="open">
 <summary>Fixed yaw ±15° / pitch ±8°</summary>
 
 ### Nine-junction test · Fixed yaw ±15° / pitch ±8°
@@ -323,7 +323,7 @@ Standard simulation: see the featured demos above.
 
 </details>
 
-<details>
+<details open="open">
 <summary>Dynamic shake 5°</summary>
 
 ### Nine-junction test · Dynamic shake 5°
@@ -350,7 +350,7 @@ Lane regions are calibrated on clean views and frozen; fixed shifts are not reca
 The GIF previews preserve the recordings' original 5× playback speed. Full MP4 files can be opened or downloaded.
 
 <!-- FUSION_CLEAN_VIDEOS:BEGIN -->
-<details>
+<details open="open">
 <summary>Video: Clean Nine-junction test: Three Controllers</summary>
 
 <img width="800" src="assets/videos/s1-multi-intersection-clean-en.gif" alt="Clean Nine-junction test: Three Controllers"/>
@@ -359,7 +359,7 @@ The GIF previews preserve the recordings' original 5× playback speed. Full MP4 
 
 </details>
 
-<details>
+<details open="open">
 <summary>Video: Clean Standard simulation: Three Controllers</summary>
 
 <img width="800" src="assets/videos/s1-standard-simulation-clean-en.gif" alt="Clean Standard simulation: Three Controllers"/>
