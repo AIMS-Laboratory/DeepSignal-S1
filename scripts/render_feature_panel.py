@@ -12,20 +12,20 @@ def render(data, chinese):
     mean = f"{latency['mean_ms']:.0f}"
     pct = f"{100 * latency['under_1s_fraction']:.2f}%"
     if chinese:
-        title = '视觉直达决策 · 抗干扰 · 快速响应'
+        title = '视觉直达决策 · 有效控制 · 快速响应'
         subtitle = 'DeepSignal S1 / 核心创新与特色'
         cards = [
             ('01  模型设计', '画面 → 动作', '同一模型理解画面并选择动作', '连续三帧 + 路口与信号状态', '直接输出合法动作及候选概率'),
-            ('02  控制特色', '4 类视觉干扰', '失焦 · 模糊 · 偏移 · 抖动', '两组仿真场景的已测条件下', '等待、排队、行程均优于 YOLO+MP'),
+            ('02  控制表现', '媲美 YOLO+MP', '正常画面下，部分指标略优', '9个路口独立测试 + 标准仿真', '比较等待、排队与平均行程'),
             ('03  响应速度', '平均 ' + mean + '毫秒', pct + ' 低于一秒', '未量化 BF16 · RTX 5090', f"统计 {latency['count']:,} 次模型请求"),
         ]
         scope = '受控仿真结果；延迟仅指模型请求。BF16 / RTX 5090；完整比较与测试条件见下文。'
     else:
-        title = 'Direct decisions. Robust control. Fast response.'
+        title = 'Direct decisions. Effective control. Fast response.'
         subtitle = 'DeepSignal S1 / Design and strengths'
         cards = [
             ('01  MODEL DESIGN', 'Vision → action', 'One model interprets and decides', 'Three frames + intersection/signal state', 'Legal actions and candidate probabilities'),
-            ('02  CONTROL', '4 perturbations', 'Defocus · blur · shift · shake', 'Lower wait, queues and journey time', 'vs YOLO+MP in both tested scenes'),
+            ('02  CONTROL', 'Comparable control', 'Clean views: on par with YOLO+MP', 'Slightly ahead on some metrics', 'Nine junctions + standard simulation'),
             ('03  RESPONSE', mean + ' ms average', pct + ' under 1 second', 'Unquantized BF16 · RTX 5090', f"{latency['count']:,} model requests"),
         ]
         scope = 'Controlled simulation; model-request latency only. BF16 / RTX 5090. Full comparisons and conditions below.'

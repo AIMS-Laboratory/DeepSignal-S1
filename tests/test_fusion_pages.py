@@ -153,9 +153,11 @@ def test_discussion_uses_current_comparisons_and_keeps_clean_town_tied(chinese):
     data = json.loads((ROOT / 'results/fusion-2026-10-30.json').read_text())
     records = json.loads((ROOT / 'results/fusion-2026-10-30-traffic.json').read_text())['records']
     body = PAGES.render_discussion(data, chinese, records)
-    for percentage in ('18.17', '33.77', '1.36', '2.28', '15.79', '59.29', '30.14',
-                       '70.16', '16.40', '82.93', '90.63', '6.80', '6.72'):
-        assert f'**{percentage}%**' in body
+    summary = PAGES.render_summary(data, chinese, records)
+    for scene in ('nansha', 'town'):
+        group = next(row for row in data['normal'] if row['scene'] == scene)
+        percentage = PAGES.improvement_percent(group, 'fixed', records)
+        assert f'**{percentage:.2f}%**' in summary
     assert ('基本持平' if chinese else 'essentially tied') in body
     assert ('真实恶劣天气验证' if chinese else 'real-world adverse-weather validation') in body
     assert '**485' in body and '**477' in body and '**99.08%**' in body
@@ -174,7 +176,7 @@ def test_discussion_uses_current_comparisons_and_keeps_clean_town_tied(chinese):
     assert '(docs/visual-robustness.md)' in body
     highlights = PAGES.render_highlights(data, chinese, records)
     assert '**99.08%**' in highlights
-    assert '**1.36%**' in PAGES.render_summary(data, chinese, records)
+    assert '1.36%' in summary
     for group in data['extreme']:
         s1 = PAGES.traffic_stats(group, 's1', records)
         mp = PAGES.traffic_stats(group, 'mp', records)

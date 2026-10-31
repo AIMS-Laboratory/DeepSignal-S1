@@ -26,10 +26,10 @@ def plot(language):
     fig, ax = plt.subplots(figsize=(10, 5.4), dpi=160)
     fig.subplots_adjust(left=.27, right=.96, top=.76, bottom=.16)
     fig.patch.set_facecolor('#FFFFFF')
-    fig.text(.035,.95,'画面受干扰时，行程缩短多少？' if zh else 'Shorter journeys under visual disruption',
+    fig.text(.035,.95,'视觉干扰测试：平均行程比较' if zh else 'Visual perturbation tests: mean journey comparison',
              fontsize=19,weight='bold',color='#142C37')
-    fig.text(.035,.885,'相对 YOLO+MP 的平均行程降幅 · 越高越好' if zh else
-             'Mean journey reduction vs YOLO+MP · Higher is better',fontsize=12,color='#53656F')
+    fig.text(.035,.885,'相对 YOLO+MP 的平均行程降幅 · 两组场景、四类干扰' if zh else
+             'Mean journey reduction vs YOLO+MP · Two scenes, four perturbations',fontsize=12,color='#53656F')
     conditions=('df9','mb31','angle15','shake5')
     labels=(['失焦 σ=9','运动模糊 31像素','固定偏角\n偏航±15° / 俯仰±8°','动态抖动 峰值5°'] if zh else
             ['Defocus σ=9','Motion blur 31 px','Fixed camera shift\nyaw ±15° / pitch ±8°','Dynamic shake peak 5°'])

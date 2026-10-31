@@ -173,6 +173,11 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
     for key, title in (('normal', '正常视觉：三方比较' if chinese else 'Clean views: three controllers'),
                        ('extreme', '特殊视觉：S1与YOLO+MP' if chinese else 'Perturbed views: S1 vs YOLO+MP')):
         lines += ['<details>', f'<summary>{title} — ' + ('完整数值与三指标图' if chinese else 'full values and three-metric chart') + '</summary>', '']
+        if key == 'extreme':
+            language = 'zh' if chinese else 'en'
+            alt = ('全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示' if chinese else
+                   'Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately')
+            lines += [f'<img width="1000" src="assets/results-fusion/journey-summary-{language}.png" alt="{alt}"/>', '']
         if chinese:
             headers = ('场景', '条件', '案例数', '控制方法', '平均等待（秒/车）', '平均排队长度（辆）', '平均行程（秒/车）')
         else:
@@ -206,58 +211,39 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
 
 
 def render_discussion(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
-    normal = {row['scene']: row for row in data['normal']}
-    extreme = {(row['scene'], row['condition']): row for row in data['extreme']}
-    fixed_ns = improvement_percent(normal['nansha'], 'fixed', records)
-    fixed_town = improvement_percent(normal['town'], 'fixed', records)
-    wait_ns = improvement_percent(normal['nansha'], 'fixed', records, 'mean_wait_s_per_vehicle')
-    wait_town = improvement_percent(normal['town'], 'fixed', records, 'mean_wait_s_per_vehicle')
-    mp_ns = improvement_percent(normal['nansha'], 'mp', records)
-    mp_wait_ns = improvement_percent(normal['nansha'], 'mp', records, 'mean_wait_s_per_vehicle')
-    df_ns = improvement_percent(extreme[('nansha', 'df9')], 'mp', records)
-    df_town = improvement_percent(extreme[('town', 'df9')], 'mp', records)
-    mb_ns = improvement_percent(extreme[('nansha', 'mb31')], 'mp', records)
-    mb_town = improvement_percent(extreme[('town', 'mb31')], 'mp', records)
-    angle_ns = improvement_percent(extreme[('nansha', 'angle15')], 'mp', records)
-    angle_town = improvement_percent(extreme[('town', 'angle15')], 'mp', records)
-    angle_wait = improvement_percent(extreme[('town', 'angle15')], 'mp', records, 'mean_wait_s_per_vehicle')
-    shake_ns = improvement_percent(extreme[('nansha', 'shake5')], 'mp', records)
-    shake_town = improvement_percent(extreme[('town', 'shake5')], 'mp', records)
     latency = data['latency']['all_calls']
     steady = data['latency']['subsequent_calls']
     if chinese:
         return '\n\n'.join([
             '### 结果解读',
-            '#### 正常视觉：高水平控制，不依赖独立车辆检测',
-            f"与固定配时方案相比，S1在9个路口独立测试和标准仿真场景的平均行程分别降低 **{fixed_ns:.2f}%** 和 **{fixed_town:.2f}%**，平均等待分别降低 **{wait_ns:.2f}%** 和 **{wait_town:.2f}%**。收益不仅是车辆更早到达，也体现在更少的停车等待与更短的排队。",
-            f"与YOLO+MP相比，S1在9个路口独立测试的平均行程再降低 **{mp_ns:.2f}%**、平均等待降低 **{mp_wait_ns:.2f}%**；标准仿真场景的平均行程基本持平。这说明，直接从视觉作出信号决策，可以在省去独立检测环节的同时达到有竞争力的交通控制效果，并在9个路口独立测试取得小幅领先。",
-            '#### 特殊视觉：更值得关注的部署优势',
+            '#### 正常视觉：验证直接视觉决策的可行性',
+            '正常画面下，S1的控制表现与YOLO+MP总体相当，部分指标略优；标准仿真场景的平均行程基本持平。这支持了直接从画面生成信号动作的可行性。当前有限场景与种子下的小幅差异，还需要更广泛评测来判断其稳定性。',
+            '#### 视觉干扰：理解输入变化对控制的影响',
             '现实路口的车流未必改变，摄像头输入却可能因光照变化、设备维护或风振而发生变化。四类测试分别对应不同的成像问题，考察S1在画面不再清晰、稳定或保持原机位时，能否继续作出有效的信号决策。',
             '\n'.join([
-                f"- **失焦：对焦不准，车辆轮廓变软。** 夜间车灯等复杂光源可能干扰自动对焦，人工调焦或更换镜头后也可能没有重新调好焦点。车辆边缘和车道细节随之变得模糊，增加识别与计数的难度。在失焦测试中，S1相对YOLO+MP的平均行程在9个路口独立测试、标准仿真场景分别降低 **{df_ns:.2f}%**、**{df_town:.2f}%**。",
-                f"- **运动模糊：曝光期间的移动形成拖影。** 傍晚或夜间光照不足时，摄像头可能采用更长曝光；车辆运动或曝光期间的相机晃动便可能形成方向性拖影，使车辆形状和相邻车辆的边界更难分辨。在运动模糊测试中，S1的平均行程分别降低 **{mb_ns:.2f}%**、**{mb_town:.2f}%**。",
-                f"- **固定角度偏移：调整后稳定在新的机位。** 例如检修后重新调整视角，或支架发生偏转：画面已经稳定，但停车线和车道在图像中的位置改变了，原先画好的车道区域可能不再对应。我们的对比先在正常机位为YOLO画线，再固定改变相机角度，不重新画线。S1的平均行程在9个路口独立测试降低 **{angle_ns:.2f}%**，在标准仿真场景降低 **{angle_town:.2f}%**；标准仿真场景的平均等待同时降低 **{angle_wait:.2f}%**。",
-                f"- **动态抖动：视角随时间来回变化。** 高杆摄像头可能受到阵风或邻近重型车辆引起的振动影响，车辆和车道在连续画面中的位置随之摆动；这与调整后保持不动的固定偏角不同。动态抖动测试中，S1的平均行程在9个路口独立测试、标准仿真场景分别降低 **{shake_ns:.2f}%**、**{shake_town:.2f}%**。抖动下仍有收益，模糊和机位偏移下的优势更突出。",
+                '- **失焦：对焦不准，车辆轮廓变软。** 夜间车灯等复杂光源可能干扰自动对焦，人工调焦或更换镜头后也可能没有重新调好焦点。车辆边缘和车道细节随之变得模糊，增加识别与计数的难度。',
+                '- **运动模糊：曝光期间的移动形成拖影。** 傍晚或夜间光照不足时，摄像头可能采用更长曝光；车辆运动或曝光期间的相机晃动便可能形成方向性拖影，使车辆形状和相邻车辆的边界更难分辨。',
+                '- **固定角度偏移：调整后稳定在新的机位。** 例如检修后重新调整视角，或支架发生偏转：画面已经稳定，但停车线和车道在图像中的位置改变了，原先画好的车道区域可能不再对应。我们的对比先在正常机位为YOLO画线，再固定改变相机角度，不重新画线。',
+                '- **动态抖动：视角随时间来回变化。** 高杆摄像头可能受到阵风或邻近重型车辆引起的振动影响，车辆和车道在连续画面中的位置随之摆动；这与调整后保持不动的固定偏角不同。',
             ]),
-            '这些变化既可能影响车辆检测与计数，也可能使画面与原有车道区域错位，进而影响依赖检测计数的信号控制。S1直接依据时序画面和信号状态决策，不依赖这条独立检测计数链路。在本次两个场景、四种特殊视觉条件的对比中，S1的平均等待、平均排队长度和平均行程均低于YOLO+MP，体现出对这些输入变化的鲁棒性，优势直接落在车辆少等待、少排队和平均行程更短上。',
+            '这组测试观察的是视觉输入变化对整套控制方案的影响。尤其在固定偏角条件下，检测质量和车道区域错位的影响可能叠加，结果应结合不重新标定的设置理解。更丰富的交通场景理解能力，需要通过专门的交通事件任务来验证。',
             '上述测试模拟的是这些现实问题可能造成的视觉变化，不等同于已经完成夜间现场或真实恶劣天气验证。[现实场景对应与资料依据](docs/visual-robustness.md)。',
             '#### 亚秒级决策：视觉模型也能快速响应',
             f"未量化模型在RTX 5090上的 **{latency['count']}** 次决策请求平均耗时 **{latency['mean_ms']:.0f}毫秒**，**{100*latency['under_1s_fraction']:.2f}%** 的请求低于1秒；稳态请求平均 **{steady['mean_ms']:.0f}毫秒**。System One直接输出结构化控制动作，无需等待长篇文字生成，让视觉理解、交通控制效果与快速响应能够同时兼顾。",
         ])
     return '\n\n'.join([
         '### What the Results Show',
-        '#### Clean Views: Competitive Control Without a Separate Detector',
-        f"Against the fixed-time plan, S1 reduces mean journey time by **{fixed_ns:.2f}%** in the nine-junction evaluation and **{fixed_town:.2f}%** in the standard simulation setting, while mean waiting falls by **{wait_ns:.2f}%** and **{wait_town:.2f}%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.",
-        f"Against YOLO+MP, S1 further reduces nine-junction mean journey time by **{mp_ns:.2f}%** and mean waiting by **{mp_wait_ns:.2f}%**; standard-simulation mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in the nine-junction evaluation.",
-        '#### Visual Disruption: A More Distinctive Deployment Advantage',
+        '#### Clean Views: Assessing the Feasibility of Direct Visual Decisions',
+        'In clean views, S1 is broadly comparable to YOLO+MP, with small gains on some metrics; standard-simulation mean journey time is essentially tied. This supports the feasibility of producing signal actions directly from images. Broader evaluation is needed to establish whether the small differences observed across these limited scenes and seeds are consistent.',
+        '#### Visual Perturbations: Understanding the Effects of Input Changes',
         'Traffic demand may stay the same while camera input changes because of lighting, maintenance or vibration. The four tests target distinct imaging problems: can S1 continue making effective signal decisions when images lose sharpness or stability, or no longer match the original viewpoint?',
         '\n'.join([
-            f"- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **{df_ns:.2f}%** lower than YOLO+MP in the nine-junction evaluation and **{df_town:.2f}%** lower in the standard simulation setting.",
-            f"- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **{mb_ns:.2f}%** lower in the nine-junction evaluation and **{mb_town:.2f}%** lower in the standard simulation setting.",
-            f"- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **{angle_ns:.2f}%** lower in the nine-junction evaluation and **{angle_town:.2f}%** lower in the standard simulation setting; standard-simulation mean waiting is **{angle_wait:.2f}%** lower.",
-            f"- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **{shake_ns:.2f}%** in the nine-junction evaluation and **{shake_town:.2f}%** in the standard simulation setting. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.",
+            '- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder.',
+            '- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles.',
+            '- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration.',
+            '- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time.',
         ]),
-        'These changes can affect vehicle detection and counting or misalign the image with calibrated lane regions, with downstream consequences for count-based signal control. S1 decides directly from temporal images and signal state, without that separate detection-and-counting pipeline. Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP: robustness translates into less waiting, shorter queues and shorter average journeys.',
+        'These tests examine how visual input changes affect the complete control system. In particular, fixed camera shifts can combine changes in detection quality with lane-region misalignment, so the results should be interpreted in light of the no-recalibration setting. Richer traffic-scene understanding requires dedicated traffic-event evaluations.',
         'The tests simulate visual changes that these real-world problems can produce; they are not completed night-time field or real-world adverse-weather validation. [Real-world context and technical sources](docs/visual-robustness.md).',
         '#### Sub-Second Decisions From a Visual Model',
         f"Across **{latency['count']}** unquantized RTX 5090 decision requests, latency averages **{latency['mean_ms']:.0f} ms**, with **{100*latency['under_1s_fraction']:.2f}%** below one second; steady-state requests average **{steady['mean_ms']:.0f} ms**. System One emits structured control actions directly, without waiting for a long textual response, combining visual understanding, traffic-control performance and fast decisions.",
@@ -270,40 +256,32 @@ def render_summary(data: dict[str, Any], chinese: bool, records: list[dict[str, 
     town = improvement_percent(groups['town'], 'fixed', records)
     mp = improvement_percent(groups['nansha'], 'mp', records)
     if chinese:
-        return f"""### 正常画面：优于经工程优化的固定配时，与YOLO+MP保持竞争力
+        return f"""本次评测关注直接视觉决策的交通控制效果，以及视觉输入变化对控制表现的影响。**YOLO+MP** 指由YOLO车辆检测与最大压力（Max Pressure）信号控制组成的方案；比较指标为车辆等待、排队和行程。
 
-> [!TIP]
-> **正常视觉下的控制收益**
-> 对照采用**经工程优化的合理固定配时方案**，参数在评测前确定并冻结，评测期间保持不变。
->
-> 与该固定方案相比，9个路口独立测试的72个案例和标准仿真场景的五类车流，平均行程分别降低 **{ns:.2f}%** 和 **{town:.2f}%**。相对YOLO+MP，前者降低 **{mp:.2f}%**，后者基本持平。
+### 正常画面：与YOLO+MP相当，部分指标略优
 
-### 画面受干扰：更鲜明的优势
+在9个路口独立测试的72个案例中，S1相对YOLO+MP的平均行程降低 {mp:.2f}%；标准仿真场景的五类车流中，两者平均行程基本持平。正常画面下，S1的整体控制表现可与YOLO+MP媲美，部分指标略优。
 
-> [!IMPORTANT]
-> **优势落在交通效果上：更少等待、更短排队、更短行程。**
-> 在两组场景、四种已测试干扰下，三项指标均优于YOLO+MP。下图展示全部八组平均行程改善。
+固定对照采用**经工程优化的合理固定配时方案**，参数在评测前确定并冻结，评测期间保持不变。与该方案相比，S1在上述两组场景的平均行程分别降低 **{ns:.2f}%** 和 **{town:.2f}%**。
 
-<img width="1000" src="assets/results-fusion/journey-summary-zh.png" alt="全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示"/>
+### 视觉干扰：输入变化下的控制表现
 
-特殊视觉每个条件在9个路口各测试1个案例，在标准仿真场景测试5个案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果尚不代表真实道路、夜间或恶劣天气验证。"""
-    return f"""### Clean views: better than engineering-optimized fixed timing, competitive with YOLO+MP
+失焦、模糊、机位偏移和抖动可能影响车辆检测或车道区域匹配，继而影响基于检测计数的信号控制，这类影响可以预期。在本次两组场景、四类干扰的测试中，S1的平均等待、排队和行程均低于YOLO+MP。完整数据与全部八组图表收录在下方可展开的结果中。
 
-> [!TIP]
-> **Control gains in clean views**
-> The baseline is a **reasonable fixed-time plan optimized through engineering design**, with parameters determined and frozen before evaluation and held unchanged throughout.
->
-> Against this plan, mean journey time falls by **{ns:.2f}%** across 72 cases at the nine junctions and **{town:.2f}%** across five standard simulation regimes. Against YOLO+MP, the nine-junction evaluation improves by **{mp:.2f}%**, while standard simulation is essentially tied.
+每类干扰在9个路口各测试1个案例，在标准仿真场景测试5个案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果适用于本次设置，尚不代表真实道路、夜间或恶劣天气验证。"""
+    return f"""This evaluation examines the traffic-control performance of direct visual decisions and the effects of changes in visual input. **YOLO+MP** combines YOLO vehicle detection with Max Pressure signal control; the comparison measures vehicle waiting, queues and journey time.
 
-### Visual disruption: the more distinctive advantage
+### Clean views: comparable to YOLO+MP, with small gains on some metrics
 
-> [!IMPORTANT]
-> **Robustness translates into less waiting, shorter queues and shorter journeys.**
-> S1 improves all three metrics over YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions.
+Across 72 cases at the nine junctions, S1 reduces mean journey time by {mp:.2f}% relative to YOLO+MP; across five standard simulation regimes, mean journey time is essentially tied. Overall, S1 delivers comparable control in clean views, with small gains on some metrics.
 
-<img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
+The fixed baseline is a **reasonable fixed-time plan optimized through engineering design**, with parameters determined and frozen before evaluation and held unchanged throughout. Against this plan, S1 reduces mean journey time by **{ns:.2f}%** and **{town:.2f}%** in the two settings, respectively.
 
-Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance."""
+### Visual perturbations: control performance under input changes
+
+Defocus, blur, camera shifts and shake can affect vehicle detection or lane-region alignment, with expected downstream effects on count-based signal control. In the two settings and four perturbations tested here, S1 records lower mean waiting, queues and journey time than YOLO+MP. Full data and charts covering all eight groups are provided in the expandable results below.
+
+Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These results apply to the tested setup and do not establish real-road, night-time or adverse-weather performance."""
 
 
 def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -> str:
@@ -311,7 +289,7 @@ def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[st
     if chinese:
         return f"""## 核心创新与特色
 
-<img width="1200" src="assets/highlights/s1-features-zh.svg" alt="核心特色：视觉直接决策、四类视觉干扰下的控制优势、RTX 5090平均485毫秒模型响应"/>
+<img width="1200" src="assets/highlights/s1-features-zh.svg" alt="核心特色：视觉直接决策、正常画面下媲美YOLO+MP的控制表现、RTX 5090平均485毫秒模型响应"/>
 
 > [!IMPORTANT]
 > **视觉理解与信号决策，在同一个模型里完成。**
@@ -320,7 +298,7 @@ def render_highlights(data: dict[str, Any], chinese: bool, records: list[dict[st
 **速度实测：** 未量化BF16模型、RTX 5090、{latency['count']:,}次请求，平均 **{latency['mean_ms']:.0f}毫秒**，**{100*latency['under_1s_fraction']:.2f}%** 低于一秒。 [工作原理](#工作原理) · [完整结果](#评测结果) · [延迟统计](#推理性能)"""
     return f"""## Design and Strengths
 
-<img width="1200" src="assets/highlights/s1-features-en.svg" alt="Direct visual decisions, control gains under four perturbations, and 485 ms average RTX 5090 model-request latency"/>
+<img width="1200" src="assets/highlights/s1-features-en.svg" alt="Direct visual decisions, clean-view control comparable to YOLO+MP, and 485 ms average RTX 5090 model-request latency"/>
 
 > [!IMPORTANT]
 > **Visual understanding and signal decisions in one model.**

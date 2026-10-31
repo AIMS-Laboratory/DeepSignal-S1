@@ -13,7 +13,7 @@ English | [简体中文](README.zh-CN.md) · [DeepSignal family](https://github.
 <!-- FUSION_HIGHLIGHTS:BEGIN -->
 ## Design and Strengths
 
-<img width="1200" src="assets/highlights/s1-features-en.svg" alt="Direct visual decisions, control gains under four perturbations, and 485 ms average RTX 5090 model-request latency"/>
+<img width="1200" src="assets/highlights/s1-features-en.svg" alt="Direct visual decisions, clean-view control comparable to YOLO+MP, and 485 ms average RTX 5090 model-request latency"/>
 
 > [!IMPORTANT]
 > **Visual understanding and signal decisions in one model.**
@@ -50,23 +50,19 @@ Watch the visual disturbance, signal actions and queue behavior. These are the e
 - **Standard simulation:** the **Town10HD virtual-city map in CARLA**, with five traffic regimes at one four-arm intersection. Town10HD names the map.
 
 <!-- FUSION_RESULTS:BEGIN -->
-### Clean views: better than engineering-optimized fixed timing, competitive with YOLO+MP
+This evaluation examines the traffic-control performance of direct visual decisions and the effects of changes in visual input. **YOLO+MP** combines YOLO vehicle detection with Max Pressure signal control; the comparison measures vehicle waiting, queues and journey time.
 
-> [!TIP]
-> **Control gains in clean views**
-> The baseline is a **reasonable fixed-time plan optimized through engineering design**, with parameters determined and frozen before evaluation and held unchanged throughout.
->
-> Against this plan, mean journey time falls by **18.17%** across 72 cases at the nine junctions and **33.77%** across five standard simulation regimes. Against YOLO+MP, the nine-junction evaluation improves by **1.36%**, while standard simulation is essentially tied.
+### Clean views: comparable to YOLO+MP, with small gains on some metrics
 
-### Visual disruption: the more distinctive advantage
+Across 72 cases at the nine junctions, S1 reduces mean journey time by 1.36% relative to YOLO+MP; across five standard simulation regimes, mean journey time is essentially tied. Overall, S1 delivers comparable control in clean views, with small gains on some metrics.
 
-> [!IMPORTANT]
-> **Robustness translates into less waiting, shorter queues and shorter journeys.**
-> S1 improves all three metrics over YOLO+MP in both scenes under all four tested perturbations. The chart shows all eight mean-journey reductions.
+The fixed baseline is a **reasonable fixed-time plan optimized through engineering design**, with parameters determined and frozen before evaluation and held unchanged throughout. Against this plan, S1 reduces mean journey time by **18.17%** and **33.77%** in the two settings, respectively.
 
-<img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
+### Visual perturbations: control performance under input changes
 
-Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These simulations do not establish real-road, night-time or adverse-weather performance.
+Defocus, blur, camera shifts and shake can affect vehicle detection or lane-region alignment, with expected downstream effects on count-based signal control. In the two settings and four perturbations tested here, S1 records lower mean waiting, queues and journey time than YOLO+MP. Full data and charts covering all eight groups are provided in the expandable results below.
+
+Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These results apply to the tested setup and do not establish real-road, night-time or adverse-weather performance.
 
 <details>
 <summary>Clean views: three controllers — full values and three-metric chart</summary>
@@ -91,6 +87,8 @@ Each perturbation covers one case at each of the nine junctions and five cases i
 
 <details>
 <summary>Perturbed views: S1 vs YOLO+MP — full values and three-metric chart</summary>
+
+<img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>
 
 <table>
 <thead>
@@ -127,22 +125,20 @@ Each perturbation covers one case at each of the nine junctions and five cases i
 
 ### What the Results Show
 
-#### Clean Views: Competitive Control Without a Separate Detector
+#### Clean Views: Assessing the Feasibility of Direct Visual Decisions
 
-Against the fixed-time plan, S1 reduces mean journey time by **18.17%** in the nine-junction evaluation and **33.77%** in the standard simulation setting, while mean waiting falls by **33.15%** and **49.45%**, respectively. The gains extend beyond earlier arrivals to less stopped waiting and shorter queues.
+In clean views, S1 is broadly comparable to YOLO+MP, with small gains on some metrics; standard-simulation mean journey time is essentially tied. This supports the feasibility of producing signal actions directly from images. Broader evaluation is needed to establish whether the small differences observed across these limited scenes and seeds are consistent.
 
-Against YOLO+MP, S1 further reduces nine-junction mean journey time by **1.36%** and mean waiting by **2.28%**; standard-simulation mean journey time is essentially tied. Direct visual decisions therefore deliver competitive traffic control without a separate vehicle-detection stage, with a modest clean-view lead in the nine-junction evaluation.
-
-#### Visual Disruption: A More Distinctive Deployment Advantage
+#### Visual Perturbations: Understanding the Effects of Input Changes
 
 Traffic demand may stay the same while camera input changes because of lighting, maintenance or vibration. The four tests target distinct imaging problems: can S1 continue making effective signal decisions when images lose sharpness or stability, or no longer match the original viewpoint?
 
-- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder. Under simulated defocus, S1 mean journey time is **15.79%** lower than YOLO+MP in the nine-junction evaluation and **59.29%** lower in the standard simulation setting.
-- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles. Under the motion-blur test, S1 mean journey time is **30.14%** lower in the nine-junction evaluation and **70.16%** lower in the standard simulation setting.
-- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration. S1 mean journey time is **16.40%** lower in the nine-junction evaluation and **82.93%** lower in the standard simulation setting; standard-simulation mean waiting is **90.63%** lower.
-- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time. S1 retains a mean-journey advantage of **6.80%** in the nine-junction evaluation and **6.72%** in the standard simulation setting. Shake still yields gains, while blur and camera shifts show the more pronounced advantages.
+- **Defocus: inaccurate focus softens vehicle outlines.** Mixed lighting, including headlights at night, can disrupt autofocus; manual focus adjustment or lens replacement can also leave the intersection out of focus. Softer vehicle and lane edges make recognition and counting harder.
+- **Motion blur: movement during exposure creates directional smearing.** In low light at dusk or night, a camera may use longer exposures. Moving vehicles or camera movement during exposure can then smear outlines and obscure separation between vehicles.
+- **Fixed camera-angle shifts: a stable view from a changed direction.** For example, maintenance-related re-aiming or a shifted mount can move lane and stop-line positions in the image, even after the camera becomes steady. Previously drawn lane regions may no longer align. Our comparison calibrates YOLO at the original pose, then holds the changed camera angle fixed without recalibration.
+- **Dynamic shake: the viewpoint keeps moving over time.** Wind gusts or vibrations from nearby heavy vehicles can shake a pole-mounted camera, shifting vehicle and lane positions across successive frames. Unlike a fixed angle shift, this disturbance continues over time.
 
-These changes can affect vehicle detection and counting or misalign the image with calibrated lane regions, with downstream consequences for count-based signal control. S1 decides directly from temporal images and signal state, without that separate detection-and-counting pipeline. Across both evaluated scenes and all four perturbations, S1 has lower mean waiting, queue length and journey time than YOLO+MP: robustness translates into less waiting, shorter queues and shorter average journeys.
+These tests examine how visual input changes affect the complete control system. In particular, fixed camera shifts can combine changes in detection quality with lane-region misalignment, so the results should be interpreted in light of the no-recalibration setting. Richer traffic-scene understanding requires dedicated traffic-event evaluations.
 
 The tests simulate visual changes that these real-world problems can produce; they are not completed night-time field or real-world adverse-weather validation. [Real-world context and technical sources](docs/visual-robustness.md).
 
@@ -191,9 +187,11 @@ A verified minimum-VRAM configuration has not been published; the tested hardwar
 
 ## Future Potential and Research Directions
 
-The current results demonstrate direct visual decisions in controlled simulations. Building on these results, **our team is actively pursuing the following next-stage research directions**; complex traffic-event handling and multi-junction coordination have not yet been validated.
+**We see S1's longer-term potential in expanding its decision-making capabilities through scene understanding.** Visual input contains information beyond vehicle counts, such as whether road space is obstructed, which events are causing congestion, and the movement needs of different road users. Combining this information with traffic rules and signal state could support appropriate actions in more complex situations, creating greater room for future capability development.
 
-- **Understand and respond to more complex traffic events.** With additional scenario data, traffic rules and safety constraints, explore reasoning about roadworks, incident blockages, emergency vehicles, and concentrated pedestrian or cyclist flows, so signal decisions can account for events and their effects on traffic.
+The current results support the feasibility of direct visual decisions in controlled simulations. **Our team is actively pursuing the following next-stage research directions** to evaluate this potential; complex traffic-event handling and multi-junction coordination have not yet been validated.
+
+- **Progress from observing traffic flows to understanding traffic scenes.** With additional scenario data, traffic rules and safety constraints, explore understanding roadworks, incident blockages, emergency vehicles, and concentrated pedestrian or cyclist flows, assessing their effects on available road space, movement priorities and downstream congestion risk, and adapting signal actions accordingly.
 - **Extend single-junction decisions to coordinated control.** Explore sharing queues, signal states and incoming-flow information between adjacent junctions to coordinate release timing, support arterial green waves, limit downstream queue spillback and improve network traffic flow. This requires new communication mechanisms and network-level evaluation.
 - **Evaluate broader applicability and reduce deployment costs.** Run independent evaluations at previously unseen junctions, at night and in adverse weather, and explore quantization and edge deployment to assess transferability, response times and compute requirements.
 
