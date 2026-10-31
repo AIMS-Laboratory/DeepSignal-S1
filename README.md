@@ -60,11 +60,11 @@ The fixed baseline is a **reasonable fixed-time plan optimized through engineeri
 
 ### Visual perturbations: control performance under input changes
 
-Defocus, blur, camera shifts and shake can affect vehicle detection or lane-region alignment, with expected downstream effects on count-based signal control. In the two settings and four perturbations tested here, S1 records lower mean waiting, queues and journey time than YOLO+MP. Full data and charts covering all eight groups are provided in the expandable results below.
+Defocus, blur, camera shifts and shake can affect vehicle detection or lane-region alignment, with expected downstream effects on count-based signal control. In the two settings and four perturbations tested here, S1 records lower mean waiting, queues and journey time than YOLO+MP. Full data and charts covering all eight groups are provided in the results below.
 
 Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These results apply to the tested setup and do not establish real-road, night-time or adverse-weather performance.
 
-<details>
+<details open="open">
 <summary>Clean views: three controllers — full values and three-metric chart</summary>
 
 <table>
@@ -85,7 +85,7 @@ Each perturbation covers one case at each of the nine junctions and five cases i
 
 </details>
 
-<details>
+<details open="open">
 <summary>Perturbed views: S1 vs YOLO+MP — full values and three-metric chart</summary>
 
 <img width="1000" src="assets/results-fusion/journey-summary-en.png" alt="Mean journey reduction versus YOLO+MP across all eight perturbation groups, with scenes shown separately"/>

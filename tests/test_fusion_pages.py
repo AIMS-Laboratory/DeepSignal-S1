@@ -264,10 +264,14 @@ def test_video_starts_collapsed_with_valid_public_media(chinese, scene, conditio
 @pytest.mark.parametrize('filename', ['README.md', 'README.zh-CN.md'])
 def test_readmes_keep_details_balanced_and_featured_previews_visible(filename):
     body = (ROOT / filename).read_text()
-    assert body.count('<details>') == body.count('</details>')
+    assert body.count('<details') == body.count('</details>')
     featured = body.split('<!-- FUSION_FEATURED:BEGIN -->')[1].split('<!-- FUSION_FEATURED:END -->')[0]
     assert '<details' not in featured and featured.count('.gif') == 2
-    assert '<details open' not in body
+    results = body.split('<!-- FUSION_RESULTS:BEGIN -->')[1].split('<!-- FUSION_RESULTS:END -->')[0]
+    sections = ET.fromstring('<root>' + results + '</root>').findall('details')
+    for section in sections:
+        assert ('open' in section.attrib) == (section.find('table') is not None)
+    assert body.count('<details open') == results.count('<details open') == 2
 
 
 def test_fresh_mp_row_uses_all_three_metrics_from_the_same_supplement():

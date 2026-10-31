@@ -172,7 +172,7 @@ def render(data: dict[str, Any], chinese: bool, records: list[dict[str, Any]]) -
     lines = [render_summary(data, chinese, records), '']
     for key, title in (('normal', '正常视觉：三方比较' if chinese else 'Clean views: three controllers'),
                        ('extreme', '特殊视觉：S1与YOLO+MP' if chinese else 'Perturbed views: S1 vs YOLO+MP')):
-        lines += ['<details>', f'<summary>{title} — ' + ('完整数值与三指标图' if chinese else 'full values and three-metric chart') + '</summary>', '']
+        lines += ['<details open="open">', f'<summary>{title} — ' + ('完整数值与三指标图' if chinese else 'full values and three-metric chart') + '</summary>', '']
         if key == 'extreme':
             language = 'zh' if chinese else 'en'
             alt = ('全部八组视觉干扰下，S1相对YOLO+MP的平均行程降幅；两个场景分别展示' if chinese else
@@ -266,7 +266,7 @@ def render_summary(data: dict[str, Any], chinese: bool, records: list[dict[str, 
 
 ### 视觉干扰：输入变化下的控制表现
 
-失焦、模糊、机位偏移和抖动可能影响车辆检测或车道区域匹配，继而影响基于检测计数的信号控制，这类影响可以预期。在本次两组场景、四类干扰的测试中，S1的平均等待、排队和行程均低于YOLO+MP。完整数据与全部八组图表收录在下方可展开的结果中。
+失焦、模糊、机位偏移和抖动可能影响车辆检测或车道区域匹配，继而影响基于检测计数的信号控制，这类影响可以预期。在本次两组场景、四类干扰的测试中，S1的平均等待、排队和行程均低于YOLO+MP。完整数据与全部八组图表见下方结果。
 
 每类干扰在9个路口各测试1个案例，在标准仿真场景测试5个案例，均为单种子仿真。YOLO车道区域在正常机位标定后冻结，固定偏角测试不重新标定。结果适用于本次设置，尚不代表真实道路、夜间或恶劣天气验证。"""
     return f"""This evaluation examines the traffic-control performance of direct visual decisions and the effects of changes in visual input. **YOLO+MP** combines YOLO vehicle detection with Max Pressure signal control; the comparison measures vehicle waiting, queues and journey time.
@@ -279,7 +279,7 @@ The fixed baseline is a **reasonable fixed-time plan optimized through engineeri
 
 ### Visual perturbations: control performance under input changes
 
-Defocus, blur, camera shifts and shake can affect vehicle detection or lane-region alignment, with expected downstream effects on count-based signal control. In the two settings and four perturbations tested here, S1 records lower mean waiting, queues and journey time than YOLO+MP. Full data and charts covering all eight groups are provided in the expandable results below.
+Defocus, blur, camera shifts and shake can affect vehicle detection or lane-region alignment, with expected downstream effects on count-based signal control. In the two settings and four perturbations tested here, S1 records lower mean waiting, queues and journey time than YOLO+MP. Full data and charts covering all eight groups are provided in the results below.
 
 Each perturbation covers one case at each of the nine junctions and five cases in standard simulation, using one seed per scene. YOLO lane regions are calibrated on clean views and frozen; fixed camera shifts are not recalibrated. These results apply to the tested setup and do not establish real-road, night-time or adverse-weather performance."""
 
